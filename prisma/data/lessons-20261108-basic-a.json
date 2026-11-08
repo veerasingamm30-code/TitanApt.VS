@@ -1,0 +1,661 @@
+[
+  {
+    "topicSlug": "number-system",
+    "slug": "number-system-basic",
+    "title": "Primes, factorisation and factor counting",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Factorise numbers into primes, count factors quickly and use LCM and HCF reasoning on repeating-event word problems.",
+    "explanation": "Every composite number breaks into primes in exactly one way, so prime factorisation is the master key for divisibility questions. To test whether n is prime it is enough to try dividing by every prime up to the square root of n. For a number written as p^a x q^b, the total number of factors is (a + 1) x (b + 1) because each prime contributes one more choice of exponent than its power. Word problems where two events repeat at different intervals and then coincide again are solved directly with the LCM.",
+    "analogy": "Prime factorisation is like the ingredient list of a dish: every recipe is built from the same basic ingredients, and the combination is unique. Counting factors is counting every way to take some or all of each ingredient.",
+    "workedExamples": [
+      {
+        "title": "Factorising and counting factors of 84",
+        "problem": "Write 84 as a product of primes and count how many factors it has.",
+        "steps": [
+          "Divide 84 by 2 twice: 84 = 2 x 42 = 2 x 2 x 21.",
+          "21 = 3 x 7, so 84 = 2^2 x 3 x 7.",
+          "Number of factors = (2 + 1) x (1 + 1) x (1 + 1) = 3 x 2 x 2 = 12."
+        ],
+        "answer": "84 = 2^2 x 3 x 7 and it has 12 factors."
+      },
+      {
+        "title": "Two blinking lights",
+        "problem": "A red light blinks every 12 seconds and a blue light every 18 seconds. They blink together now. After how many seconds will they blink together again, and how many times does that happen within 2 minutes?",
+        "steps": [
+          "Find the LCM of 12 and 18: 12 = 2^2 x 3 and 18 = 2 x 3^2, so LCM = 2^2 x 3^2 = 36.",
+          "The lights blink together every 36 seconds.",
+          "2 minutes = 120 seconds. 120 divided by 36 gives 3 with remainder 12, so the joint blinks occur at seconds 36, 72 and 108."
+        ],
+        "answer": "They blink together every 36 seconds, which happens 3 more times within 2 minutes."
+      }
+    ],
+    "rule": [
+      { "title": "Prime test", "detail": "Try primes up to the square root of n; if none divide n, then n is prime." },
+      { "title": "Factor counter", "detail": "For n = p^a x q^b, the number of factors is (a + 1) x (b + 1)." },
+      { "title": "Repeating events", "detail": "Events repeating every m and n seconds coincide every LCM(m, n) seconds." },
+      { "title": "One is special", "detail": "1 is neither prime nor composite; 2 is the only even prime." }
+    ],
+    "mistakes": [
+      { "mistake": "Writing the factor count as a x b instead of (a + 1) x (b + 1).", "fix": "Add 1 to each exponent first: 12 = 2^2 x 3 has (2+1)(1+1) = 6 factors, which are 1, 2, 3, 4, 6 and 12." },
+      { "mistake": "Testing every number up to n for primality.", "fix": "Testing primes up to the square root is enough: if n = a x b, one of a or b is at most sqrt(n)." },
+      { "mistake": "Treating 1 as a prime.", "fix": "A prime has exactly two factors; 1 has only one, so it is neither prime nor composite." }
+    ],
+    "memoryTip": "Square-root test for primality; add 1 to each prime exponent and multiply to count factors; LCM for events that repeat together.",
+    "practice": [
+      { "prompt": "How many factors does 36 have?", "answer": "9. 36 = 2^2 x 3^2, so (2 + 1) x (2 + 1) = 9." },
+      { "prompt": "Find the LCM of 4, 6 and 9.", "answer": "36. LCM(4, 6) = 12 and LCM(12, 9) = 36." },
+      { "prompt": "Is 97 a prime? Justify your answer.", "answer": "Yes. Its square root is below 10, and checking primes 2, 3, 5 and 7 shows none divide 97." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "percentages",
+    "slug": "percentages-basic",
+    "title": "Percentages as fractions and percent change",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Convert between fractions, decimals and percentages and calculate percentage increases, decreases and discounts.",
+    "explanation": "A percentage is a fraction with denominator 100, so 35 percent means 35/100 of the whole. Converting fluently between common fractions and percentages, such as 1/8 = 12.5 percent, saves time in exams. A percentage change is always computed on the original value: percent change = change divided by original, times 100. When two changes happen one after the other, they multiply as factors; for example a rise of a percent followed by a fall of a percent does not cancel to zero.",
+    "analogy": "Think of percentages as a shared language for every ratio: exam marks, discounts and interest all speak it, which is why converting any ratio to parts per 100 makes different situations comparable.",
+    "workedExamples": [
+      {
+        "title": "Finding a percentage of a quantity",
+        "problem": "Calculate 18 percent of 250.",
+        "steps": [
+          "Write 18 percent as 18/100 = 0.18.",
+          "Multiply: 250 x 0.18 = 45."
+        ],
+        "answer": "18 percent of 250 is 45."
+      },
+      {
+        "title": "Percentage change",
+        "problem": "A jacket marked at 800 is sold for 600. Find the percentage discount.",
+        "steps": [
+          "Discount amount = 800 - 600 = 200.",
+          "Discount percentage = 200/800 x 100 = 25."
+        ],
+        "answer": "The discount is 25 percent."
+      }
+    ],
+    "rule": [
+      { "title": "Basic conversion", "detail": "x percent of y = x/100 y and x percent of y = y percent of x." },
+      { "title": "Percent change", "detail": "Percent change = (new - old)/old x 100, always taken on the original value." },
+      { "title": "Successive changes", "detail": "Multiply the factors: +20 percent then -20 percent gives 1.2 x 0.8 = 0.96, a net fall of 4 percent." },
+      { "title": "Handy fractions", "detail": "50 = 1/2, 25 = 1/4, 20 = 1/5, 12.5 = 1/8 and 16.67 = 1/6 in percent." }
+    ],
+    "mistakes": [
+      { "mistake": "Computing the percentage change on the final value instead of the original.", "fix": "Change from 250 to 200 is 50/250 = 20 percent, not 50/200 = 25 percent." },
+      { "mistake": "Assuming +x percent followed by -x percent returns to zero.", "fix": "The two changes act on different bases, so they multiply as (1 plus) x (1 minus) factors." },
+      { "mistake": "Confusing 'percentage of' with 'percentage more than'.", "fix": "40 percent of 60 is 24, but 40 percent more than 60 is 84." }
+    ],
+    "memoryTip": "Percent means out of 100; change is always measured against the starting value; successive changes multiply.",
+    "practice": [
+      { "prompt": "Find 35 percent of 460.", "answer": "161. 460 x 0.35 = 161." },
+      { "prompt": "12 is what percent of 48?", "answer": "25 percent. 12/48 x 100 = 25." },
+      { "prompt": "A number is increased by 12.5 percent and becomes 540. Find the number.", "answer": "480. 540/1.125 = 480, since 12.5 percent equals 1/8." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "profit-and-loss",
+    "slug": "profit-and-loss-basic",
+    "title": "Cost price, selling price and discount",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Compute profit, loss and discount percentages from cost price, selling price and marked price.",
+    "explanation": "Cost price (CP) is what the seller pays to acquire an item, selling price (SP) is what it is sold for, and marked price (MP) is the printed price before any discount. Profit and loss percentages are always computed on the cost price, while discounts are always computed on the marked price. The chain is: discount is cut from the marked price to reach the selling price, and profit or loss is the gap between selling price and cost price measured on the cost price.",
+    "analogy": "Think of a train journey: marked price is the full platform, the discount is the coach you lose at the start, and profit is how much further you end up past the cost-price station.",
+    "workedExamples": [
+      {
+        "title": "Profit percentage",
+        "problem": "A trader buys a clock for 240 and sells it for 300. Find the profit percentage.",
+        "steps": [
+          "Profit = 300 - 240 = 60.",
+          "Profit percent = 60/240 x 100 = 25."
+        ],
+        "answer": "The profit is 25 percent."
+      },
+      {
+        "title": "Discount then profit",
+        "problem": "An article marked at 1000 is sold at a 30 percent discount. Its cost price is 500. Find the profit percentage.",
+        "steps": [
+          "Selling price = 1000 x 0.70 = 700.",
+          "Profit = 700 - 500 = 200.",
+          "Profit percent = 200/500 x 100 = 40."
+        ],
+        "answer": "The profit is 40 percent."
+      }
+    ],
+    "rule": [
+      { "title": "Profit on CP", "detail": "Profit percent = (SP - CP)/CP x 100; loss percent = (CP - SP)/CP x 100." },
+      { "title": "Discount on MP", "detail": "Discount percent is computed on the marked price, never on the cost price." },
+      { "title": "Selling price chain", "detail": "SP = MP x (1 - d/100) = CP x (1 + p/100)." },
+      { "title": "No profit no loss", "detail": "When SP equals CP the profit percent is zero even if the marked price is high." }
+    ],
+    "mistakes": [
+      { "mistake": "Computing profit percent on the selling price.", "fix": "Both profit and loss percentages are defined on the cost price in exams." },
+      { "mistake": "Applying the discount to the cost price.", "fix": "Discount comes off the marked price; cost price is not part of that calculation." },
+      { "mistake": "Subtracting percentages of different bases directly.", "fix": "Convert each stage to an actual amount before comparing." }
+    ],
+    "memoryTip": "Profit and loss sit on cost price; discount sits on marked price; SP is the hinge of both relations.",
+    "practice": [
+      { "prompt": "An item bought for 500 is sold for 560. Find the profit percent.", "answer": "12 percent. Profit 60 on cost 500 gives 60/500 x 100 = 12." },
+      { "prompt": "Goods costing 800 are sold for 640. Find the loss percent.", "answer": "20 percent. Loss 160 on 800 gives 160/800 x 100 = 20." },
+      { "prompt": "A bag marked 850 is sold at a 15 percent discount. Find the selling price.", "answer": "722.50. 850 x 0.85 = 722.5." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "ratio-and-proportion",
+    "slug": "ratio-and-proportion-basic",
+    "title": "Sharing totals with ratios",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Simplify ratios, verify proportions by cross multiplication and divide a total among people in a given ratio.",
+    "explanation": "A ratio a : b compares two quantities of the same kind and stays the same when both parts are multiplied or divided by the same number. Four quantities a, b, c and d are in proportion when a : b = c : d, checked by confirming a x d = b x c. To divide an amount in the ratio of several shares, express the total as the sum of ratio parts, find one part, then scale each share.",
+    "analogy": "A ratio is a recipe with fixed relative amounts: doubling the whole recipe keeps the taste identical. Sharing in a ratio is pouring the fixed recipe proportions into equal-sized ladle scoops.",
+    "workedExamples": [
+      {
+        "title": "Sharing 720 in the ratio 2 : 3 : 4",
+        "problem": "Divide 720 among three people in the ratio 2 : 3 : 4.",
+        "steps": [
+          "Total parts = 2 + 3 + 4 = 9.",
+          "One part = 720/9 = 80.",
+          "Shares = 2 x 80 = 160, 3 x 80 = 240 and 4 x 80 = 320."
+        ],
+        "answer": "The shares are 160, 240 and 320."
+      },
+      {
+        "title": "Combining two ratios",
+        "problem": "If a : b = 2 : 3 and b : c = 3 : 4, find a : c.",
+        "steps": [
+          "The b terms already match (3 in both), so a : b : c = 2 : 3 : 4.",
+          "Then a : c = 2 : 4.",
+          "Simplify by dividing both parts by 2."
+        ],
+        "answer": "a : c = 1 : 2."
+      }
+    ],
+    "rule": [
+      { "title": "Cross test for proportion", "detail": "a : b = c : d holds exactly when a x d = b x c." },
+      { "title": "Scaling", "detail": "Multiplying both parts of a ratio by the same number leaves it unchanged." },
+      { "title": "Total sharing", "detail": "Share of a person = (own parts / total parts) x grand total." },
+      { "title": "Matching the middle term", "detail": "To combine a : b and b : c, make the b values equal by multiplying each ratio as needed." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding equal amounts to both parts of a ratio and expecting it to stay equal.", "fix": "Only multiplication or division preserves a ratio; adding changes it." },
+      { "mistake": "Distributing the total by dividing only by the first ratio number.", "fix": "Divide by the sum of all parts first." },
+      { "mistake": "Reading the order of a ratio loosely.", "fix": "2 : 3 and 3 : 2 describe different comparisons." }
+    ],
+    "memoryTip": "Ratio parts add to a whole; cross multiplication tests proportion; matching middle terms combines ratios.",
+    "practice": [
+      { "prompt": "Two numbers are in the ratio 3 : 5 and their sum is 64. Find them.", "answer": "24 and 40. Total parts 8, one part 8, so 3 x 8 = 24 and 5 x 8 = 40." },
+      { "prompt": "Simplify the ratio 45 : 60.", "answer": "3 : 4, by dividing both parts by 15." },
+      { "prompt": "Is 7 : 9 in proportion with 14 : 18?", "answer": "Yes. Cross test: 7 x 18 = 126 = 9 x 14." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "average",
+    "slug": "average-basic",
+    "title": "Averages from sums",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Compute averages, use the sum = average x count relation, and handle one new member joining or replacing an old member.",
+    "explanation": "The average of a group is the total of all values divided by how many values there are, so sum = average x count is the central identity. If one member joins, the new average is the new total divided by the new count. If an old value is replaced by a new one, the average shifts by the difference between the two values spread over the count, and the direction of the shift follows the direction of the replacement.",
+    "analogy": "An average is like leveling water poured from differently sized cups into one flat tub: the tub only knows the total water and the number of cups, so every question is really about the total.",
+    "workedExamples": [
+      {
+        "title": "A new member joins",
+        "problem": "The average of 4 numbers is 15. A fifth number 20 joins the group. Find the new average.",
+        "steps": [
+          "Old total = 4 x 15 = 60.",
+          "New total = 60 + 20 = 80.",
+          "New average = 80/5 = 16."
+        ],
+        "answer": "The new average is 16."
+      },
+      {
+        "title": "Replacing a value",
+        "problem": "The average of 8 numbers is 24. One number 30 is replaced by 40. Find the new average.",
+        "steps": [
+          "The total rises by 40 - 30 = 10.",
+          "Rise in average = 10/8 = 1.25.",
+          "New average = 24 + 1.25 = 25.25."
+        ],
+        "answer": "The new average is 25.25."
+      }
+    ],
+    "rule": [
+      { "title": "Core identity", "detail": "Average = sum / count, so sum = average x count." },
+      { "title": "Joining one member", "detail": "New average = (old total + new value)/(old count + 1)." },
+      { "title": "Replacement shift", "detail": "Average moves by (new value - old value)/count." },
+      { "title": "Symmetric lists", "detail": "In an evenly spaced list the average is the middle value." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding the new number directly to the old average.", "fix": "The newcomer changes the total, and the total must be divided by the larger count." },
+      { "mistake": "Forgetting to divide the replacement difference by the count.", "fix": "A swap of 10 in a group of 8 moves the average by 10/8 = 1.25, not by 10." },
+      { "mistake": "Using the average of averages without weights.", "fix": "Two groups with different sizes need a weighted total first." }
+    ],
+    "memoryTip": "Every average question is a sum question in disguise; multiply first, adjust, then divide back.",
+    "practice": [
+      { "prompt": "Find the average of 10, 20 and 30.", "answer": "20. Sum 60 divided by 3." },
+      { "prompt": "The average of 12 numbers is 25. Find their total.", "answer": "300. Sum = 25 x 12." },
+      { "prompt": "Find the average of the first 5 odd numbers.", "answer": "5. The list is 1, 3, 5, 7, 9 and the middle value is 5." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "simple-and-compound-interest",
+    "slug": "simple-and-compound-interest-basic",
+    "title": "Simple interest and the first years of compound interest",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Use SI = P r t / 100, compute compound amounts year by year, and find a rate or principal from given data.",
+    "explanation": "Simple interest grows linearly: every year adds the same amount P x r/100, so SI = P r t / 100 and the final amount is P + SI. Compound interest grows geometrically: each year's interest is computed on the amount at the start of that year, so after t years the amount is P x (1 + r/100)^t. For one year the two agree; from the second year onward compound interest runs ahead, and the two-year compound interest exceeds the two-year simple interest because interest earns interest.",
+    "analogy": "Simple interest is a fixed weekly allowance; compound interest is an allowance that grows because yesterday's allowance also starts paying you.",
+    "workedExamples": [
+      {
+        "title": "Simple interest",
+        "problem": "Find the simple interest and amount on 1200 for 3 years at 8 percent per year.",
+        "steps": [
+          "SI = 1200 x 8 x 3/100.",
+          "Compute: 1200 x 24/100 = 288.",
+          "Amount = 1200 + 288 = 1488."
+        ],
+        "answer": "The simple interest is 288 and the amount is 1488."
+      },
+      {
+        "title": "Compound interest for two years",
+        "problem": "Find the compound interest on 1000 for 2 years at 10 percent per year.",
+        "steps": [
+          "After year 1: amount = 1000 x 1.10 = 1100.",
+          "After year 2: amount = 1100 x 1.10 = 1210.",
+          "Compound interest = 1210 - 1000 = 210."
+        ],
+        "answer": "The compound interest is 210 and the amount is 1210."
+      }
+    ],
+    "rule": [
+      { "title": "Simple interest", "detail": "SI = P x r x t / 100; the yearly interest is constant." },
+      { "title": "Compound amount", "detail": "A = P x (1 + r/100)^t for yearly compounding." },
+      { "title": "Year-by-year", "detail": "New principal each year = old principal + interest earned." },
+      { "title": "Same first year", "detail": "For t = 1, compound and simple interest are equal at P x r/100." }
+    ],
+    "mistakes": [
+      { "mistake": "Computing compound interest as P x r x t / 100.", "fix": "That is the simple interest formula; compound interest needs the power formula or year-by-year growth." },
+      { "mistake": "Confusing rate percent with its decimal.", "fix": "8 percent enters as r/100 = 0.08, never as 0.8." },
+      { "mistake": "Reporting interest when the question asks for the amount.", "fix": "Amount = principal + interest; read the question twice." }
+    ],
+    "memoryTip": "SI is linear, CI is powered; amount = principal plus interest; compound pulls ahead from year 2.",
+    "practice": [
+      { "prompt": "Find the simple interest on 5000 at 6 percent for 4 years.", "answer": "1200. 5000 x 6 x 4/100 = 1200." },
+      { "prompt": "Find the amount on 2000 at 5 percent for 1 year.", "answer": "2100. Year 1 interest is 100." },
+      { "prompt": "Find the compound interest on 800 at 10 percent for 2 years.", "answer": "168. Amount = 800 x 1.1 x 1.1 = 968, so interest = 168." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-and-work",
+    "slug": "time-and-work-basic",
+    "title": "One-day work rates",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Convert days into one-day work rates, add rates for people working together and convert combined rates back into days.",
+    "explanation": "If a person finishes a job in d days, their one-day work is 1/d of the job. People working together contribute rates that add, so the combined one-day work of A and B is 1/a + 1/b and the time together is the reciprocal of that sum. Rates can also be avoided entirely by taking the LCM of the given days as the total number of units of work and converting everyone into units per day.",
+    "analogy": "Think of each worker as a tap draining a tank. Two taps open together finish twice as fast only in rates, never by halving the individual days.",
+    "workedExamples": [
+      {
+        "title": "Two workers together",
+        "problem": "A finishes a job in 6 days and B in 12 days. How long do they take together?",
+        "steps": [
+          "One-day work of A = 1/6 and of B = 1/12.",
+          "Combined one-day work = 1/6 + 1/12 = 2/12 + 1/12 = 3/12 = 1/4.",
+          "Time together = 1 / (1/4) = 4 days."
+        ],
+        "answer": "They finish the job in 4 days together."
+      },
+      {
+        "title": "Units method",
+        "problem": "A completes a task in 10 days and B in 15 days. In how many days do they finish working together?",
+        "steps": [
+          "Take LCM(10, 15) = 30 units of total work.",
+          "A does 30/10 = 3 units per day and B does 30/15 = 2 units per day.",
+          "Together = 5 units per day, so time = 30/5 = 6 days."
+        ],
+        "answer": "They finish in 6 days."
+      }
+    ],
+    "rule": [
+      { "title": "Rate of one person", "detail": "A person taking d days has one-day work 1/d." },
+      { "title": "Rates add", "detail": "Working together, one-day works add; days never add." },
+      { "title": "Units shortcut", "detail": "Take total work as LCM of the individual days and divide by units per day." },
+      { "title": "Inverse relation", "detail": "Twice the workforce at equal rates halves the days, not the rate." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding the days instead of the rates.", "fix": "6 days and 12 days do not make 18 days or 9 days; the correct answer comes from 1/6 + 1/12." },
+      { "mistake": "Forgetting to invert the combined rate into days.", "fix": "After adding rates, take the reciprocal to get the time." },
+      { "mistake": "Mixing different jobs in one rate sum.", "fix": "A rate belongs to one fixed job; rescale before combining." }
+    ],
+    "memoryTip": "Days ask how fast, rates say how much: add rates, invert once at the end.",
+    "practice": [
+      { "prompt": "A takes 4 days and B takes 12 days. Together?", "answer": "3 days. Rates 1/4 and 1/12 add to 1/3, so the time is 3 days." },
+      { "prompt": "One man alone takes 15 days and one woman alone takes 10 days. Working together?", "answer": "6 days. 1/15 + 1/10 = 1/6." },
+      { "prompt": "If 5 workers take 6 days, how long do 10 workers of equal rate take?", "answer": "3 days. Double the workforce at the same rate halves the time." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-speed-distance",
+    "slug": "time-speed-distance-basic",
+    "title": "Distance equals speed times time",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Apply d = s x t directly, convert speeds between km/h and m/s and compute simple average speeds from totals.",
+    "explanation": "Distance, speed and time form one relation, d = s x t; knowing any two fixes the third. Speeds expressed in km/h and m/s convert by multiplying by 5/18 or 18/5 because 1 km = 1000 m and 1 hour = 3600 s. The average speed of a trip is always total distance over total time, which equals the arithmetic mean of the speeds only when each speed lasts the same time.",
+    "analogy": "Coverage is like earning wages: distance is the money, speed the hourly wage and time the hours worked; the rate you earned at on average is total money over total hours.",
+    "workedExamples": [
+      {
+        "title": "Finding distance",
+        "problem": "A car runs at 60 km/h for 2.5 hours. Find the distance covered.",
+        "steps": [
+          "Distance = speed x time.",
+          "Distance = 60 x 2.5 = 150."
+        ],
+        "answer": "The car covers 150 km."
+      },
+      {
+        "title": "Unit conversion",
+        "problem": "Convert a speed of 36 km/h into m/s.",
+        "steps": [
+          "Multiply by 5/18.",
+          "36 x 5/18 = 10."
+        ],
+        "answer": "36 km/h equals 10 m/s."
+      }
+    ],
+    "rule": [
+      { "title": "Core relation", "detail": "d = s x t, so s = d/t and t = d/s." },
+      { "title": "Conversion", "detail": "km/h to m/s: multiply by 5/18. m/s to km/h: multiply by 18/5." },
+      { "title": "Average speed", "detail": "Average speed = total distance / total time, never the plain mean unless times are equal." },
+      { "title": "Same distance halves", "detail": "If two equal parts are covered at speeds u and v, the average speed is 2uv/(u + v)." }
+    ],
+    "mistakes": [
+      { "mistake": "Averaging two speeds by simple addition without checking equal times.", "fix": "In general average = total distance / total time." },
+      { "mistake": "Mixing units inside one equation.", "fix": "Convert everything to km and hours, or to m and seconds, before computing." },
+      { "mistake": "Reversing the 5/18 factor.", "fix": "36 km/h = 10 m/s confirms km/h to m/s is multiply by 5/18." }
+    ],
+    "memoryTip": "One relation, three poses: d = s t; 5/18 turns km/h into m/s; averages respect totals, not raw means.",
+    "practice": [
+      { "prompt": "Convert 15 m/s into km/h.", "answer": "54 km/h. 15 x 18/5 = 54." },
+      { "prompt": "Find the distance covered in 3.5 hours at 48 km/h.", "answer": "168 km. 48 x 3.5 = 168." },
+      { "prompt": "A trip of 120 km takes 3 hours at 40 km/h. How long at 60 km/h?", "answer": "2 hours. 120/60 = 2." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "mixtures-alligation",
+    "slug": "mixtures-alligation-basic",
+    "title": "Two-part mixtures and weighted averages",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Compute concentrations inside a given mixture, form weighted averages of two sources and set up the basic alligation ratio.",
+    "explanation": "A mixture problem tracks the amount of each ingredient: if milk and water are mixed in the ratio 3 : 1 in 20 litres, there are 15 litres of milk and 5 litres of water. The price or strength of a mixture is the weighted average of its sources, where the weights are the quantities mixed. Alligation is the shortcut that reverses this: when two ingredients priced cheaper than the mixture, the mixing ratio equals the difference between the two farthest prices, that is (dear price - mean price) : (mean price - cheap price).",
+    "analogy": "A mixture is a bank account of ingredients: every deposit adds to both the balance (quantity) and the average interest (strength), and alligation simply reads back which deposits produced a given average.",
+    "workedExamples": [
+      {
+        "title": "Reading a ratio mixture",
+        "problem": "20 litres of a milk-water mixture has milk and water in the ratio 3 : 1. Find the quantity of each.",
+        "steps": [
+          "Total parts = 3 + 1 = 4.",
+          "One part = 20/4 = 5 litres.",
+          "Milk = 3 x 5 = 15 litres and water = 1 x 5 = 5 litres."
+        ],
+        "answer": "Milk 15 litres, water 5 litres."
+      },
+      {
+        "title": "Weighted average price",
+        "problem": "5 kg of sugar at 60 per kg is mixed with 3 kg of sugar at 40 per kg. Find the price per kg of the mixture.",
+        "steps": [
+          "Total cost = 5 x 60 + 3 x 40 = 300 + 120 = 420.",
+          "Total weight = 5 + 3 = 8 kg.",
+          "Average price = 420/8 = 52.5."
+        ],
+        "answer": "The mixture costs 52.50 per kg."
+      }
+    ],
+    "rule": [
+      { "title": "Parts of a mixture", "detail": "Divide the total by the sum of ratio parts to find one part." },
+      { "title": "Weighted average", "detail": "Mixture value = (q1 v1 + q2 v2)/(q1 + q2)." },
+      { "title": "Alligation rule", "detail": "Ratio of quantities = (dearer value - mean) : (mean - cheaper value)." },
+      { "title": "Mean position", "detail": "The mixture value always lies between the two source values." }
+    ],
+    "mistakes": [
+      { "mistake": "Averaging prices without weighting by quantity.", "fix": "(60 x 5 + 40 x 3)/8 = 52.5, not (60 + 40)/2 = 50." },
+      { "mistake": "Reversing the alligation differences.", "fix": "The ratio is (dear - mean) : (mean - cheap); checking with 25, 30 and a mean of 27 gives quantities 3 : 2, confirmed by (25 x 3 + 30 x 2)/5 = 27." },
+      { "mistake": "Adding quantities and concentrations as thought both linear.", "fix": "Add quantities, then recompute the concentration from parts." }
+    ],
+    "memoryTip": "Total divided by parts gives one scoop; weighted means use quantities as weights; alligation differences frame the ratio.",
+    "practice": [
+      { "prompt": "Sugar and water are in ratio 1 : 3 in 40 litres of solution. Find the sugar quantity.", "answer": "10 litres. One part = 40/4 = 10." },
+      { "prompt": "4 kg at 50 per kg is mixed with 2 kg at 35 per kg. Find the mixture price.", "answer": "45 per kg. (200 + 70)/6 = 45." },
+      { "prompt": "Mix amounts costing 12 and 18 per unit so the mixture averages 15. What ratio is needed?", "answer": "1 : 1. (18 - 15) : (15 - 12) = 3 : 3 = 1 : 1, and indeed 15 = (12 + 18)/2." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "algebra",
+    "slug": "algebra-basic",
+    "title": "Solving one and two linear equations",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Solve linear equations in one variable by balancing both sides and solve simple pairs of equations by elimination or substitution.",
+    "explanation": "A linear equation states that two expressions stay equal; whatever is done to one side must be done to the other. Move constants and coefficients across equals with inverse operations until the variable is isolated in the form x = value. A pair of equations in two variables is solved by elimination, adding or subtracting aligned copies to cancel one variable, or by substitution, replacing one variable with an expression from the other equation.",
+    "analogy": "An equation is a balanced seesaw: adding or removing equal weights on both sides keeps it level. Solving two equations is like two spies who each know one fact; elimination makes them share until one secret disappears.",
+    "workedExamples": [
+      {
+        "title": "One variable",
+        "problem": "Solve 3x + 5 = 20.",
+        "steps": [
+          "Subtract 5 from both sides: 3x = 15.",
+          "Divide both sides by 3: x = 5.",
+          "Check: 3 x 5 + 5 = 20."
+        ],
+        "answer": "x = 5."
+      },
+      {
+        "title": "Two variables by elimination",
+        "problem": "Solve x + y = 10 and x - y = 2.",
+        "steps": [
+          "Add the two equations: 2x = 12.",
+          "So x = 6.",
+          "Substitute into x + y = 10: y = 4.",
+          "Check: 6 - 4 = 2."
+        ],
+        "answer": "x = 6 and y = 4."
+      }
+    ],
+    "rule": [
+      { "title": "Balance", "detail": "Any operation applied to one side must be applied to both sides." },
+      { "title": "Transposition", "detail": "A term crossing the equals sign changes sign: from 3x + 5 = 20 the 5 becomes -5 on the right." },
+      { "title": "Elimination", "detail": "Add equations when one variable has opposite coefficients; subtract when the same." },
+      { "title": "Substitution", "detail": "Express one variable from the simpler equation and replace it in the other." }
+    ],
+    "mistakes": [
+      { "mistake": "Changing sign on transit incorrectly.", "fix": "From 3x + 5 = 20 the 5 moves as -5; writing +5 gives x = 25/3." },
+      { "mistake": "Dividing only part of one side by the coefficient.", "fix": "In 2x + 2 = 10, divide the whole right side: x + 1 = 5, so x = 4." },
+      { "mistake": "Skipping the verification step.", "fix": "Always substitute the solution once; 10 seconds of checking beats a wrong option." }
+    ],
+    "memoryTip": "Balance both sides; transpose with a sign flip; eliminate by aligning one variable; verify at the end.",
+    "practice": [
+      { "prompt": "Solve 2x = 18.", "answer": "x = 9." },
+      { "prompt": "Solve 4x - 3 = 13.", "answer": "x = 4. 4x = 16." },
+      { "prompt": "If a = 2 and b = 3, find a^2 + b^2.", "answer": "13. 4 + 9 = 13." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "progressions",
+    "slug": "progressions-basic",
+    "title": "Arithmetic progressions: nth term and sum",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Identify an arithmetic progression, compute any term with a + (n - 1)d and compute sums with the standard formula.",
+    "explanation": "An arithmetic progression (AP) is a list in which every term is the previous term plus a fixed common difference d. The nth term is a + (n - 1)d, because the first term needs no steps and every later term adds one more d. The sum of the first n terms is n/2 x (2a + (n - 1)d), equivalently n/2 x (first + last) when both endpoints are known, since terms pair up from the two ends to the same total.",
+    "analogy": "An AP is staircase climbing with identical steps: the landing you reach depends only on the starting floor, the step height and how many steps you climbed.",
+    "workedExamples": [
+      {
+        "title": "Twentieth term",
+        "problem": "Find the 20th term of the AP 5, 8, 11, ...",
+        "steps": [
+          "First term a = 5 and common difference d = 8 - 5 = 3.",
+          "20th term = a + 19d = 5 + 19 x 3.",
+          "Compute: 5 + 57 = 62."
+        ],
+        "answer": "The 20th term is 62."
+      },
+      {
+        "title": "Sum of twenty terms",
+        "problem": "Find the sum of the first 20 terms of the AP 5, 8, 11, ...",
+        "steps": [
+          "Use S = n/2 x (2a + (n - 1)d).",
+          "S = 10 x (2 x 5 + 19 x 3) = 10 x (10 + 57).",
+          "Compute: 10 x 67 = 670."
+        ],
+        "answer": "The sum is 670."
+      }
+    ],
+    "rule": [
+      { "title": "Common difference", "detail": "d = any term minus the previous term; constant throughout." },
+      { "title": "nth term", "detail": "t_n = a + (n - 1)d." },
+      { "title": "Sum formula", "detail": "S_n = n/2 x (2a + (n - 1)d) = n/2 x (a + t_n)." },
+      { "title": "Middle as average", "detail": "In an AP the average of the terms is the middle term." }
+    ],
+    "mistakes": [
+      { "mistake": "Using a + n d instead of a + (n - 1)d.", "fix": "The 1st term is a itself, since (1 - 1)d = 0; the offset is n - 1 steps." },
+      { "mistake": "Reading the position of the asked term wrongly.", "fix": "Counting terms between two given terms changes n by 1; define n explicitly." },
+      { "mistake": "Adding the whole list term by term.", "fix": "Use the sum formula; it is faster and error-free on long lists." }
+    ],
+    "memoryTip": "Term = start + steps x size; sum = half x count x (first + last).",
+    "practice": [
+      { "prompt": "Find the 15th term of the AP 7, 12, 17, ...", "answer": "77. a = 7, d = 5, so 7 + 14 x 5 = 77." },
+      { "prompt": "Find the sum 1 + 2 + ... + 10.", "answer": "55. S = 10/2 x (1 + 10) = 55." },
+      { "prompt": "Find the average of 3, 7, 11 in an AP sense.", "answer": "7. The middle term equals the average." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "probability",
+    "slug": "probability-basic",
+    "title": "Counting favourable outcomes",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Compute probabilities of simple events with coins, dice and cards by counting equally likely outcomes.",
+    "explanation": "Probability measures the chance of an event among equally likely outcomes: P(event) = number of favourable outcomes / total number of outcomes, always between 0 and 1. Two coins give 4 equally likely ordered pairs; two dice give 36 ordered pairs; a standard deck gives 52 cards in 4 suits and 13 ranks. Complementary counting, 1 minus the probability of the opposite event, is often the fastest route when the event is an at-least-one question.",
+    "analogy": "Probability is a stadium of equal seats: the event wins if the ball lands in its stands, and the chance is exactly the share of stands the event owns.",
+    "workedExamples": [
+      {
+        "title": "Two heads with two coins",
+        "problem": "Two coins are tossed. Find the probability of getting two heads.",
+        "steps": [
+          "List ordered outcomes: HH, HT, TH, TT, 4 in total.",
+          "Favourable: only HH, so 1 outcome.",
+          "P = 1/4."
+        ],
+        "answer": "P(two heads) = 1/4."
+      },
+      {
+        "title": "Sum of seven on two dice",
+        "problem": "Two dice are rolled. Find the probability that the sum is 7.",
+        "steps": [
+          "Total outcomes = 6 x 6 = 36.",
+          "Favourable pairs: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1), so 6.",
+          "P = 6/36 = 1/6."
+        ],
+        "answer": "P(sum 7) = 1/6."
+      }
+    ],
+    "rule": [
+      { "title": "Definition", "detail": "P(E) = favourable outcomes / total outcomes for equally likely outcomes." },
+      { "title": "Complement", "detail": "P(not E) = 1 - P(E); often faster for at-least-one events." },
+      { "title": "Sample spaces", "detail": "Two coins: 4 outcomes. Two dice: 36. Deck: 52 cards, 4 suits, 13 ranks." },
+      { "title": "Range", "detail": "0 <= P(E) <= 1, with 0 impossible and 1 certain." }
+    ],
+    "mistakes": [
+      { "mistake": "Treating the two unobservable sides of two coins as one outcome each.", "fix": "HT and TH are different ordered outcomes; there are 4, not 3, equally likely pairs." },
+      { "mistake": "Adding probabilities of overlapping events directly.", "fix": "Use complements or careful counting when events overlap." },
+      { "mistake": "Reporting probabilities over 1.", "fix": "Any answer above 1 signals a counting error; recheck the sample space." }
+    ],
+    "memoryTip": "Count the stadium, count the stands your event owns; for at-least questions take 1 minus none.",
+    "practice": [
+      { "prompt": "Find the probability of drawing a king from a standard deck.", "answer": "1/13. 4 kings among 52 cards." },
+      { "prompt": "Find the probability of an even number on one die.", "answer": "1/2. Outcomes 2, 4, 6 among 1 to 6." },
+      { "prompt": "Two coins: find the probability of at least one head.", "answer": "3/4. Only TT fails, so 1 - 1/4 = 3/4." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "permutation-and-combination",
+    "slug": "permutation-and-combination-basic",
+    "title": "Multiplication principle and first selections",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Use the multiplication principle for staged choices and compute simple selections with nCr and arrangements with nPr.",
+    "explanation": "When a task happens in stages, the total number of outcomes is the product of the number of ways each stage can happen; this is the multiplication principle. Choosing items where order does not matter uses combinations, nCr = n!/(r!(n-r)!), while ordered arrangements use permutations, nPr = n!/(n-r)!. Arranging n distinct objects fully in a line gives n! ways, and every count should be checked for whether order matters.",
+    "analogy": "Getting dressed is staged: shirts then trousers multiply, but a hand of cards is chosen as a set, where order inside the hand is invisible.",
+    "workedExamples": [
+      {
+        "title": "Staged outfit choice",
+        "problem": "A wardrobe has 4 shirts and 3 pairs of trousers. How many different shirt-trouser outfits are possible?",
+        "steps": [
+          "Stage 1: choose a shirt, 4 ways.",
+          "Stage 2: choose trousers, 3 ways.",
+          "Multiply: 4 x 3 = 12."
+        ],
+        "answer": "There are 12 possible outfits."
+      },
+      {
+        "title": "Choosing two friends",
+        "problem": "From 5 friends, in how many ways can 2 be chosen to run an errand together?",
+        "steps": [
+          "Order does not matter, so use combinations.",
+          "C(5, 2) = 5!/(2! 3!) = 10.",
+          "Sanity check: with A, B, C, D, E the pairs AB, AC, AD, AE, BC, BD, BE, CD, CE, DE indeed make 10."
+        ],
+        "answer": "There are 10 ways."
+      }
+    ],
+    "rule": [
+      { "title": "Multiplication principle", "detail": "Staged independent choices multiply." },
+      { "title": "Combination", "detail": "nCr = n!/(r!(n-r)!) counts unordered selections." },
+      { "title": "Permutation", "detail": "nPr = n!/(n-r)! counts ordered arrangements of r from n." },
+      { "title": "Full lineup", "detail": "n distinct objects arrange in a line in n! ways." }
+    ],
+    "mistakes": [
+      { "mistake": "Using nCr where order matters, or nPr where it does not.", "fix": "Selections for a team, a lottery or a committee use nCr; ranks, seats and passwords use ordered counts." },
+      { "mistake": "Doubling counts by listing both orders of the same pair.", "fix": "In combination problems, AB and BC-type duplicates are the same selection." },
+      { "mistake": "Adding the ways of independent stages.", "fix": "Independent stages multiply; only mutually exclusive alternatives add." }
+    ],
+    "memoryTip": "Stages multiply, unordered picks use nCr, ordered uses nPr, and a full line-up is n factorial.",
+    "practice": [
+      { "prompt": "In how many ways can 2 different toppings be chosen from 5?", "answer": "10. C(5, 2) = 10." },
+      { "prompt": "How many 2-digit numbers can be formed from digits 1 to 5 without repetition?", "answer": "20. 5 x 4 = 20, since order matters." },
+      { "prompt": "Find C(6, 2).", "answer": "15. 6!/(2! 4!) = 15." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

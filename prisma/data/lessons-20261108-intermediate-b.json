@@ -1,0 +1,667 @@
+[
+  {
+    "topicSlug": "geometry-and-mensuration",
+    "slug": "geometry-and-mensuration-intermediate",
+    "title": "Diagonals, rhombus area and inscribed shapes",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Use diagonal properties of rectangles and rhombi, apply Heron-type area data, and relate inscribed circles and squares to their hosts.",
+    "explanation": "A rectangle's diagonal is its hypotenuse, uniting Pythagoras with area problems. A rhombus with diagonals d1 and d2 has area d1 d2/2 that also equals side times perpendicular height. Concentric shapes pack predictable ratios: a circle inscribed in a square has radius a/2 for square side a, and a square inscribed in a circle of radius r has diagonal 2r. These fixed relationships let exam questions hide one measurement inside another.",
+    "analogy": "Inscribed figures are Russian dolls with fixed size ratios; knowing the inner doll's waist instantly gives the outer doll's.",
+    "workedExamples": [
+      {
+        "title": "Rectangle diagonal",
+        "problem": "A rectangle measures 6 cm by 8 cm. Find the length of its diagonal.",
+        "steps": [
+          "Diagonal d satisfies d^2 = 6^2 + 8^2.",
+          "= 36 + 64 = 100.",
+          "d = 10."
+        ],
+        "answer": "The diagonal is 10 cm."
+      },
+      {
+        "title": "Rhombus area from diagonals",
+        "problem": "A rhombus has diagonals 10 cm and 24 cm. Find its area.",
+        "steps": [
+          "Area = d1 d2/2.",
+          "= 10 x 24/2 = 120.",
+          "Sanity: each half-diagonal pair makes right triangles with hypotenuse sqrt(5^2 + 12^2) = 13, consistent with a rhombus."
+        ],
+        "answer": "The area is 120 square cm."
+      }
+    ],
+    "rule": [
+      { "title": "Rectangle diagonal", "detail": "d = sqrt(l^2 + b^2) for sides l and b." },
+      { "title": "Rhombus", "detail": "Area = (1/2) d1 d2; the diagonals bisect each other at right angles." },
+      { "title": "Incircle in square", "detail": "Radius r = a/2 for a square of side a; area ratio pi/4." },
+      { "title": "Square in circle", "detail": "Diagonal of the square = diameter = 2r; so its side is r sqrt(2)." }
+    ],
+    "mistakes": [
+      { "mistake": "Multiplying rhombus diagonals without halving.", "fix": "The diagonals count each half-diamond twice if not halved." },
+      { "mistake": "Using the square's side as the diameter of its circumscribed circle.", "fix": "The diagonal, equal to a sqrt(2), is the circle's diameter." },
+      { "mistake": "Mixing slant height with diagonal in rhombus work.", "fix": "Area = 1/2 d1 d2 uses the two diagonals, not a side and a diagonal." }
+    ],
+    "memoryTip": "Rectangle diagonal is Pythagoras; rhombus area halves the diagonal product; incircle radius is half the square side.",
+    "practice": [
+      { "prompt": "A rhombus has diagonals 16 and 30. Find the area.", "answer": "240. 16 x 30/2 = 240." },
+      { "prompt": "A circle of radius 7 is inscribed in a square. Find the square's side.", "answer": "14. Diameter equals the side." },
+      { "prompt": "A rectangle 5 by 12: diagonal length?", "answer": "13. 25 + 144 = 169 = 13^2." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "data-interpretation",
+    "slug": "data-interpretation-intermediate",
+    "title": "Comparative growth and percentage-point traps",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Compare growth rates across rows or periods, convert between percentages and percentage points and compute weighted body indexes.",
+    "explanation": "Two common DI traps test careful comparison. First, growth percent depends on the base period, so a bigger absolute rise can carry a smaller percent rise. Second, percentage points and percent growth differ: moving from 20 percent to 25 percent is 5 percentage points but 25 percent growth, since 25/20 - 1 = 0.25. When several categories mix with different weights, each contributes its percent change multiplied by its weight share.",
+    "analogy": "Growth on a small base is a trampoline and on a big base a ramp: same upward jump height reads completely differently once you normalise by the base.",
+    "workedExamples": [
+      {
+        "title": "Percentage points versus percent",
+        "problem": "A pass rate moves from 20 percent to 25 percent. Report both the percentage-point change and the percent growth.",
+        "steps": [
+          "Percentage points: 25 - 20 = 5.",
+          "Percent growth: 5/20 x 100 = 25 percent.",
+          "Report both carefully; they are different numbers."
+        ],
+        "answer": "5 percentage points, or 25 percent relative growth."
+      },
+      {
+        "title": "Weighted index",
+        "problem": "Sectors: IT (35 percent weight) grows 12 percent, manufacturing (45 percent) grows 8 percent, agriculture (20 percent) grows 3 percent. Find the overall growth.",
+        "steps": [
+          "Contribution = weight x growth.",
+          "Total = 0.35 x 12 + 0.45 x 8 + 0.20 x 3 = 4.2 + 3.6 + 0.6.",
+          "= 8.4 percent."
+        ],
+        "answer": "The overall growth is 8.4 percent."
+      }
+    ],
+    "rule": [
+      { "title": "Points vs percent", "detail": "Points subtract; percent divides by the old value." },
+      { "title": "Base-period care", "detail": "Compare growth percents only when the bases match." },
+      { "title": "Weighted growth", "detail": "Overall growth = sum of weight_i x growth_i with weights summing to 1." },
+      { "title": "Ratio rows", "detail": "Row ratios often reveal the intended comparison the table hides." }
+    ],
+    "mistakes": [
+      { "mistake": "Reading 5 percentage points as 5 percent growth.", "fix": "From 20 to 25 is 25 percent growth, not 5." },
+      { "mistake": "Comparing absolute and relative rises as equivalent.", "fix": "Normalise both to percent on the same base period first." },
+      { "mistake": "Averaging growth rates instead of weighting them.", "fix": "Weights come from the table's base shares." }
+    ],
+    "memoryTip": "Points subtract, percent divides; weighting beats averaging; check whose base carries each growth.",
+    "practice": [
+      { "prompt": "Share rises from 40 to 50 percent: points change and relative growth?", "answer": "10 points; 10/40 = 25 percent growth." },
+      { "prompt": "Which grew faster: 30 to 45 or 45 to 60?", "answer": "30 to 45: 50 percent versus 33.33 percent, though both rise 15 in absolute terms." },
+      { "prompt": "Weights 0.5 at 10 percent and 0.5 at 2 percent: overall growth?", "answer": "6 percent." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "number-series",
+    "slug": "number-series-intermediate",
+    "title": "Reachable patterns: primes, squares-plus and interleaves",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Recognise prime sequences, shifted square sequences and interleaved series, then extend them correctly.",
+    "explanation": "Beyond differences and ratios, several structures recur in exams: prime numbers (2, 3, 5, 7, 11, ...), squares shifted by a constant such as n^2 - 1, tables of multiplied terms hidden in plain lists, and interleaved series made of two simpler chains on alternating positions. The method is to test the classic families in order: primes, squares +/- constant, cubes +/- constant, triangular numbers and finally interleaving two free series.",
+    "analogy": "Series are masked dancers at fixed meetups: squares minus one always wears the off-by-one scarf; to unmask, try the guest list of famous families first.",
+    "workedExamples": [
+      {
+        "title": "Shifted squares",
+        "problem": "Find the next term: 3, 8, 15, 24, 35, ...",
+        "steps": [
+          "Pair the terms with squares: 4 - 1 = 3, 9 - 1 = 8, 16 - 1 = 15, 25 - 1 = 24, 36 - 1 = 35.",
+          "So t_n = n^2 - 1 and the list has reached its 6th term.",
+          "The 7th term = 7^2 - 1 = 48."
+        ],
+        "answer": "48."
+      },
+      {
+        "title": "Interleaved chains",
+        "problem": "Find the next term: 2, 30, 4, 27, 6, 24, ...",
+        "steps": [
+          "Odd positions: 2, 4, 6, ... increasing by 2.",
+          "Even positions: 30, 27, 24, ... decreasing by 3.",
+          "The requested position is the 7th: odd chain gives 8."
+        ],
+        "answer": "8."
+      }
+    ],
+    "rule": [
+      { "title": "Famous families", "detail": "Test primes, squares and cubes with shifts, triangular numbers, then factorials for early terms." },
+      { "title": "Shift tag", "detail": "n^2 - 1, n^2 + 1, n^3 - 1 and similar shifts are common; fit both a power and a constant." },
+      { "title": "Interleave split", "detail": "Split odd and even positions into two chains and solve each separately." },
+      { "title": "Position matters", "detail": "Answer forIndexPath questions by chain membership, not by overall position." }
+    ],
+    "mistakes": [
+      { "mistake": "Treating 3, 8, 15, 24 as first-difference arithmetic only.", "fix": "Differences 5, 7, 9 grow by 2, but the true family is squares minus 1; both readings must agree." },
+      { "mistake": "Extending the wrong chain when two interleave.", "fix": "Identify the parity of the asked position first." },
+      { "mistake": "Assuming the prime list includes 1.", "fix": "Primes start at 2; 1 is not prime." }
+    ],
+    "memoryTip": "Families first: primes, squares and cubes with shifts, triangulars, then split alternates; answer by chain membership.",
+    "practice": [
+      { "prompt": "Next term: 2, 3, 5, 7, 11, ...", "answer": "13. Prime numbers." },
+      { "prompt": "Next term: 5, 10, 17, 26, ...", "answer": "37. n^2 + 1 with n from 2: 4+1, 9+1, 16+1, 25+1, next 36+1." },
+      { "prompt": "Next term: 7, 14, 28, 56, ...", "answer": "112. Doubling ratio." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "coding-and-decoding",
+    "slug": "coding-and-decoding-intermediate",
+    "title": "Composite codes: sums, mixed shifts and reverse alphabets",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Decode letter-sum codes, handle alternating shifts across letters and use the reverse-alphabet mapping.",
+    "explanation": "Beyond fixed shifts, three composite structures recur. Letter-sum codes replace a word's letters by the sum or list of their A1Z26 values, so calibrating needs whole-word arithmetic. Alternating-shift codes move neighbouring letters by different step sizes, typically +1 and -1 alternately. The reverse alphabet maps A to Z, B to Y and so on through the formula code = 27 - position. Each composite must be calibrated from the given pair before being applied anywhere else.",
+    "analogy": "Composite codes are machines with two working gears working together: sum gears add up letters, alternation gears send neighbours opposite directions; calibrate once from a labelled pair.",
+    "workedExamples": [
+      {
+        "title": "Letter-sum code",
+        "problem": "If CAT is coded 24 (3 + 1 + 20), how is DOG coded?",
+        "steps": [
+          "Positions: D = 4, O = 15, G = 7.",
+          "Sum = 4 + 15 + 7.",
+          "= 26."
+        ],
+        "answer": "DOG is coded 26."
+      },
+      {
+        "title": "Alternating shifts",
+        "problem": "A code shifts letters alternately +1, -1 from position 1 on: encode ABCDE.",
+        "steps": [
+          "A +1 = B; B -1 = A; C +1 = D; D -1 = C; E +1 = F.",
+          "Join in order: B A D C F.",
+          "Verify each letter against its own step size."
+        ],
+        "answer": "ABCDE becomes BADCF."
+      }
+    ],
+    "rule": [
+      { "title": "Sum codes", "detail": "Letter values add; watch subtractive variants like 100 minus the sum, which reverse the reading." },
+      { "title": "Alternating shifts", "detail": "Fixed alternation +1/-1 or +2/-2 across positions; step applies by letter index." },
+      { "title": "Reverse alphabet", "detail": "Position p maps to 27 - p: A to 26 (Z), M (13) to 14 (N), Z (26) to 1 (A)." },
+      { "title": "Word-position anchors", "detail": "M = 13 sits at the exact reverse-mirror midpoint; use it to check alternate codes." }
+    ],
+    "mistakes": [
+      { "mistake": "Applying an alternating shift as a uniform shift.", "fix": "Verify one letter pair on each parity: first letter and second letter steps differ." },
+      { "mistake": "Misreading reverse mapping direction.", "fix": "A (1) maps to Z (26): 27 - 1 = 26; M (13) maps to N (14)." },
+      { "mistake": "Summing letter values after reversing their order.", "fix": "Sums ignore order, but digit-codes concatenated by positions do not." }
+    ],
+    "memoryTip": "Add for sum codes; alternate steps by letter index; reverse alphabet is 27 minus position with M to N mirror.",
+    "practice": [
+      { "prompt": "Word-sum code: SKY given 55 (19 + 11 + 25). Code WORD?", "answer": "60. W 23 + O 15 + R 18 + D 4 = 60." },
+      { "prompt": "Reverse-alphabet mapping (position p maps to 27 - p): decode SRKOL.", "answer": "HIPLO. S 19 to 8 (H), R 18 to 9 (I), K 11 to 16 (P), O 15 to 12 (L), L 12 to 15 (O)." },
+      { "prompt": "With the alternating rule +2, -2 starting on the first letter, code FEED.", "answer": "HCGB. F + 2 = H, E - 2 = C, E + 2 = G, D - 2 = B." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "blood-relations",
+    "slug": "blood-relations-intermediate",
+    "title": "Symbol-coded relations and generation tracking",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Parse symbol-coded relation chains, assign genders from codes only and answer with generation bookkeeping.",
+    "explanation": "Symbol codes replace words like mother of or son of with signs: each symbol carries a fixed relation and carries gender information when the family words do. Parse chains left to right, remember that every sign applies between its immediate neighbours, and draw the tree as you go. Because the final question asks across the whole chain, mark the gender of each person only when a code states it; unknown genders block gendered answers such as uncle or niece and push towards neutral words like child or parent.",
+    "analogy": "Symbol chains are grammar-free sentences: each sign is a verb with fixed family meaning, and the tree you draw is the sentence's diagram, gendered only where the codes say so.",
+    "workedExamples": [
+      {
+        "title": "Two-symbol chain",
+        "problem": "In a code, A @ B means A is the mother of B and A # B means A is the father of B. Parse P @ Q # R. What is P to R?",
+        "steps": [
+          "P @ Q: P is the mother of Q.",
+          "Q # R: Q is the father of R.",
+          "So Q is male, R is Q's child (gender unknown), and P is the mother of R's father."
+        ],
+        "answer": "P is R's grandmother (paternal side)."
+      },
+      {
+        "title": "Chain with a sibling sign",
+        "problem": "With + for brother of and - for sister of, parse A + B - C, where all symbols state genders. What is A to C?",
+        "steps": [
+          "A + B: A is the brother of B (A male).",
+          "B - C: B is the sister of C (B female).",
+          "A is the male sibling of C's parent."
+        ],
+        "answer": "A is C's uncle."
+      }
+    ],
+    "rule": [
+      { "title": "Local application", "detail": "Each symbol joins exactly the two people beside it; never read across signs." },
+      { "title": "Gender from codes only", "detail": "Mother, father, brother and sister codes carry gender; child, parent and cousin codes do not." },
+      { "title": "Tree as you parse", "detail": "Draw rows per generation immediately; the final answer reads across the tree." },
+      { "title": "Neutral fallback", "detail": "When gender at a link is unknown, the answer collapses to a neutral relation like child or parent." }
+    ],
+    "mistakes": [
+      { "mistake": "Reading two symbols across an unknown middle person.", "fix": "Compose the relation stepwise through the middle person." },
+      { "mistake": "Assuming gender of a person linked only by neutral codes.", "fix": "Without gender words, uncles and nieces are unprovable." },
+      { "mistake": "Mixing up in-law direction after a sibling link.", "fix": "Sibling of the parent is uncle or aunt; sibling of the spouse is in-law." }
+    ],
+    "memoryTip": "Sign joins its neighbours; genders come only from stated words; compose stepwise along the drawn tree.",
+    "practice": [
+      { "prompt": "Parse M - N + P with - sister and + brother. What is P to M?", "answer": "M is female and a sibling of N, who is male and a sibling of P. M and P are siblings of the same person; gender of P is unknown, so P is M's sibling." },
+      { "prompt": "Parse X @ Y with @ meaning 'is the mother of'; what gender is Y's parent stated here?", "answer": "The mother side is female (X); Y's father is not mentioned." },
+      { "prompt": "In P # Q @ R (# father, @ mother), what is P to R?", "answer": "Paternal grandfather. P is the father of Q and Q is the mother of R." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "direction-sense",
+    "slug": "direction-sense-intermediate",
+    "title": "Multi-leg displacement and turn bookkeeping",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Reduce several legs with turns to one net displacement vector and answer distance and direction from the start.",
+    "explanation": "Long walks with rights and lefts reduce cleanly to coordinates: keep running x (east positive) and y (north positive) totals, update the facing direction after each turn, and read the final displacement as (dx, dy). The distance from start is the hypotenuse sqrt(dx^2 + dy^2) when both components are nonzero, and the final direction is read from the signs of dx and dy. Legs in opposite directions cancel; perpendicular leftover legs form the Pythagorean pair.",
+    "analogy": "Walk legs are travel invoices in credits and debits: east-west credits subtract west debits, north-south tracks separately, and the final settlement is one straight trip from origin.",
+    "workedExamples": [
+      {
+        "title": "Four-leg rectangle walk",
+        "problem": "A boy walks 10 km east, 5 km north, 10 km west, 10 km north. How far and in which direction is he from the start?",
+        "steps": [
+          "East-west: +10 - 10 = 0.",
+          "North-south: +5 + 10 = 15 north.",
+          "Displacement = sqrt(0 + 15^2) = 15."
+        ],
+        "answer": "15 km due north of the start."
+      },
+      {
+        "title": "Facing chain",
+        "problem": "A person facing north turns left, then left again, then right. Which way does she face?",
+        "steps": [
+          "Facing north; left to west.",
+          "Left again: south.",
+          "Right from south: west."
+        ],
+        "answer": "She faces west."
+      }
+    ],
+    "rule": [
+      { "title": "Coordinate per axis", "detail": "Track x for east-west and y for north-south throughout." },
+      { "title": "Left/right updates", "detail": "Right turns clockwise (N to E to S to W); left turns anticlockwise." },
+      { "title": "Hypotenuse finish", "detail": "Distance = sqrt(dx^2 + dy^2); read the direction from (dx, dy) signs." },
+      { "title": "Cancellation", "detail": "Equal opposite legs vanish into one axis total." }
+    ],
+    "mistakes": [
+      { "mistake": "Updating direction from the origin rather than the walker's facing.", "fix": "Left and right are body-relative; keep a facing variable." },
+      { "mistake": "Adding all walked distances for the answer.", "fix": "35 km walked can land 15 km away, as in the example." },
+      { "mistake": "Forgetting the sign of later legs.", "fix": "The third leg moves west, subtracting from the east total." }
+    ],
+    "memoryTip": "Two counters x and y plus a facing note; cancellation clears one axis; hypotenuse and signs answer both parts.",
+    "practice": [
+      { "prompt": "Walk 6 east, 4 north, 6 west, 4 north. Final displacement from the start?", "answer": "8 km due north." },
+      { "prompt": "Facing south, turn right, then left. Facing?", "answer": "South. Right to west, left back to south." },
+      { "prompt": "Walk 3 north, 4 east, 3 south. Distance from start?", "answer": "4 km east; the 3 north cancels." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "seating-arrangement",
+    "slug": "seating-arrangement-intermediate",
+    "title": "Five-seat deductions and facing-centre circles",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Solve five-to-six-person linear rows with negative clues and handle circular rows facing the centre with clockwise bookkeeping.",
+    "explanation": "Harder rows include negative clues such as 'B is not adjacent to A' and 'not at an end'; these prune placements rather than pin them, so work seat by seat with the anchors first and prune afterwards. For circles facing the centre, the convention is: the left hand of a person faces the chair anticlockwise from theirs... standard usage places a person's right side on the chair that comes clockwise? No: facing the centre, rights run anticlockwise for the viewer; the safe habit is to pick one heading (right = anticlockwise) and hold it through the problem.",
+    "analogy": "A circular table turned inside out is a clock face: once you fix one hand as clockwise, each clue is a fixed number of minute-steps between neighbours.",
+    "workedExamples": [
+      {
+        "title": "Linear five with negatives",
+        "problem": "Five friends A, B, C, D, E in a row. A is immediately right of B. C is not adjacent to D. D is at the left end. E is between A and C. Determine the order.",
+        "steps": [
+          "D anchors seat 1 (left end).",
+          "E lies between A and C, so A, E, C or C, E, A occupy three consecutive seats with E in the middle.",
+          "A must sit immediately right of B, so B, A is an adjacent pair.",
+          "Testing A, E, C on seats 2-4 gives no legal seat for B; move the triple right by one.",
+          "So A(3), E(4), C(5) and B sits immediately left of A at seat 2."
+        ],
+        "answer": "D, B, A, E, C."
+      },
+      {
+        "title": "Circle facing centre",
+        "problem": "P, Q, R sit in a circle facing the centre with P to the right of Q (right taken anticlockwise). If P faces a fixed reference, describe their clockwise order.",
+        "steps": [
+          "P is one anticlockwise step from Q.",
+          "So clockwise the order is Q to P, with the third person R free in the remaining chair unless clues fix it.",
+          "State assumptions explicitly so the answer stays provable."
+        ],
+        "answer": "Clockwise: Q, P, then R in the free seat."
+      }
+    ],
+    "rule": [
+      { "title": "Negative clues prune", "detail": "Use them after anchors to strike forbidden chairs." },
+      { "title": "Between needs a facing", "detail": "Only apply between-statements once left-right orientation is fixed." },
+      { "title": "Circle convention", "detail": "Pick right = anticlockwise for facing-centre circles and state it once." },
+      { "title": "Full verification", "detail": "Read all clues against the final arrangement; negative clues included." }
+    ],
+    "mistakes": [
+      { "mistake": "Applying 'not adjacent' before anchors exist.", "fix": "Pruning needs a chosen seat grid first." },
+      { "mistake": "Collapsing between-orientations too early.", "fix": "Keep both possible orders until a clue rejects one." },
+      { "mistake": "Mixing clockwise conventions mid-problem.", "fix": "Fix the handedness at the start of the question and keep it." }
+    ],
+    "memoryTip": "Anchor, place pairs, prune negatives, choose one circle handedness; audit every clue at the end.",
+    "practice": [
+      { "prompt": "Row of 4: P is 2nd from left, Q at an end, Q right of P. Which end has Q?", "answer": "Right end. P seat 2, Q seat 4." },
+      { "prompt": "Circle: faces centre, A right of B (anticlockwise reading). Give the clockwise order of two people.", "answer": "B then A." },
+      { "prompt": "Linear: C middle, A immediately left of C, D extreme left, E right of B in five seats. Final order?", "answer": "D, A, C, B, E." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "syllogism",
+    "slug": "syllogism-intermediate",
+    "title": "No-statements, some-not and full conclusion tables",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Draw valid inferences when No-statements and Some-not statements appear, and read full conclusion verdicts table-style.",
+    "explanation": "No A are B is a wall between the sets; any conclusion crossing it is invalid, but the wall lets you assert No A are C when C lies on or beyond B's outside link. Some A are not B says at least one member of A avoids B, which can support Some-not conclusions downstream but supports nothing that needs overlap. A conversion table keeps this honest: All A are B converts to Some B are A; Some A are B converts to Some B are A; No A are B converts to No B are A; Some A are not B converts to nothing.",
+    "analogy": "All is a pipe, Some is a shared window, No is a wall, and Some-not is a hole in the fence on one side only; conclusions must reuse exactly these structures in both directions they claim.",
+    "workedExamples": [
+      {
+        "title": "Wall transfer",
+        "problem": "Statements: All A are B. No B are C. Conclusion: No A are C. Valid?",
+        "steps": [
+          "A sits wholly inside B.",
+          "B walls off C, so nothing inside B can be C.",
+          "A's members, being inside B, cannot be C."
+        ],
+        "answer": "Valid: No A are C."
+      },
+      {
+        "title": "Wall and window compose",
+        "problem": "Statements: Some A are B. No A are C. Conclusion: Some B are not C. Valid?",
+        "steps": [
+          "Some A are B guarantees at least one member of B that is also in A.",
+          "No A are C is a wall between A and C, so that very member cannot be C.",
+          "Hence at least one member of B lies outside C."
+        ],
+        "answer": "Valid: some B are not C."
+      }
+    ],
+    "rule": [
+      { "title": "Conversion table", "detail": "All A-B to Some B-A; Some A-B to Some B-A; No A-B to No B-A; Some A-not-B to nothing." },
+      { "title": "Wall chaining", "detail": "Inside-of-All plus a No-wall transfers the wall inward across the contained set." },
+      { "title": "Overlap needs overlap", "detail": "Any Some conclusion downstream requires an overlapping statement to reach it." },
+      { "title": "Draw the four cases", "detail": "When unsure, sketch worst-case diagrams; one counter-case kills validity." }
+    ],
+    "mistakes": [
+      { "mistake": "Converting Some A are not B.", "fix": "That sentence has no valid two-way conversion." },
+      { "mistake": "Believing No statements imply Some-not conclusions automatically.", "fix": "No A are B does not assert a non-empty A; Some-not statements need members." },
+      { "mistake": "Chaining through a wall rather than against it.", "fix": "Walls block crossing; chain on the contained side only." }
+    ],
+    "memoryTip": "Learn the four conversions; walls move inward through All sets; Some-not converts to nothing.",
+    "practice": [
+      { "prompt": "All desks are chairs. No chairs are lamps. Valid conclusion?", "answer": "No desks are lamps." },
+      { "prompt": "Some keys are locks. Valid conversion?", "answer": "Some locks are keys." },
+      { "prompt": "Some pens are not pencils. Does 'no pencils are pens' follow?", "answer": "No; the statements overlap partly; a No-conclusion is too strong." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "statement-and-conclusion",
+    "slug": "statement-and-conclusion-intermediate",
+    "title": "Courses of action and argument strength",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Rate suggested courses of action as practical follow-ups and grade arguments as strong or weak against a stated situation.",
+    "explanation": "Two exam variants extend plain conclusions. Courses of action ask whether a proposal is a reasonable step given the statement: strong follow-ups act directly on the stated cause, are practical, and do not contradict the problem; follow-ups that leap beyond it, repeat the problem or promise impossible outcomes are weak. Argument questions grade claims as strong or weak: strong arguments tie to the stated fact, are widely-workable points of practical wisdom, and address the main issue; weak ones are generalities, anecdotes or tangents.",
+    "analogy": "Courses of action are fire-safety drills: a strong drill attacks the specific fire reported; a drill for a different fire, or one pointing everywhere, fails the building.",
+    "workedExamples": [
+      {
+        "title": "Course of action grading",
+        "problem": "Statement: Frequent power cuts hit the industrial area. Course: The state should set up an additional power plant in that region. Strong or weak?",
+        "steps": [
+          "The course addresses the stated cause directly (shortfall of supply).",
+          "It is practical and within normal policy steps.",
+          "It does not contradict the problem."
+        ],
+        "answer": "Strong."
+      },
+      {
+        "title": "Weak-argument pattern",
+        "problem": "Statement: City buses remain overcrowded. Argument: Buses are public property, so overcrowding should be tolerated. Strong or weak?",
+        "steps": [
+          "The argument does not address the problem itself.",
+          "It uses ownership as if it forced tolerance, which is a generality.",
+          "Service logic, not ownership, would be the main issue."
+        ],
+        "answer": "Weak."
+      }
+    ],
+    "rule": [
+      { "title": "Direct action wins", "detail": "A course of action that acts on the stated cause and is feasible is strong." },
+      { "title": "Nothing-too-far", "detail": "Courses beyond the statement's scope, or stemming from unmentioned politics, are weak." },
+      { "title": "Argument checklist", "detail": "Relevance, practical wisdom, and main-issue focus define strength." },
+      { "title": "Experience-based claims", "detail": "Widely-accepted administrative or economic wisdom counts; single anecdotes do not." }
+    ],
+    "mistakes": [
+      { "mistake": "Rating ambitious plans strong by intention alone.", "fix": "Feasibility within the statement is required." },
+      { "mistake": "Dismissing generic wisdom as weak in every case.", "fix": "Common administrative wisdom applied correctly is strong; it fails only when tangential." },
+      { "mistake": "Picking arguments that restate the problem with a complaint.", "fix": "A complaint is not an argument until it proposes workable reasoning." }
+    ],
+    "memoryTip": "Direct, feasible, on-issue means strong; scope-external or generic means weak.",
+    "practice": [
+      { "prompt": "Statement: Airport congestion rising. Course: Add screening staff at peak hours. Strong or weak?", "answer": "Strong; direct and feasible on the stated cause." },
+      { "prompt": "Statement: River polluted upstream. Course: Ban all boats on the whole river. Strong or weak?", "answer": "Weak; overbroad beyond the stated cause region." },
+      { "prompt": "Argument: Plants must be watered, so offices should water theirs. Strong or weak for an office-greening case?", "answer": "Strong if the case concerns plant upkeep; weak if the case is about air quality instead." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "analogy",
+    "slug": "analogy-intermediate",
+    "title": "Letter and number-position analogies",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Solve alphabet-position analogies with shift or mirror rules and number analogies with mixed arithmetic relations.",
+    "explanation": "Letter analogies break into positions: ABC to XYZ is a shift of 23 on each letter; ABC to ZYX is a full mirror (position p maps to 27 - p). Number analogies hide one operation: 26 is double 13 - then 13 relates to 65 how? Careful work at this level contains mixed two-operation relations such as multiply then add a constant; the strategy is to test single operations first, then pairs, and always verify the rule on the second member pair before choosing an option.",
+    "analogy": "Letter analogies are slide rules and mirrors in the A1Z26 number line; number analogies are tiny machines whose gears you reverse-engineer from the two given pairs.",
+    "workedExamples": [
+      {
+        "title": "Shift analogy on letters",
+        "problem": "Complete: ABC : DEF :: GHI : ?",
+        "steps": [
+          "A to D is +3; B to E is +3; C to F is +3.",
+          "Apply +3 to G, H, I: J, K, L.",
+          "Relation: shift three positions ahead."
+        ],
+        "answer": "JKL."
+      },
+      {
+        "title": "Two-step number rule",
+        "problem": "Complete: 4 : 18 :: 7 : ? with relation multiply then add 2.",
+        "steps": [
+          "18 = 4 x 4 + 2.",
+          "Apply: 7 x 4 + 2 = 30.",
+          "Verify second pair wording: rule is x 4 + 2 exactly."
+        ],
+        "answer": "30."
+      }
+    ],
+    "rule": [
+      { "title": "Position shifts", "detail": "Convert letters to numbers and test constant shifts first." },
+      { "title": "Mirror mapping", "detail": "p maps to 27 - p; palindromic pairs around M and N centre it." },
+      { "title": "Operation pairs", "detail": "If a single operation fails, test multiply-then-add and add-then-multiply patterns." },
+      { "title": "Second-pair discipline", "detail": "Verify the guessed rule reproduces the second given pair exactly." }
+    ],
+    "mistakes": [
+      { "mistake": "Shifting letters without converting to numbers.", "fix": "Work on positions; E (5) plus 3 is H (8), not any near letter." },
+      { "mistake": "Stopping at a close-but-wrong arithmetic fit.", "fix": "Verify the rule on the second pair before matching options." },
+      { "mistake": "Ignoring pairs that straddle Z or wrap around the alphabet.", "fix": "Shifts on letters near Z may wrap; a stated rule decides wrapping." }
+    ],
+    "memoryTip": "Letters become numbers; shift, mirror or two-step gears; confirm the rule on the second pair.",
+    "practice": [
+      { "prompt": "B : D :: F : ?", "answer": "H. Shift of 2... verify: B 2 to D 4 is +2; F 6 plus 2 = 8 = H." },
+      { "prompt": "E : J :: K : ?", "answer": "P. +5 shift." },
+      { "prompt": "3 : 10 :: 4 : ? with rule multiply by 3 then add 1.", "answer": "13. 3 x 3 + 1 = 10 and 4 x 3 + 1 = 13." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "grammar-and-usage",
+    "slug": "grammar-and-usage-intermediate",
+    "title": "Tense consistency and modal usage",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Keep tense sequences consistent in compound sentences, use modals for exact shades of meaning and fix conditional structures.",
+    "explanation": "Tense questions hinge on sequence: since-clauses set times that following verbs must respect, past perfect marks the earlier of two past events, and present perfect connects a past action to now. Modals carry precise grades: can for ability or possibility, may for permission and possibility, must for necessity, should for duty or advice, and would for polite or hypothetical. Conditionals follow fixed templates: real future conditions use if + present, will; unreal present uses if + past, would; unreal past uses if + had, would have.",
+    "analogy": "Tense is a film timeline and modals are lights on the timeline: perfect tenses flash back, modals stamp what is possible, permitted, required or imagined at each frame.",
+    "workedExamples": [
+      {
+        "title": "Sequence of tenses",
+        "problem": "Fix: When I reached the station, the train left already.",
+        "steps": [
+          "Reaching is a past event; leaving happened earlier still.",
+          "The earlier past event takes the past perfect: had left.",
+          "Sentence: When I reached the station, the train had already left."
+        ],
+        "answer": "When I reached the station, the train had already left."
+      },
+      {
+        "title": "Unreal present conditional",
+        "problem": "Fix: If I was you, I will apologise.",
+        "steps": [
+          "The condition is unreal in the present; the speaker is not the listener.",
+          "Unreal present: if + past simple with would.",
+          "Sentence: If I were you, I would apologise."
+        ],
+        "answer": "If I were you, I would apologise."
+      }
+    ],
+    "rule": [
+      { "title": "Earlier past", "detail": "Past perfect (had + participle) marks the first of two past events." },
+      { "title": "Since and for", "detail": "Since + point in time, for + duration; these clauses fix the verb tense that follows." },
+      { "title": "Modal grades", "detail": "can < may < should < must in obligation; may doubles for permission." },
+      { "title": "Conditional templates", "detail": "If + present, will; if + past, would; if + had, would have." }
+    ],
+    "mistakes": [
+      { "mistake": "Using present perfect for a finished past time marker.", "fix": "Yesterday, last year take simple past, not have finished." },
+      { "mistake": "Mixing will and would across a conditional line.", "fix": "Match both sides of a conditional to one template." },
+      { "mistake": "Using can for permission formally.", "fix": "May is the permission modal; can is ability." }
+    ],
+    "memoryTip": "Timeline flashes: had for the earlier past; modal ladder can, may, should, must; three conditional templates matched on both halves.",
+    "practice": [
+      { "prompt": "Fix: I will call you after I will finish the report.", "answer": "I will call you after I finish the report." },
+      { "prompt": "Fix: She has gone to Paris last week.", "answer": "She went to Paris last week." },
+      { "prompt": "Fix: If he studied, he would pass (context: he did study and did pass; make it factual).", "answer": "If he studied, he passed; factual past uses simple past in both halves." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "vocabulary",
+    "slug": "vocabulary-intermediate",
+    "title": "Root-powered decoding and word precision",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Decode unfamiliar words from Latin and Greek roots and choose precise words for shades of meaning.",
+    "explanation": "Exam vocabulary rewards root thinking: chron- is time (chronological, anachronism), bene- good and mal- bad, dict- to say or order, cred- to believe, and labor- to work. The same system gives shades: amiable (friendly by nature), amicable (peaceful between parties), and equitable vs equal show how near-synonyms split by configuration. Strategy: split the word into prefix, root and suffix, guess the semantic shell, then consult the option sentence's intended shade.",
+    "analogy": "Roots are Lego bricks of meaning: the same bricks rebuild dozens of words, and shades of meaning are the one-stud variations in how the bricks click together.",
+    "workedExamples": [
+      {
+        "title": "Root decoding",
+        "problem": "Choose the meaning of anachronism.",
+        "steps": [
+          "Split: ana- (against or back) + chron- (time) + -ism (state).",
+          "A thing against its time.",
+          "Options: mockery of time, misplaced in time, ancient, slow."
+        ],
+        "answer": "Something placed in the wrong period of time."
+      },
+      {
+        "title": "Shade selection",
+        "problem": "Choose the precise word: The two companies settled the lawsuit in an ___ way. (amiable / amicable)",
+        "steps": [
+          "Amiable describes a person's friendly nature.",
+          "Amicable describes peaceful relations between parties.",
+          "Lawsuits involve parties, so amicable fits."
+        ],
+        "answer": "amicable."
+      }
+    ],
+    "rule": [
+      { "title": "Power roots", "detail": "chron- time; dict- say; cred- believe; labor- work; greg- group; loqu- speak." },
+      { "title": "Moral prefixes", "detail": "bene- beneficial, mal- harmful, mis- wrongly, anti- against." },
+      { "title": "Suffix roles", "detail": "-ism names a state or doctrine; -able makes adjectives of capacity." },
+      { "title": "Shade discipline", "detail": "Near-synonyms differ by register, orientation (people or parties) or degree; test the sentence." }
+    ],
+    "mistakes": [
+      { "mistake": "Guessing from a familiar false root.", "fix": "Chronology is the real anchor of chron-; avoid lookalike roots from other languages." },
+      { "mistake": "Choosing a synonym outside the sentence's register.", "fix": "Formal sentences want formal words; friendly chatty slots want plain ones." },
+      { "mistake": "Confusing amicable with amiable-type person words.", "fix": "Person-words need person subjects; party-words need party subjects." }
+    ],
+    "memoryTip": "Split into prefix, root and suffix; know the root dictionary; test shades against person and party orientation.",
+    "practice": [
+      { "prompt": "Meaning of credulous?", "answer": "Ready to believe too readily. Root cred-." },
+      { "prompt": "Meaning of benevolent?", "answer": "Wishing good; kindly. Bene- plus volens (wishing)." },
+      { "prompt": "Choose: an ___ attitude (amicable/amiable) toward rival teams.", "answer": "amicable." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "calendars-and-clocks",
+    "slug": "calendars-and-clocks-intermediate",
+    "title": "Odd-day books, century maths and clock coincidences",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Accumulate odd days across years and centuries, compute weekday jumps between two dates and use the 65 5/11-minute coincidence rule.",
+    "explanation": "Weekday arithmetic runs on odd days: each common year contributes 1 and each leap year 2, so 100 years (76 common + 24 leap) give 76 + 48 = 124 odd days, and 124 mod 7 = 5; a 400-year block cycles to 0. The minutes hand and hour hand coincide every 65 5/11 minutes, because the hour hand gains 55 minutes on the dial each 60-minute hour: 60 x 12/11 = 65 5/11. The angle between hands at h hours m minutes is |30h - 5.5m| degrees, reduced to the smaller angle.",
+    "analogy": "Odd days are pockets of spare change: every year leaves one or two coins, 100 years leave five coins on the table, and only full centuries of 400 cancel the whole tab.",
+    "workedExamples": [
+      {
+        "title": "Odd days in 100 years",
+        "problem": "How many odd days does a block of 100 ordinary years contain?",
+        "steps": [
+          "76 common years x 1 = 76.",
+          "24 leap years x 2 = 48.",
+          "Total = 124; 124 mod 7 = 5."
+        ],
+        "answer": "124 odd days, which is 5 weekdays' worth."
+      },
+      {
+        "title": "Hands coinciding",
+        "problem": "Between 3 and 4 o'clock, at what time do the hands coincide?",
+        "steps": [
+          "Coincidence spacing = 65 5/11 minutes.",
+          "The hands coincide at m = 60h/11 minutes past h.",
+          "For h = 3: m = 180/11 = 16 4/11 minutes."
+        ],
+        "answer": "At 3:16 4/11."
+      }
+    ],
+    "rule": [
+      { "title": "Yearly odd days", "detail": "Common: 1; leap: 2; 100 years: 5; 200: 3; 300: 1; 400: 0." },
+      { "title": "Date jump", "detail": "Days between two dates mod 7 gives the weekday shift." },
+      { "title": "Coincidence spacing", "detail": "The hands coincide every 65 5/11 minutes; 11 coincidences in 12 hours." },
+      { "title": "Angle formula", "detail": "Angle = |30h - 5.5m|; reduce to at most 180." }
+    ],
+    "mistakes": [
+      { "mistake": "Counting the endpoint year as leap wrongly in century blocks.", "fix": "Use the fixed decomposition: 100 years = 76 common + 24 leap." },
+      { "mistake": "Stating the hands coincide every 65 minutes exactly.", "fix": "The exact spacing is 65 5/11 minutes; 11 meets fit in 12 hours." },
+      { "mistake": "Forgetting to reduce an angle over 180 degrees.", "fix": "Angles between hands report the smaller of the two." }
+    ],
+    "memoryTip": "Pockets: 1, 2 per years; 100-year pockets are 5; hands meet 11 times per 12 hours spaced 65 5/11 minutes apart.",
+    "practice": [
+      { "prompt": "Odd days in 200 years?", "answer": "3. Two 100-year blocks of 5: 10; 10 mod 7 = 3." },
+      { "prompt": "Find the angle between the hands at 4:30.", "answer": "45 degrees. |120 - 165| = 45." },
+      { "prompt": "How many times do the hands coincide in 24 hours?", "answer": "22. 11 per 12 hours." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

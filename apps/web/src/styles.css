@@ -863,6 +863,11 @@ summary::-webkit-details-marker {
   color: #25674e;
 }
 
+.level-basic {
+  background: var(--paper);
+  color: var(--muted);
+}
+
 .level-intermediate {
   background: var(--amber-soft);
   color: #795314;
@@ -871,6 +876,11 @@ summary::-webkit-details-marker {
 .level-advanced {
   background: var(--danger-soft);
   color: #843324;
+}
+
+.level-expert {
+  background: var(--violet-soft);
+  color: var(--violet);
 }
 
 .progress-wrap {

@@ -1,0 +1,597 @@
+[
+  {
+    "topicSlug": "probability",
+    "slug": "probability-expert",
+    "title": "Random sources and inverse conditioning",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Compute probabilities across randomly chosen sources and invert a conditional probability through its components.",
+    "explanation": "When a random source is picked first, total probability blends the per-source chances weighted by the pick probabilities: P(red) = P(choose A) P(red | A) + P(choose B) P(red | B). Inverse conditioning reverses the reading: given the draw was red, the probability it came from A is the A-red share divided by the total red share, the same total probability numerator over denominator in action.",
+    "analogy": "Two jars contest a lottery: first a coin bins you into a jar, then the jar draws. Undoing the story demands you split the win back by how much each jar contributed.",
+    "workedExamples": [
+      {
+        "title": "Blended draw",
+        "problem": "Bag A holds 3 red and 2 blue balls; bag B holds 2 red and 3 blue. A bag is chosen at random and one ball is drawn. Find the probability it is red.",
+        "steps": [
+          "P(red) = 1/2 x 3/5 + 1/2 x 2/5.",
+          "= 3/10 + 2/10.",
+          "= 5/10 = 1/2."
+        ],
+        "answer": "1/2."
+      },
+      {
+        "title": "Inverse conditioning",
+        "problem": "Given that the drawn ball is red, find the probability it came from bag A.",
+        "steps": [
+          "A contributed 3/10 of red-ness; total red-ness is 5/10.",
+          "P(A | red) = (3/10)/(5/10).",
+          "= 3/5."
+        ],
+        "answer": "3/5."
+      }
+    ],
+    "rule": [
+      { "title": "Total probability", "detail": "P(E) = sum over sources of P(source) P(E | source)." },
+      { "title": "Inversion", "detail": "P(source | E) = P(source) P(E | source) / P(E)." },
+      { "title": "Equal priors", "detail": "A fair coin between two equal bags halves every per-bag probability." },
+      { "title": "Denominator check", "detail": "The inverted probability cannot exceed 1; over 1 signals a slip." }
+    ],
+    "mistakes": [
+      { "mistake": "Averaging per-bag probabilities without the pick weights.",
+        "fix": "With a fair pick the weights are both 1/2; weighted, not plain, addition." },
+      { "mistake": "Dividing by the wrong denominator in inversion.",
+        "fix": "Divide the source's red contribution by the total red probability." },
+      { "mistake": "Forgetting that bags differ in total contents.",
+        "fix": "Per-bag chances use that bag's own denominator (5 here)." }
+    ],
+    "memoryTip": "Blend by weights, invert by dividing contribution over total.",
+    "practice": [
+      { "prompt": "Bag A: 4 red 1 blue; bag B: 1 red 4 blue; fair pick then draw. P(blue)?", "answer": "1/2. Symmetric to the red case." },
+      { "prompt": "Given a blue was drawn, probability it came from B?", "answer": "3/5. B contributed 3/10 of blue over 5/10 total blue." },
+      { "prompt": "Three bags each with 2 red; fair pick. P(red)?", "answer": "1. Every bag gives red with probability 1." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "geometry-and-mensuration",
+    "slug": "geometry-and-mensuration-expert",
+    "title": "Composite subtraction with exact pi and equilateral areas",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Compute composite shaded areas exactly and handle equilateral-fraction areas cleanly.",
+    "explanation": "Composite questions subtract an inscribed shape from its host: a square of side 28 has area 784, and its incircle has radius 14 so area (22/7) x 196 = 616, leaving exactly 168. Equilateral triangles introduce the fixed factor root 3 over 4: a side of 12 gives area (1.732/4) x 144 = 62.35 approx (36 x 1.732). Keeping one fractional convention through the whole computation preserves exact answers.",
+    "analogy": "Composites are meal budgets: rate the whole plate, subtract the side dish bill, and let the tip (root-3 factor) stay in fraction form until the final coin-rounding.",
+    "workedExamples": [
+      {
+        "title": "Square minus incircle",
+        "problem": "A square has side 28. Its largest inscribed circle is removed. Find the remaining area, using pi = 22/7.",
+        "steps": [
+          "Square area = 28 x 28 = 784.",
+          "Incircle radius = 28/2 = 14; circle area = (22/7) x 14 x 14 = 22 x 28 = 616.",
+          "Remaining = 784 - 616 = 168."
+        ],
+        "answer": "168 square units."
+      },
+      {
+        "title": "Equilateral area",
+        "problem": "Find the area of an equilateral triangle of side 12, using root 3 approx 1.732.",
+        "steps": [
+          "Area formula: (root 3/4) x side^2.",
+          "= 36 x 1.732.",
+          "= 62.35 approx."
+        ],
+        "answer": "About 62.35 square units (36 root 3)."
+      }
+    ],
+    "rule": [
+      { "title": "Incircle subtraction", "detail": "Remaining = host area - pi (side/2)^2 with side 2r." },
+      { "title": "Equilateral factor", "detail": "Area = (root 3/4) side^2; memorise side 12 gives 36 root 3." },
+      { "title": "Pi discipline", "detail": "22/7 on numbers divisible by 7; 3.14 otherwise; never mix." },
+      { "title": "Exact before rounding", "detail": "Carry fractions like 600/7 or 36 root 3 to the final step." }
+    ],
+    "mistakes": [
+      { "mistake": "Using the square's side as the incircle radius.",
+        "fix": "The incircle touches the sides: radius = side/2 = 14." },
+      { "mistake": "Rounding pi to 3.14 inside a 22/7 computation.",
+        "fix": "784 - 616 is exact only through 22/7." },
+      { "mistake": "Halving the equilateral factor.",
+        "fix": "The formula is root 3 over 4, not over 8." }
+    ],
+    "memoryTip": "Host minus inscribed; equilateral = root 3 over 4 times side squared.",
+    "practice": [
+      { "prompt": "Square side 42 with incircle removed, pi = 22/7. Remaining area?", "answer": "378. 1764 - (22/7) x 441 = 1764 - 1386." },
+      { "prompt": "Equilateral triangle side 8: area?", "answer": "16 root 3 approx 27.71. (1.732/4) x 64 = 16 x 1.732." },
+      { "prompt": "Rectangle 20 by 14 with an incircle of diameter 14 removed, pi = 22/7. Remaining?", "answer": "280 - 154 = 126." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "data-interpretation",
+    "slug": "data-interpretation-expert",
+    "title": "Weighted indexes and reverse share lookups",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Build weighted indexes from category tables and invert shares into absolute values.",
+    "explanation": "A weighted index multiplies each category's growth rate by its base share and sums: weights 40, 35 and 25 percent carrying growth of 12, 6 and 10 percent give 0.40 x 12 + 0.35 x 6 + 0.25 x 10 = 4.8 + 2.1 + 2.5 = 9.4 percent overall. The reverse skill is just as valuable: when a table gives shares and one absolute anchor, every other absolute is shares times the anchor, and checkable totals close the loop.",
+    "analogy": "A weighted index is a class test with section weights: each section's average is scaled by its mark-share; reverse lookups are invoices recovered from percentage coupons plus one known price.",
+    "workedExamples": [
+      {
+        "title": "Index construction",
+        "problem": "Categories with base shares 40, 35 and 25 percent grew 12, 6 and 10 percent respectively. Overall growth?",
+        "steps": [
+          "Contributions: 0.40 x 12 = 4.8; 0.35 x 6 = 2.1; 0.25 x 10 = 2.5.",
+          "Sum: 4.8 + 2.1 + 2.5.",
+          "= 9.4 percent."
+        ],
+        "answer": "9.4 percent."
+      },
+      {
+        "title": "Reverse share lookup",
+        "problem": "A table gives region shares 25, 35 and 40 percent and states region A earned 500. Find the grand total and B's earnings.",
+        "steps": [
+          "25 percent of total = 500, so total = 2000.",
+          "B = 35 percent of 2000 = 700.",
+          "Check: C = 800; the three sum to 2000."
+        ],
+        "answer": "Total 2000; region B earned 700."
+      }
+    ],
+    "rule": [
+      { "title": "Weights sum to 1", "detail": "Normalize shares before weighting; missing weight breaks the index." },
+      { "title": "Share inversion", "detail": "Absolute = share x total; one anchor recovers the total." },
+      { "title": "Sum closure", "detail": "Recovered absolutes must re-add to the anchor total." },
+      { "title": "Base-period note", "detail": "Indexes weigh by base shares unless the table states otherwise." }
+    ],
+    "mistakes": [
+      { "mistake": "Averaging 12, 6 and 10 directly.",
+        "fix": "The weighted result 9.4 beats the plain mean 9.33 only because weights differ; compute the weighted sum." },
+      { "mistake": "Reading shares as absolutes.",
+        "fix": "Multiply by the recovered total first." },
+      { "mistake": "Skipping the closure sum check.",
+        "fix": "Recovered parts must total the anchor; a failed sum invalidates them." }
+    ],
+    "memoryTip": "Index = weights x growth; shares fold back through one anchor.",
+    "practice": [
+      { "prompt": "Weights 50, 30, 20 with growth 8, 5, 15. Index?", "answer": "9.5 percent. 4 + 1.5 + 3." },
+      { "prompt": "Shares 20, 50, 30 and one part 240. Total and biggest part?", "answer": "Total 1200; biggest 50 percent = 600." },
+      { "prompt": "Two categories grow 10 and 2 with overall 5.6. Equal or unequal weights?", "answer": "Weights 45 and 55 percent? solve: 10w + 2(1 - w) = 5.6 gives 8w = 3.6, w = 0.45." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "number-series",
+    "slug": "number-series-expert",
+    "title": "Two-row differences that breathe their own rhythm",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Decode series whose gaps form a secondary pattern and extend them reliably.",
+    "explanation": "The gap row is a series of its own: in 2, 10, 26, 50 the gaps are 8, 16, 24, an arithmetic run with common difference 8, so the next gap is 32 and the next term 82. Two-row bookkeeping (terms row, difference row, sometimes a third) turns almost any exam series into honest arithmetic, provided the second row's own rule is verified on all visible gaps.",
+    "analogy": "The difference row is the drumbeat under the melody: once the drum's own rhythm locks in, every coming bar is predictable.",
+    "workedExamples": [
+      {
+        "title": "Linear gap row",
+        "problem": "Find the next term: 2, 10, 26, 50, ...",
+        "steps": [
+          "Gaps: 10 - 2 = 8; 26 - 10 = 16; 50 - 26 = 24.",
+          "The gap row is arithmetic: 8, 16, 24 with common difference 8.",
+          "Next gap = 32.",
+          "Next term = 50 + 32 = 82."
+        ],
+        "answer": "82."
+      },
+      {
+        "title": "Geometric gap row",
+        "problem": "Find the next term: 3, 4, 6, 10, 18, ...",
+        "steps": [
+          "Gaps: 1, 2, 4, 8, doubling each time.",
+          "Next gap = 16.",
+          "Next term = 18 + 16 = 34."
+        ],
+        "answer": "34."
+      }
+    ],
+    "rule": [
+      { "title": "Gap row first", "detail": "Compute differences before guessing term rules." },
+      { "title": "Gap-row pattern", "detail": "The gaps may be arithmetic, geometric or factorial; verify across all visible gaps." },
+      { "title": "Extend one row", "detail": "Predict the next gap from the gap row, then add." },
+      { "title": "Third row if needed", "detail": "When the gap row wavers, difference the gap row itself." }
+    ],
+    "mistakes": [
+      { "mistake": "Reading the term row's growth as exponential when gaps are linear.",
+        "fix": "In 2, 10, 26, 50 the terms grow quadratically because gaps grow linearly." },
+      { "mistake": "Extending the gap row with the term row's rule.",
+        "fix": "Each row obeys its own rule." },
+      { "mistake": "Stopping at the first consistent reading.",
+        "fix": "Test the rule on every visible gap, not just the last." }
+    ],
+    "memoryTip": "Read the drumbeat: gaps form their own series; predict the gap, then step the term.",
+    "practice": [
+      { "prompt": "Next term: 3, 9, 19, 33, ...", "answer": "51. Gaps 6, 10, 14 (arithmetic, +4); next gap 18; 33 + 18 = 51." },
+      { "prompt": "Next term: 4, 6, 10, 18, ...", "answer": "34. Gaps 2, 4, 8 doubling." },
+      { "prompt": "Next term: 1, 2, 4, 10, 34, ...", "answer": "154. The gaps 1, 2, 6, 24 are the factorials (1!, 2!, 3!, 4!); the next gap is 5! = 120, and 34 + 120 = 154." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "blood-relations",
+    "slug": "blood-relations-expert",
+    "title": "Photograph puzzles and self-reference traps",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Solve pointing-to-photograph statements where the speaker refers to themselves through layered descriptions.",
+    "explanation": "Photograph puzzles embed the speaker in the family description: a line such as the man's mother is the only daughter of my mother links through the speaker herself, because the only daughter of my mother is me when I am that daughter. Unfolding such self-references step by step - first naming the bridging description, then replacing it with the speaker - resolves which relative the speaker is to the photographed person.",
+    "analogy": "A photograph puzzle is a mirror hallway: the statement reflects through the speaker, and each bounce (my mother, her only daughter) must be named before the final face is identified.",
+    "workedExamples": [
+      {
+        "title": "Mother in the mirror",
+        "problem": "Pointing to a man, a woman says: His mother is the only daughter of my mother. How is the woman related to the man?",
+        "steps": [
+          "The only daughter of the woman's mother is the woman herself (she is female and the description names a daughter).",
+          "So the man's mother = the woman.",
+          "The woman is the man's mother."
+        ],
+        "answer": "The woman is his mother."
+      },
+      {
+        "title": "Father's only son",
+        "problem": "Pointing to a photograph, a man says: She is the daughter of my grandfather's only son. How is the photographed person related to him?",
+        "steps": [
+          "The grandfather's only son is the man's father.",
+          "The daughter of his father is his sister.",
+          "So the photographed person is his sister."
+        ],
+        "answer": "She is his sister."
+      }
+    ],
+    "rule": [
+      { "title": "Resolve bridges first", "detail": "Translate phrases like only son or only daughter into named people before linking." },
+      { "title": "Self-reference check", "detail": "When the bridge is itself (the only daughter of my mother), substitute the speaker's gender before concluding." },
+      { "title": "Gender of speaker matters", "fit": null, "detail": "Fix title later", "memo": null },
+      { "title": "Draw both generations", "detail": "Sketch the two rows (speaker's parents, siblings, children) before naming the final relation." }
+    ],
+    "mistakes": [
+      { "mistake": "Reading only daughter of my mother as a sibling.",
+        "fix": "If the speaker is that daughter, the bridge is the speaker herself; verify the gender of the speaker first." },
+      { "mistake": "Assuming grandfather's only son excludes the speaker's father's brothers.",
+        "fix": "Only son means the father has no brothers, so the bridge is exactly the father." },
+      { "mistake": "Answering the wrong direction (how is he related to her).",
+        "fix": "Read the question's arrow; relation statements are not symmetric." }
+    ],
+    "memoryTip": "Name each bridge, check the speaker's gender, then walk the two-generation tree.",
+    "practice": [
+      { "prompt": "Pointing to a boy, a man says: He is the son of my father's only son. Relation?", "answer": "The man's father has only one son: the man himself; so the boy is the man's son." },
+      { "prompt": "Pointing to a woman, a man says: Her mother is the only daughter of my mother. Relation?", "answer": "The only daughter of the man's mother is the man's sister... careful: if the speaker is male, the only daughter of his mother is his sister; the woman's mother is the man's sister; so the woman is the man's niece." },
+      { "prompt": "She is the only daughter of my grandmother's only child: a man pointing at a girl; who is she?", "answer": "His sister? The grandmother's only child is the man's parent; its only daughter is the man's sister if the speaker's parent is that daughter... if the speaker is male and the only child's only daughter could be the speaker's sister - the standard reading gives sister." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "syllogism",
+    "slug": "syllogism-expert",
+    "title": "Three-verdict drill on chained statements",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Deliver must-follow verdicts on a set of three candidate conclusions against chained statements.",
+    "explanation": "Given: All A are B and No B are C. Three verdicts: (1) No A are C - valid, since A sits wholly inside B and the wall blocks all of B from C. (2) Some C are not A - valid, because C lies fully outside B, hence outside A, and C is taken non-empty by diagram convention. (3) All C are A - invalid, contradicting the wall. Each verdict stands on the statements alone, with one counter-example enough to fail.",
+    "analogy": "A verdict exercise is a referee reviewing three goals: each stands or falls on the field's own lines, never on the crowd's expectations.",
+    "workedExamples": [
+      {
+        "title": "Verdict one and two",
+        "problem": "Statements: All A are B. No B are C. Verdict on: (1) No A are C; (2) Some C are not A.",
+        "steps": [
+          "(1) A is inside B; B is walled from C; so nothing of A is C: valid.",
+          "(2) C lies entirely outside B and hence outside A; C is non-empty, so at least one C avoids A: valid."
+        ],
+        "answer": "Both conclusions are valid."
+      },
+      {
+        "title": "Verdict three",
+        "problem": "Same statements; verdict on: (3) All C are A.",
+        "steps": [
+          "C is outside B while A is inside B.",
+          "Any member of C would violate the wall if it were also A.",
+          "So (3) contradicts the statements: invalid."
+        ],
+        "answer": "Invalid."
+      }
+    ],
+    "rule": [
+      { "title": "One counterexample kills", "detail": "A conclusion unsatisfied by one legal diagram is invalid." },
+      { "title": "Walls dominate", "detail": "No-statements forbid overlap regardless of other claims." },
+      { "title": "Non-empty convention", "detail": "Exam diagrams treat named sets as existing, licensing some-conclusions over disjoint sets." },
+      { "title": "Cite the statements", "detail": "Every verdict quotes the two statements, never the other candidates." }
+    ],
+    "mistakes": [
+      { "mistake": "Marking (2) invalid because C and A were never mentioned together.",
+        "fix": "Transitivity through the wall B gives C's full separation from A; the some-verdict then follows." },
+      { "mistake": "Letting one verdict influence another.",
+        "fix": "Each conclusion is judged in isolation." },
+      { "mistake": "Forgetting the non-empty diagram convention.",
+        "fix": "Some-certainties rely on the set being drawn with at least one member." }
+    ],
+    "memoryTip": "Judge verdicts solo; walls and containment carry them; disjoint non-empty sets license some claims.",
+    "practice": [
+      { "prompt": "All cats are animals; no animals are statues. Verdict: no cats are statues?", "answer": "Valid: cats sit inside animals, which are walled from statues." },
+      { "prompt": "Same statements; verdict: some statues are not cats?", "answer": "Valid: statues are disjoint from animals, hence from cats." },
+      { "prompt": "Same statements; verdict: all statues are animals?", "answer": "Invalid: it would cross the wall." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "statement-and-conclusion",
+    "slug": "statement-and-conclusion-expert",
+    "title": "Assumption drills with the negation test",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Grade candidate assumptions by necessity and proportion, applying the negation test.",
+    "explanation": "An assumption must be necessary: if negating it collapses the statement's point, it stays; if the statement survives without it, the candidate is merely helpful and fails. Proportion matters too: an assumption claiming everyone will comply outruns a notice's needs - enough compliance will do. A study-method notice, for example, assumes both that students read notices and that they can adopt the method, but not that they will succeed.",
+    "analogy": "Assumptions are load-bearing joists: tap each candidate with the negation hammer - survivors are joists, ones the house never needed are decoration.",
+    "workedExamples": [
+      {
+        "title": "Negation test pass",
+        "problem": "Statement: Students should try the new revision method for best results. Candidate assumption: notices like this reach the students they concern. Valid?",
+        "steps": [
+          "Negate: notices never reach the relevant students.",
+          "The advice loses its audience and point.",
+          "So the assumption is necessary: valid."
+        ],
+        "answer": "Valid."
+      },
+      {
+        "title": "Outrunning the statement",
+        "problem": "Same statement; candidate assumption: every student who tries the method will succeed. Valid?",
+        "steps": [
+          "The statement promises best results only if tried, not guaranteed success.",
+          "Universal success is a stronger claim than needed.",
+          "Reject as over-strong."
+        ],
+        "answer": "Invalid."
+      }
+    ],
+    "rule": [
+      { "title": "Negation test", "detail": "Negating a true assumption frustrates the statement; negating a false one changes nothing." },
+      { "title": "Proportionality", "detail": "Assumptions claim no more than the statement needs: many, not all." },
+      { "title": "Inside the world", "detail": "Assumptions live among people, habits and feasible acts named or implied by the statement." },
+      { "title": "Success vs opportunity", "detail": "Notices assume opportunity, not guaranteed outcomes." }
+    ],
+    "mistakes": [
+      { "mistake": "Failing necessary-but-implicit joists because they sound obvious.",
+        "fix": "Obvious and necessary are different axes; the test decides." },
+      { "mistake": "Accepting universal claims as assumptions.",
+        "fix": "Everyone will comply overreaches; use enough-scope wording." },
+      { "mistake": "Testing tone instead of necessity.",
+        "fix": "Run the negation hammer, not the style checker." }
+    ],
+    "memoryTip": "Tap with the negation hammer: necessary survives, decoration falls.",
+    "practice": [
+      { "prompt": "Statement: Please use the new timetable from Monday. Assumption: people read posted timetables?", "answer": "Valid: without readers the notice has no effect." },
+      { "prompt": "Statement: Attendance is mandatory. Assumption: attendance is recorded?", "answer": "Not necessary for the instruction's validity: mandatary rules can exist un-enforced; helpful but not required." },
+      { "prompt": "Statement: Try method A; it works. Assumption: users can follow method A's steps?", "answer": "Valid: an unusable method's recommendation collapses." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "analogy",
+    "slug": "analogy-expert",
+    "title": "Multiplicative number bonds and mirror letter pairs",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Solve number analogies based on consecutive-multiples and letter analogies on mirrored alphabet partners.",
+    "explanation": "Two expert families recur. Consecutive-multiple bonds: 6 : 42 works as 6 x 7, and applying the same bond to 8 gives 8 x 9 = 72. Mirror-partner letters: 1 pairs with 26, 2 with 25, 3 with 24, so AZ : BY :: CX : DW, because each pair sits at mirrored positions summing to 27. Testing the named rule on the second member before answering remains the discipline.",
+    "analogy": "Number analogies are gears whose tooth counts differ: find the tooth rule once; letter mirrors are dance partners facing each other on a number line from 1 to 26.",
+    "workedExamples": [
+      {
+        "title": "Consecutive multiples",
+        "problem": "Complete: 6 : 42 :: 8 : ?",
+        "steps": [
+          "Check the bond: 42 = 6 x 7.",
+          "Rule: pair n with n(n + 1).",
+          "Apply: 8 x 9 = 72."
+        ],
+        "answer": "72."
+      },
+      {
+        "title": "Mirror letter partners",
+        "problem": "Complete: AZ : BY :: CX : ?",
+        "steps": [
+          "Positions: A 1 with Z 26; B 2 with Y 25; C 3 with X 24.",
+          "Each partner pair sums to 27, and the next mirror pair is 4 with 23.",
+          "So 4 = D with 23 = W."
+        ],
+        "answer": "DW."
+      }
+    ],
+    "rule": [
+      { "title": "Name the bond", "detail": "State the arithmetic rule on the first pair before scanning options." },
+      { "title": "Consecutive-multiple family", "detail": "n : n(n + 1) links 6 to 42, 8 to 72, 10 to 110." },
+      { "title": "Mirror positions", "detail": "p and 27 - p are partners: 1-26 (A-Z), 2-25 (B-Y), 4-23 (D-W)." },
+      { "title": "Second-member check", "detail": "Confirm the rule reproduces the second given pair if one exists." }
+    ],
+    "mistakes": [
+      { "mistake": "Reading 42 as 6 x 6 plus remainder and guessing 64 for 8.",
+        "fix": "42 = 6 x 7 exactly; the rule is the consecutive multiple, giving 72." },
+      { "mistake": "Mirroring to the wrong partner (D to V instead of W).",
+        "fix": "Partners sum to 27: D is 4, partner 23 = W." },
+      { "mistake": "Ignoring the pair's order direction.",
+        "fix": "Read a : b in the stated order; mirrored answers break direction." }
+    ],
+    "memoryTip": "Bonds first, mirrors sum to 27; verify the rule on the second pair.",
+    "practice": [
+      { "prompt": "5 : 30 :: 9 : ?", "answer": "90. n(n + 1): 9 x 10." },
+      { "prompt": "AZ : BY :: GL : ?", "answer": "TO. G 7 pairs with 20 = T; L 12 pairs with 15 = O." },
+      { "prompt": "4 : 20 :: 6 : ?", "answer": "42. n(n + 1): 6 x 7." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "grammar-and-usage",
+    "slug": "grammar-and-usage-expert",
+    "title": "Parallel structure and preposition collocations",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Repair faulty parallelism in paired constructions and choose fixed prepositions after verbs and adjectives.",
+    "explanation": "Correlative pairs such as not only ... but also, both ... and, either ... or must be followed by grammatically equal items: parallel words, phrases or clauses. Faulty: She not only sings but also plays the violin is correct, while mixing a noun with a clause breaks it. Prepositions follow fixed collocations: capable of, interested in, confident of, insists on, apologises for, married to. The exam rewards recognising the pattern rather than reasoning from feelings.",
+    "analogy": "Parallelism is matched shoe sizes on both feet: the not-only foot and the but-also foot must wear the same grammatical shoe; prepositions are shoe sizes the words were born with.",
+    "workedExamples": [
+      {
+        "title": "Repairing parallelism",
+        "problem": "Fix: The course not only improved his writing but also with spoken English.",
+        "steps": [
+          "The not-only side carries a verb phrase: improved his writing.",
+          "The but-also side carries a prepositional phrase, breaking parallelism.",
+          "Repair: not only improved his writing but also polished his spoken English."
+        ],
+        "answer": "The course not only improved his writing but also polished his spoken English."
+      },
+      {
+        "title": "Fixed prepositions",
+        "problem": "Choose correct prepositions: He is interested ___ chess and confident ___ winning. (in / of / about)",
+        "steps": [
+          "Interested collocates with in: interested in chess.",
+          "Confident collocates with of: confident of winning.",
+          "Both are fixed pairings."
+        ],
+        "answer": "interested in chess, confident of winning."
+      }
+    ],
+    "rule": [
+      { "title": "Correlative equality", "detail": "The words after not only and but also must be the same part of speech." },
+      { "title": "Verb phrase parallel", "detail": "Keep both halves finite and matching in tense." },
+      { "title": "Fixed collocations", "detail": "capable of, interested in, confident of, insists on, apologises for, married to." },
+      { "title": "Listen for the break", "detail": "A noun following but also after a not-only verb signals the fault." }
+    ],
+    "mistakes": [
+      { "mistake": "Writing both ... as when the pair is both ... and.",
+        "fix": "Correlatives come in fixed matching pairs." },
+      { "mistake": "Using confident about and capable to.",
+        "fix": "The fixed pairings are confident of and capable of." },
+      { "mistake": "Parallelising tense dissimilar verbs.",
+        "fix": "Match tense and form: improved ... polished, not improved ... polishing." }
+    ],
+    "memoryTip": "Match the grammatical shoe on both feet; verbs marry fixed prepositions.",
+    "practice": [
+      { "prompt": "Fix: He not only passed the exam but also a distinction.", "answer": "He not only passed the exam but also earned a distinction." },
+      { "prompt": "Choose: She insists ___ payment in advance.", "answer": "on. insists on." },
+      { "prompt": "Choose: They apologised ___ the delay.", "answer": "for. apologises for." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "vocabulary",
+    "slug": "vocabulary-expert",
+    "title": "High-register words: ennui, onerous and friends",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Use high-register exam words precisely and separate them from their tempting near-neighbours.",
+    "explanation": "Expert vocabulary pivots on words whose roots carry the meaning: ennui is weariness from boredom (a French borrowing), onerous means burdensome (from onus, a load), laconic means using very few words (from Laconia, home of the Spartans), and soporific means sleep-inducing (from sopor, deep sleep). Trap pairs matter: laconic is brevity with power, while lethargic is tiredness; onerous is heavy duty, not just hard work.",
+    "analogy": "High-register words are tailored suits: the label (root) tells the cut, and near-neighbours are off-the-rack lookalikes that miss the actual shoulder width.",
+    "workedExamples": [
+      {
+        "title": "Picking onerous",
+        "problem": "Fill in: The committee accepted the ___ task of auditing every ledger. (onerous / slothful)",
+        "steps": [
+          "The task is a burden: onerous fits.",
+          "Slothful describes a lazy worker, not a taxing task.",
+          "Sentence reads: the onerous task."
+        ],
+        "answer": "onerous."
+      },
+      {
+        "title": "Laconic versus lethargic",
+        "problem": "Choose: His reply was ___: just fine. (laconic / lethargic)",
+        "steps": [
+          "A three-word reply shows brevity: laconic.",
+          "Lethargic would describe him, not the reply's brevity.",
+          "So laconic is right."
+        ],
+        "answer": "laconic."
+      }
+    ],
+    "rule": [
+      { "title": "Semantic anchors", "detail": "ennui: bored weariness; onerous: burdensome; laconic: terse; soporific: sleep-inducing." },
+      { "title": "Part-of-speech slots", "detail": "onerous and laconic fit noun-slots as adjectives; ennui is a noun." },
+      { "title": "Roots orient", "detail": "onus = load; sopor = sleep; Laconia = Sparta." },
+      { "title": "Near-neighbour sieve", "detail": "lethargic (low energy) is not laconic (few words) in meaning." }
+    ],
+    "mistakes": [
+      { "mistake": "Using laconic to mean boring.",
+        "fix": "Laconic praises or notes brevity; dull chatter is its opposite." },
+      { "mistake": "Calling a lazy person onerous.",
+        "fix": "Onerous describes burdens, never people's character." },
+      { "mistake": "Reading soporific as 'horrific'.",
+        "fix": "The root sopor means sleep: a soporific lecture puts listeners to sleep." }
+    ],
+    "memoryTip": "Ennui bores, onerous burdens, laconic compresses, soporific sedates.",
+    "practice": [
+      { "prompt": "Synonym of onerous?", "answer": "Burdensome. From onus, a load." },
+      { "prompt": "Use in a sentence: the heat produced a ___ afternoon nap (soporific/laconic).", "answer": "soporific." },
+      { "prompt": "Which word means bored weariness: ennui, elation, zeugma?", "answer": "ennui." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "calendars-and-clocks",
+    "slug": "calendars-and-clocks-expert",
+    "title": "Month-chain weekday reconstruction and exact hand meetings",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Reconstruct weekdays across a month boundary and find exact clock positions when hands are opposite.",
+    "explanation": "Crossing a month needs month lengths: from 1 June (a Thursday) to 15 July totals 30 - 1 + 15 = 44 days? take days = (30 - 1) + 15 = 44, and 44 mod 7 = 2, so Thursday plus 2 gives Saturday. Exact hand positions use the relative-speed fact: relative to the hour hand the minute hand gains 330 degrees per hour, and opposite positions satisfy 330 degrees correspond? precisely: m = 60(h + 6)/11 minutes past h gives the opposite moment, so between 4 and 5 the hands are opposite at 60(10)/11 = 54 6/11 minutes past 4.",
+    "analogy": "Month chains are bridges with fixed spans; hand meetings are two runners passing on an oval at exact fractional minutes their relative pace decrees.",
+    "workedExamples": [
+      {
+        "title": "Across the June-July bridge",
+        "problem": "1 June is a Thursday. Which weekday is 15 July in the same year (June has 30 days)?",
+        "steps": [
+          "Days from 1 June to 15 July = (30 - 1) + 15 = 44.",
+          "44 mod 7 = 2.",
+          "Thursday + 2 days = Saturday."
+        ],
+        "answer": "Saturday."
+      },
+      {
+        "title": "Hands opposite between 4 and 5",
+        "problem": "Find when the clock hands are exactly opposite between 4 and 5 o'clock.",
+        "steps": [
+          "At h o'clock the hour hand sits at 30h degrees, using the 12-hour dial.",
+          "For opposition the minute hand must reach 30h + 180 degrees: 6m - 30h = 180.",
+          "m = (30h + 180)/6 = 5h + 30 minutes; check the standard form: m = 60(h + 6)/11 minutes past h.",
+          "For h = 4: m = 600/11 = 54 6/11 minutes past 4."
+        ],
+        "answer": "At 4:54 6/11 the hands are exactly opposite."
+      }
+    ],
+    "rule": [
+      { "title": "Month-length table", "detail": "31, 28 or 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 from January." },
+      { "title": "Bridge counting", "detail": "Days = (days left in month 1) + days into month 2." },
+      { "title": "Opposition moment", "detail": "m = 60(h + 6)/11 minutes past h gives exact opposition." },
+      { "title": "Coincidence anchor", "detail": "The same arithmetic settles coincidences: m = 60h/11." }
+    ],
+    "mistakes": [
+      { "mistake": "Counting June itself as 31 days.",
+        "fix": "June has 30; only July among the two has 31." },
+      { "mistake": "Stating opposition every 65 minutes past the hour.",
+        "fix": "The exact spacing is 65 5/11 minutes, so opposition lands at fractional minutes like 54 6/11." },
+      { "mistake": "Mixing the 12-hour dial with constant signs.",
+        "fix": "Compute positions on the same 360-degree dial before taking differences." }
+    ],
+    "memoryTip": "Bridges use month lengths; opposition at 60(h + 6)/11 past h.",
+    "practice": [
+      { "prompt": "1 March is a Monday. Which weekday is 5 April in a non-leap year?", "answer": "35 days later (30 - 1 + 6 = 35), 35 mod 7 = 0, so Monday." },
+      { "prompt": "When are the hands opposite between 2 and 3?", "answer": "60(8)/11 = 43 7/11 minutes past 2." },
+      { "prompt": "How many times in 12 hours are the hands opposite?", "answer": "11 times." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

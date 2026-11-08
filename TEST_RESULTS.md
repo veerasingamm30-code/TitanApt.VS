@@ -158,3 +158,63 @@ collaboratively; see BUG_FIX_REPORT.md #12).
 - `/api/auth/me` 401 while signed out on `/signup` is pre-existing auth-gate behavior (logged, not a regression).
 - Login as the seeded admin from a free-hand probe failed because `.env` values are quoted;
   the automated test suite (dotenv-parsed) logs in fine — evidence: `enforces admin authorization` test.
+
+---
+
+## Cycle G - 5-level lesson-path expansion (2026-11-08)
+
+Goal: every single-lesson topic grows to a full 5-level path (BEGINNER, BASIC,
+INTERMEDIATE, ADVANCED, EXPERT); the latent zero-lesson topic calendars-and-clocks
+gets its first full path. Boolean Algebra and Programming Logic keep their existing
+3-lesson paths (documented PARTIAL; user did not ask to expand them).
+
+### Content authoring and safety
+
+| Check | Result |
+|---|---|
+| LessonLevel enum migrated 3 -> 5 values | PASS - migration `20261108090000_add_lesson_levels_basic_expert` via `prisma migrate deploy`; `enum-final-check.cjs` shows BEGINNER, BASIC, INTERMEDIATE, ADVANCED, EXPERT; no stray LessonLevelNew type |
+| Batch authoring (9 files, 105 lessons) | PASS - basic a/b (26), intermediate a/b (26), advanced a/b (26), expert a/b (26), calendars BEGINNER (1) |
+| Merge validator (`scripts/merge-lessons-20261108.cjs`) | PASS - required fields, slug uniqueness (136 unique), level in enum, per-topic order continuity 1..n, recursion-safe JSON warnings, ASCII-only scan on authored batches |
+| ASCII-only authored content | PASS - 0 non-ASCII glyphs across all 9 batch files (Windows WIN1252 client encoding constraint) |
+| No duplicated examples across levels | PASS - duplicate-risk items re-authored: TSD uses 24 km/3 h+4 h (advanced) vs 30 km/2 h+3 h (expert); geometry square 14/incircle 154 vs square 28/incircle 42-base; C-and-L coding TITAN->PCVKV vs TIPS->WTMX scheme |
+| sourceRef honesty | PASS - every lesson states TitanApt-authored 2026-11-08 expansion with verified answer keys; no PDF/page invented |
+| Arithmetic re-verification | PASS - corrected during review: mirror-letter DEF->WVU / GHI->TSR; series 3,8,23,68->203 (x3-1); 15 Aug 1947 = Friday; 2^50 mod 9 = 4; 5^20 mod 7 = 4 (Fermat); worker-rate 27.5; MARS->UTCO / VOKI->GIMT; factorial-gap series -> 154 |
+
+### Seed and DB persistence
+
+| Check | Result |
+|---|---|
+| `npm run db:seed` | PASS - `Seed complete: topics=28 lessons=136 companies=26 questions=1700 mocks=27 users=58` |
+| User data preservation | PASS - users=58 pre- and post-seed (all pre-existing accounts intact; seed is upsert) |
+| Questions untouched | PASS - 1,675 approved + 25 pending before and after |
+| Checkpoints | PASS - 404 LessonCheckpoint rows; every lesson of every topic has >= 1 checkpoint window (`lesson-path-report.cjs`: issues: none) |
+| Level row counts | PASS - BEGINNER=30 (29 legacy + 1 calendars), BASIC=26, INTERMEDIATE=28 (2 legacy + 26), ADVANCED=26, EXPERT=26 = 136 |
+
+### Runtime verification (dev stack API :4000)
+
+| Check | Result |
+|---|---|
+| `/health/ready` | PASS - users=58, topics=28, approvedQuestions=1675, approvedLessons=136, publishedMocks=27 |
+| `/api/topics/:slug` for all 26 expanded topics | PASS - each returns exactly 5 lessons in order 1..5 with levels BEGINNER..EXPERT |
+| `/api/lessons/:id` for all 26 EXPERT lessons | PASS - full payload (objective, explanation, analogy, 2 worked examples, rule, mistakes, memoryTip, 3 practice items, sourceRef, reviewer, topic, siblings=5) |
+| Checkpoint windows served over HTTP | PASS - every tested EXPERT lesson serves >= 1 checkpoint question; pooled small-pool topics (e.g. seating-arrangement pool=3, number-series=7, blood-relations=7, analogy=8, vocabulary=8) reuse head-fallback windows for the 4th/5th lessons - documented honest limitation of the pool size, not a bug |
+| Lesson progression | PASS - sibling navigation exposes 5 ordered lessons; `/api/lessons/:id/next` handoff intact |
+
+### Final gates
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | PASS (shared + api + web) |
+| `npm test` | PASS - 5 files / 42 tests (API 25 incl. `approvedLessons: 136` readiness pin, web 17) |
+| `npm run build` | PASS (api dist 146.55 KB ESM; web dist 544.70 KB JS / 131.62 KB CSS) |
+| Dev stack restart | PASS - stale node processes on :4000/:5173 from a prior session killed, `npm run dev` restarted; API + Vite serve normally |
+
+### Known honest limitations
+
+- boolean-algebra and programming-logic remain 3-lesson paths (legacy data kept
+  verbatim; no attempt to expand into their existing BEGINNER x2 glitch).
+- Checkpoint windows repeat head-fallback questions for topics whose question
+  pool is smaller than 5 (seating-arrangement=3, number-series=7,
+  blood-relations=7, analogy=8, vocabulary=8); each lesson still has a window.
+- Test suite count grew from the 33 noted in earlier cycles to 42 (5 files):
+  prior cycles' auth/context additions; `approvedLessons` pin updated 31 -> 136.

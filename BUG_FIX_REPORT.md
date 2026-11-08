@@ -138,3 +138,14 @@ Conventions used throughout: statuses are honest; "FIXED" means a repeatable che
 - `npm run typecheck` PASS · `npm test` 33/33 PASS · `npm run build` PASS
 - Main integration probe 34/34 PASS · category probe 11/11 PASS · production smoke PASS
 - Existing user data (30+ pre-existing users) untouched throughout: no resets, no schema rebuilds.
+
+## 17. 2026-11-08: LessonLevel enum too narrow for the 5-level expansion
+
+- Issue: seed needed BEGINNER/BASIC/INTERMEDIATE/ADVANCED/EXPERT; existing enum had only 3 values (FIXED).
+- Root cause: initially authoritative authoring enums were authored as only 3 LessonLevel values.
+- Fix: migration 20261108090000_add_lesson_levels_basic_expert recreated the enum with all 5 values
+  (PG cannot DROP an enum value; recreate-enum with single-quoted labels is the working syntax),
+  applied via `prisma migrate deploy` because `migrate dev` hits checksum drift in this repo.
+- A follow-on test pin: `http.test.ts` readiness assertion updated approvedLessons 31 -> 136.
+- Residual honesty note: checkpoint windows repeat (head fallback) for the 5 topics whose question pool
+  is smaller than 5 items; every lesson still gets a checkpoint.

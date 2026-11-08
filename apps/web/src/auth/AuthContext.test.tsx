@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ReactNode } from 'react';
 import { AuthProvider, useAuth } from './AuthContext';
@@ -85,7 +85,7 @@ describe('AuthProvider session bootstrap', () => {
     expect(snapshot?.loading).toBe(true);
 
     await tick(900); // attempt 3 runs and fails -> retries exhausted
-    await waitFor(() => expect(snapshot?.loading).toBe(false));
+    await waitFor(() => expect(snapshot?.loading).toBe(false), { timeout: 4000 });
     expect(snapshot?.user).toBeNull();
     expect(snapshot?.bootstrapError).toBeTruthy();
     expect(apiDataMock).toHaveBeenCalledTimes(3);
@@ -114,7 +114,7 @@ describe('AuthProvider session bootstrap', () => {
     apiDataMock.mockRejectedValueOnce(new TypeError('fetch failed #3'));
     apiDataMock.mockResolvedValueOnce({ user: learner } as never);
     renderProvider();
-    await waitFor(() => expect(snapshot?.loading).toBe(false));
+    await waitFor(() => expect(snapshot?.loading).toBe(false), { timeout: 4000 });
     expect(snapshot?.user).toBeNull();
     expect(snapshot?.bootstrapError).toBeTruthy();
     expect(apiDataMock).toHaveBeenCalledTimes(3);

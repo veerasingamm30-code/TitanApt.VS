@@ -1,0 +1,670 @@
+[
+  {
+    "topicSlug": "geometry-and-mensuration",
+    "slug": "geometry-and-mensuration-advanced",
+    "title": "Heron triangles, incircles and shaded regions",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Apply Heron's formula, relate incircle radius to triangle area and compute shaded regions by subtraction.",
+    "explanation": "When only the three sides a, b, c are known, Heron's formula computes area as sqrt(s(s - a)(s - b)(s - c)) with s = (a + b + c)/2; the 13-14-15 triangle is the classic with area 84. The incircle radius follows as area/s, tying three sides to one formula chain. Shaded-region questions avoid fancy geometry: compute the larger shape, subtract the removed shape, and rely on compatible pi fractions like 22/7 to land on clean numbers.",
+    "analogy": "Heron's formula is a locksmith for side-only triangles: three edge measurements open the area lock; shaded regions are wall-painting jobs where the window area is simply subtracted.",
+    "workedExamples": [
+      {
+        "title": "Heron triangle",
+        "problem": "Find the area of a triangle with sides 13, 14 and 15.",
+        "steps": [
+          "s = (13 + 14 + 15)/2 = 21.",
+          "Area = sqrt(21 x 8 x 7 x 6).",
+          "21 x 8 = 168 and 7 x 6 = 42; product = 168 x 42 = 7056 = 84^2.",
+          "Area = 84."
+        ],
+        "answer": "84 square units."
+      },
+      {
+        "title": "Incircle in a square",
+        "problem": "A square has side 14. Its largest inscribed circle is removed. Find the remaining area, using pi = 22/7.",
+        "steps": [
+          "Square area = 14^2 = 196.",
+          "Incircle radius = 14/2 = 7; circle area = (22/7) x 49 = 154.",
+          "Remaining = 196 - 154 = 42."
+        ],
+        "answer": "42 square units."
+      }
+    ],
+    "rule": [
+      { "title": "Heron", "detail": "Area = sqrt(s(s-a)(s-b)(s-c)) with s the half perimeter." },
+      { "title": "Inradius", "detail": "r = area/s for any triangle; for a right triangle with legs a, b and hypotenuse c, r = (a + b - c)/2." },
+      { "title": "Shaded subtraction", "detail": "Remaining = outer area - inner area; match the pi convention across shapes." },
+      { "title": "Classic Heron triple", "detail": "Sides 13, 14, 15 give area 84 exactly; recognising it saves minutes." }
+    ],
+    "mistakes": [
+      { "mistake": "Using full perimeter in Heron products.", "fix": "s is half the perimeter; feeding the full sum adds spurious factors." },
+      { "mistake": "Mixing 3.14 and 22/7 inside one subtraction.", "fix": "Choose one approximate pi for the whole question." },
+      { "mistake": "Measuring the incircle radius as half the longest side in non-equilateral triangles.", "fix": "Only the equilateral case ties radius to a fixed side fraction; otherwise use area/s." }
+    ],
+    "memoryTip": "Half-perimeter s unlocks Heron; right-triangle inradius is (a + b - c)/2; shaded means subtract one area from another.",
+    "practice": [
+      { "prompt": "Area of a 5-6-7 triangle by Heron?", "answer": "sqrt(9 x 4 x 3 x 2) = sqrt(216) = 14.7 approx (6 sqrt(6))." },
+      { "prompt": "Right triangle legs 6, 8: inradius?", "answer": "(6 + 8 - 10)/2 = 2." },
+      { "prompt": "Square side 20 with inscribed circle removed, pi = 22/7: remaining area?", "answer": "400 - (22/7) x 100 = 400 - 2200/7 = 86 approx; exact 600/7." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "data-interpretation",
+    "slug": "data-interpretation-advanced",
+    "title": "Cross-table computations and index building",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Combine rows and columns through ratios, build weighted indexes and interpret unit-growth sequences accurately.",
+    "explanation": "Advanced DI compares across two dimensions at once: entity versus period, category versus region. The reliable pattern is to compute one derived ratio per cell you need, then sum or average those ratios with weights from the table itself. Weighted indexes multiply each category's growth by its base share; unit-growth sequences chain percentages across periods, requiring base-by-base multiplication rather than simple addition.",
+    "analogy": "A DI table is a woven mesh: you weave derived ratios along rows and columns, then reinforce with weights, never trusting a naked average.",
+    "workedExamples": [
+      {
+        "title": "Weighted growth index",
+        "problem": "Categories: A 50 percent weight growing 10 percent; B 30 percent growing 15 percent; C 20 percent growing 5 percent. Built index growth?",
+        "steps": [
+          "Contributions: 0.5 x 10 + 0.3 x 15 + 0.2 x 5.",
+          "= 5 + 4.5 + 1.",
+          "= 10.5 percent."
+        ],
+        "answer": "10.5 percent overall growth."
+      },
+      {
+        "title": "Unit growth chain",
+        "problem": "Sales move 400, 450, 510 across three periods. Give period-wise growth rates.",
+        "steps": [
+          "Period 1 to 2: 50/400 = 12.5 percent.",
+          "Period 2 to 3: 60/450 = 13.33 percent.",
+          "Overall: (510 - 400)/400 = 27.5 percent."
+        ],
+        "answer": "12.5 percent, then 13.33 percent; 27.5 percent overall."
+      }
+    ],
+    "rule": [
+      { "title": "Derived ratio first", "detail": "Compute the ratio you actually need once, then reuse it across cells." },
+      { "title": "Index = weight x growth", "detail": "Weights come from base-period shares and must sum to 1." },
+      { "title": "Chain multiplication", "detail": "Percent growth across periods multiplies factors; never add successive percentages directly." },
+      { "title": "Reverse lookups", "detail": "When the table gives shares, the missing absolute value is shares x known total." }
+    ],
+    "mistakes": [
+      { "mistake": "Averaging growth rates unweighted.", "fix": "Multiply each rate by its base share." },
+      { "mistake": "Adding successive growth percents for a two-period total.", "fix": "1.125 x 1.1333 = 1.275, that is 27.5 percent, not 25.83." },
+      { "mistake": "Reading a share row as absolute values.", "fix": "Keep shares and totals separated by header clues." }
+    ],
+    "memoryTip": "Weave derived ratios first; weighted indexes = shares x growth; period chains multiply.",
+    "practice": [
+      { "prompt": "Two categories: 70 percent weight at 5 percent growth, 30 percent at 20 percent. Index growth?", "answer": "9.5 percent. 3.5 + 6." },
+      { "prompt": "Values 200, 250, 300: two successive growth rates overall?", "answer": "25 percent then 20 percent; overall 50 percent." },
+      { "prompt": "Total 1200 with shares 1/3, 1/4, rest: absolute parts?", "answer": "400, 300, 500." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "number-series",
+    "slug": "number-series-advanced",
+    "title": "Operated chains and factorial steps",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Decode series built by alternate operations, factorial-based jumps and digit-plus-position rules.",
+    "explanation": "Advanced series build each term by applying an operation whose operand grows: multiply by 3 then subtract 1 in every step; add 2, then 4, then 8 doubling fills; or insert factorials 1, 2, 6, 24 as jump sizes. Digit-based rules use the term's own digits, like adding the digit sum. The decoding drill: tabulate consecutive operations, look for the operand pattern (constant, doubling, multiplication), and verify across at least two transitions.",
+    "analogy": "Operated chains are gearboxes with a growing input: the same gear ratio applies at each step but to a bigger number, and the operand series is the pedal cylinder.",
+    "workedExamples": [
+      {
+        "title": "Multiply then subtract chain",
+        "problem": "Find the next term: 2, 5, 14, 41, ...",
+        "steps": [
+          "Operations: x3 - 1 each step: 2 x 3 - 1 = 5, 5 x 3 - 1 = 14, 14 x 3 - 1 = 41.",
+          "Next: 41 x 3 - 1 = 122.",
+          "Verify one more interior transition: correct on all three."
+        ],
+        "answer": "122."
+      },
+      {
+        "title": "Factorial jumps",
+        "problem": "Find the next term: 1, 2, 4, 10, 34, ...",
+        "steps": [
+          "Differences: 1, 2, 6, 24, which are 1!, 2!, 3!, 4!.",
+          "Next difference = 5! = 120.",
+          "Next term = 34 + 120 = 154."
+        ],
+        "answer": "154."
+      }
+    ],
+    "rule": [
+      { "title": "Operation operand", "detail": "Same operation with a computed operand: read its own pattern (constant, doubling, factorial)." },
+      { "title": "Factorial staircase", "detail": "1, 2, 6, 24, 120 jumps appear as differences or as multipliers." },
+      { "title": "Digit rules", "detail": "Digit sums, digit products and reversed digits can generate the next term." },
+      { "title": "Double verification", "detail": "Confirm the rule across two consecutive transitions before answering." }
+    ],
+    "mistakes": [
+      { "mistake": "Assuming one fixed operation when the operand itself varies.", "fix": "Tabulate operands: 1, 2, 6, 24 is factorial, not noise." },
+      { "mistake": "Testing rules only on the last transition.", "fix": "Validate across the whole visible window." },
+      { "mistake": "Overlooking digit-based rules with no arithmetic clue.", "fix": "When differences and ratios both fail, inspect digits." }
+    ],
+    "memoryTip": "Operation plus operand: same gear, growing pedal; factorial staircases hide in difference rows; verify twice.",
+    "practice": [
+      { "prompt": "Next term: 3, 8, 23, 68, ...", "answer": "203. Each term is 3 times the previous minus 1: 3 x 3 - 1 = 8, 8 x 3 - 1 = 23, 23 x 3 - 1 = 68, so 68 x 3 - 1 = 203." },
+      { "prompt": "Next term: 2, 3, 5, 11, 23, ...", "answer": "47. Each term is 2 times the previous plus 1: 2 x 2 + 1 = 5, 5 x 2 + 1 = 11, 11 x 2 + 1 = 23, so 23 x 2 + 1 = 47." },
+      { "prompt": "Next term: 1, 4, 13, 40, ...", "answer": "121. x3 + 1 each step: 40 x 3 + 1 = 121." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "coding-and-decoding",
+    "slug": "coding-and-decoding-advanced",
+    "title": "Layered codes: shift plus reversal and mixed schemes",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Decode codes formed by two stacked rules, choose among letter-reversal, word-split and digit-letter hybrid schemes.",
+    "explanation": "Advanced codes stack simple rules: first shift every letter by k, then reverse the whole word; or split the word and code the halves differently. Because stacked rules are confusing to read directly, decode in reverse order: un-reverse first, then un-shift. Hybrid schemes replace letters with their positions and recombine digits; decoding always begins by reproducing the given example's two transformations explicitly.",
+    "analogy": "Layered codes are wrapped parcels: unwrap in reverse order of packing, one layer at a time, until the readable label reappears.",
+    "workedExamples": [
+      {
+        "title": "Shift then reverse",
+        "problem": "A code shifts letters +2 and then reverses the word. Encode TITAN.",
+        "steps": [
+          "Shift +2: V K V C P.",
+          "Reverse the order: P C V K V.",
+          "Answer joins as PCVKV."
+        ],
+        "answer": "PCVKV."
+      },
+      {
+        "title": "Unwrap in reverse order",
+        "problem": "Using the same scheme (shift +2, then reverse), decode PCVKV back to the original.",
+        "steps": [
+          "Reverse undo: P C V K V reversed is V K V C P.",
+          "Shift -2 on each: V-2 = T, K-2 = I, V-2 = T, C-2 = A, P-2 = N.",
+          "Original word: TITAN."
+        ],
+        "answer": "TITAN."
+      }
+    ],
+    "rule": [
+      { "title": "Decode backwards", "detail": "Undo the last transformation first; layers peel in stack order." },
+      { "title": "Split schemes", "detail": "Words may code by halves with different shifts; identify the boundary from the example." },
+      { "title": "Hybrid digits", "detail": "Letter-position digits recombined still obey layer order; keep columns aligned." },
+      { "title": "Example-first discipline", "detail": "Never apply an unverified scheme; reproduce the given pair fully before coding the new word." }
+    ],
+    "mistakes": [
+      { "mistake": "Unwrapping layers in packing order instead of decoding order.", "fix": "The last applied rule is the first undone." },
+      { "mistake": "Applying a stacked rule unchecked on the given pair.", "fix": "Verify the whole transformation pipeline on the example." },
+      { "mistake": "Mixing which half takes which shift in split schemes.", "fix": "Label halves explicitly from the calibration pair." }
+    ],
+    "memoryTip": "Peel in stack order, verify on the given pair, and keep hybrid digit columns aligned.",
+    "practice": [
+      { "prompt": "Scheme: reverse first, then shift +1. Encode BAT.", "answer": "UBC. Reversing BAT gives TAB; then each letter moves +1: T to U, A to B, B to C." },
+      { "prompt": "Scheme: code = word reversed, then every letter shifted -1. This produced TQFP. Decode it.", "answer": "QGRU. Undo the last layer first: shift +1 on each letter gives URGQ, then reversing gives QGRU." },
+      { "prompt": "Why must decoding peel layers in the opposite order of packing?", "answer": "The last rule applied is the first undone; peeling in packing order mixes shifted and reversed letters." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "blood-relations",
+    "slug": "blood-relations-advanced",
+    "title": "Coded trees with spouses and gender closures",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Parse long symbol chains including spouse symbols, close gender gaps by inference and answer cross-generation questions.",
+    "explanation": "Long coded chains add spouse signs alongside descent signs; a spouse link joins people horizontally on one generation row. Parsing proceeds sign by sign, drawing rows immediately, and gender can close by inference: someone who signs as father or mother is gendered, and a child linked to them inherits nothing, only a parent link. The final question often spans two or more generations, so label rows G1, G2, G3 to keep the walk honest.",
+    "analogy": "Coded trees are subway maps: descent signs are vertical escalators, spouse signs are same-level corridors, and lines labelled G1, G2, G3 stop you crossing wrongly.",
+    "workedExamples": [
+      {
+        "title": "Three-generation chain",
+        "problem": "Symbols: + father of, - mother of. Parse A + B - C + D. What is A to D?",
+        "steps": [
+          "A + B: A is B's father (G1 to G2).",
+          "B - C: B is C's mother (G2 to G3).",
+          "C + D: C is D's father (G3 to G4).",
+          "A is the father of B, who is the mother of D's father."
+        ],
+        "answer": "A is D's great-grandfather: three descent hops (A to B to C to D), with B as C's mother."
+      },
+      {
+        "title": "Gender closure",
+        "problem": "Symbols: @ mother of, # father of. Parse M @ N # P. What is M to P?",
+        "steps": [
+          "M @ N: M is N's mother.",
+          "N # P: N is P's father; so N is male.",
+          "M is the mother of P's father."
+        ],
+        "answer": "M is P's paternal grandmother."
+      }
+    ],
+    "rule": [
+      { "title": "Rows per generation", "detail": "Label G1 downward; descent moves one row, spouses stay put." },
+      { "title": "Closure by gendered sign", "detail": "Father and mother symbols gender their subject directly; children inherit only links." },
+      { "title": "Chain composition", "detail": "Compose the final walk relation stepwise; check the direction of each hop." },
+      { "title": "Grandparent labelling", "detail": "Three hops give grand; four hops great-grand; say the side honestly." }
+    ],
+    "mistakes": [
+      { "mistake": "Skipping one generation while naming the answer.", "fix": "Count hops: one is parent, two grand, three great-grand." },
+      { "mistake": "Letting an unrelated person's gender leak into the answer.", "fix": "Only gendered symbols license gendered words." },
+      { "mistake": "Reading spouse symbols as descent.", "fix": "Spouses share a row; no generation change occurs." }
+    ],
+    "memoryTip": "G-rows stop missteps; gendered signs close genders; hops count the generation distance.",
+    "practice": [
+      { "prompt": "Parse X # Y - Z (- mother, # father): what is X to Z?", "answer": "Grandfather. X is the father of Y, who is the mother of Z." },
+      { "prompt": "Parse A @ B with @ mother. Gender of A?", "answer": "Female; mother symbols state it." },
+      { "prompt": "Parse P + Q + R (both + father). What is P to R?", "answer": "Grandfather. P is the father of Q, and Q is the father of R: two descent hops." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "direction-sense",
+    "slug": "direction-sense-advanced",
+    "title": "Shadow walks, bearings and multi-person anchors",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Use sun-shadow directions as anchors, chain long mixed walks, and track two movers relative to a fixed point.",
+    "explanation": "Advanced direction questions anchor on natural facts: the sun rises in the east, so an early-morning shadow falls to the west, and a person walking toward their shadow faces west. Long chains still reduce to dx and dy coordinates, and two-mover questions fix one walker as the reference point, converting the other's displacement into relative position. The discipline is unchanged: one facing variable, two axis totals, explicit anchor notes.",
+    "analogy": "Shadow facts are free compass calibrations; once the morning map prints west, every next step chains off the same coordinates.",
+    "workedExamples": [
+      {
+        "title": "Shadow anchor",
+        "problem": "In the morning, a man walks directly toward his shadow for 10 m, then turns right and walks 8 m. How far is he from the start?",
+        "steps": [
+          "Morning shadows fall west, so walking toward the shadow means walking 10 m west.",
+          "Right from west heading... facing west; right turn is north; walk 8 m north.",
+          "Displacement = sqrt(10^2 + 8^2) = sqrt(164) = about 12.8 m."
+        ],
+        "answer": "About 12.8 m, toward the north-west."
+      },
+      {
+        "title": "Relative position",
+        "problem": "A starts at the origin and walks 5 km north. B starts at the origin and walks 5 km east. Relative to A, where is B?",
+        "steps": [
+          "A is at (0, 5).",
+          "B is at (5, 0).",
+          "B relative to A: subtract (0, 5) from (5, 0), giving (5, -5): 5 km east and 5 km south of A.",
+          "Straight distance = sqrt(25 + 25) = 7.07 km."
+        ],
+        "answer": "B is 7.07 km south-east of A."
+      }
+    ],
+    "rule": [
+      { "title": "Morning shadow west", "detail": "Sunrise east casts shadows west; afternoon reverses to east." },
+      { "title": "Facing bookkeeping", "detail": "Update facing after every turn; direction words belong to the walker." },
+      { "title": "Two movers", "detail": "Fix one as origin; the other's coordinates subtract to give relative position." },
+      { "title": "Hypotenuse finish", "detail": "Final distance uses sqrt(dx^2 + dy^2) with signed components." }
+    ],
+    "mistakes": [
+      { "mistake": "Assuming shadows fall north at sunrise.", "fix": "Shadows point away from the sun: east sun makes west shadows." },
+      { "mistake": "Comparing two movers as if both started from the same facing.", "fix": "Relative position is coordinate arithmetic, not facing arithmetic." },
+      { "mistake": "Dropping the negative sign on westward or southward legs.", "fix": "Signs feed the final sqrt and the direction wording." }
+    ],
+    "memoryTip": "Shadow says west in the morning; coordinates never lie; relative position is one subtraction away.",
+    "practice": [
+      { "prompt": "Evening: shadows fall east. A person walks toward her shadow 12 m, then turns right 6 m. Distance from start?", "answer": "About 13.4 m. East 12 then right (south) 6: sqrt(144 + 36) = sqrt(180) = 13.4." },
+      { "prompt": "Two friends leave the same point: one 9 km north, one 9 km west. Distance between them?", "answer": "12.73 km (9 sqrt(2))." },
+      { "prompt": "Facing south, a man turns left and walks 4 m, turns left again and walks 4 m. Where is he relative to start?", "answer": "4 m east? Trace: south facing; left = east; walks 4 m east; left again = north; walks 4 north. Net: 4 east, 4 north from start." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "seating-arrangement",
+    "slug": "seating-arrangement-advanced",
+    "title": "Two facing rows and dual-key circles",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Coordinate two rows facing each other and resolve circular arrangements where each person knows both neighbours.",
+    "explanation": "Two-row setups place a row facing another; clues may link partners across rows (opposite seats) or within rows, so keep two anchored seat maps side by side and mark cross-row pairs. In circles, adjacent-pair clues may be one-sided (A right of B) or double-sided (A adjacent to B); double-sided clues leave two distinct placements until a facing note resolves handedness. Negative clues prune forbidden chairs exactly as in linear solving.",
+    "analogy": "Two facing rows are opposing bookshelves: each shelf is arranged alone, then clamped by the pairs you decide run across the aisle.",
+    "workedExamples": [
+      {
+        "title": "Row facing row",
+        "problem": "Rows 1 (P, Q, R) and 2 (A, B, C) face each other. R is opposite A. P faces C? Let us use: R opposite A, Q opposite B, P opposite C; plus internal clue Q immediately right of P (viewed from row-1's own facing). Describe row 1's order.",
+        "steps": [
+          "Cross pairs fix which column each row-1 person occupies, but internal order still needs the right-hand clue.",
+          "With Q immediately right of P, and R then completing the row, the row-1 order is P, Q, R.",
+          "Check: Q sits immediately right of P in their own facing."
+        ],
+        "answer": "Row 1 reads P, Q, R from their left."
+      },
+      {
+        "title": "Circle with double clue",
+        "problem": "Five friends around a circle facing the centre. A is adjacent to B, and B is adjacent to C. How many seats may A and C each occupy?",
+        "steps": [
+          "Fix B anywhere (circle rotation is free).",
+          "A occupies either chair beside B; C likewise.",
+          "Without a handedness note, A and C each have 2 possible chairs; the remaining two seats stay for the other two friends."
+        ],
+        "answer": "Each of A and C has 2 placements; total pairings 2 x 2 = 4 until one more clue resolves them."
+      }
+    ],
+    "rule": [
+      { "title": "Two maps, one clamp", "detail": "Arrange each row by its internal clues; cross-row pairs clamp the relative shift." },
+      { "title": "One-sided vs double", "detail": "'Right of' fixes handedness; 'adjacent to' leaves two options until resolved." },
+      { "title": "Rotation freedom", "detail": "Circles have no absolute seat: fix one person as the anchor." },
+      { "title": "Negative pruning", "detail": "'Not adjacent' strikes chairs after placements exist." }
+    ],
+    "mistakes": [
+      { "mistake": "Mixing the two rows' handedness conventions.", "fix": "Each row faces the other; left for one row is the other's right side of the aisle." },
+      { "mistake": "Treating adjacent clues as fixing order.", "fix": "Adjacent means two mirror options until another clue breaks the tie." },
+      { "mistake": "Anchoring circles to an absolute corner.", "fix": "Only relative anchors exist around a circle." }
+    ],
+    "memoryTip": "Clamp cross-aisle pairs, keep facing conventions per row, anchor circles internally.",
+    "practice": [
+      { "prompt": "Circle facing centre: A right of B (anticlockwise), B adjacent to C. How many C placements?", "answer": "Two (either side of B), unless handedness locks further." },
+      { "prompt": "Row facing row with fixed cross pairs; internal clue R between P and Q (linear order with 3). Row order?", "answer": "Either P, R, Q or Q, R, P without a handedness note." },
+      { "prompt": "Why can two facing rows disagree on left and right?", "answer": "Each person's left is body-facing; facing opposite directions mirrors the axes." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "syllogism",
+    "slug": "syllogism-advanced",
+    "title": "Possibility boxes and three-conclusion verdicts",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Test possibility-based conclusions with diagram cases and deliver instance-by-instance verdicts on multi-conclusion sets.",
+    "explanation": "Possibility questions ask whether a diagram can exist that satisfies all statements and the extra claim; the verdict is yes or no depending on whether the statements force the claim false. Their cousin, the multi-conclusion verdict, grades several candidate conclusions; each is checked against the statements with 'must follow' discipline, one counter-case killing it. Venn sketches with deliberate corner cases are the tool of record, and the conversion table remains the algebra of record.",
+    "analogy": "Possibility questions are room-layout puzzles: statements are walls that must stand in every layout; a claim survives if at least one legal layout contains it.",
+    "workedExamples": [
+      {
+        "title": "Possibility layout",
+        "problem": "Statements: All A are B. Some B are C. Is a layout possible where some C are A?",
+        "steps": [
+          "Draw B as a large set; A strictly inside it.",
+          "Place part of C overlapping B; a sliver of C may also overlap the A region because C overlaps B.",
+          "This layout satisfies both statements and the claim."
+        ],
+        "answer": "Yes, possible; the claim is not forced but it is not forbidden either."
+      },
+      {
+        "title": "Forced false claim",
+        "problem": "Statements: All A are B. No B are C. Is any C being A possible?",
+        "steps": [
+          "A lies wholly inside B.",
+          "The wall No B are C excludes every C from B's interior.",
+          "So no member of C can lie in A."
+        ],
+        "answer": "No; the statements force the claim false."
+      }
+    ],
+    "rule": [
+      { "title": "Possibility = one legal layout", "detail": "Build a layout satisfying both statements and the claim; failure means impossible." },
+      { "title": "Must-follow verdicts", "detail": "Each conclusion stands alone; one counter-case clears it to invalid." },
+      { "title": "Walls dominate", "detail": "No-statements forbid layouts; All-statements confine members." },
+      { "title": "Conversion table still applies", "detail": "Use the table's four conversions before diagramming." }
+    ],
+    "mistakes": [
+      { "mistake": "Calling unforced conclusions invalid in possibility questions.", "fix": "Possibility asks can, not must; unforced means possible." },
+      { "mistake": "Drafting layouts that violate a No-statement.", "fix": "Walls stand in every layout; resketch around them." },
+      { "mistake": "Grading conclusions against each other instead of the statements.", "fix": "Each verdict cites the statements only." }
+    ],
+    "memoryTip": "Possibility wants one legal sketch; verdicts want zero legal counterexamples; walls always stand.",
+    "practice": [
+      { "prompt": "All cats are animals; some animals are pets. Is 'some pets are cats' possible?", "answer": "Yes; draw pets overlapping the cat region inside animals." },
+      { "prompt": "All pens are items; no items are liquids. Possible that some liquid is a pen?", "answer": "No; the wall forbids it." },
+      { "prompt": "Some keys are locks; some locks are rings. Possible that some key is a ring?", "answer": "Yes; chain the two overlaps through locks." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "statement-and-conclusion",
+    "slug": "statement-and-conclusion-advanced",
+    "title": "Hidden assumptions and advertisement logic",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Surface the implicit assumptions inside persuasive statements and grade promotional claims against stated facts.",
+    "explanation": "Assumption questions read under the statement's floor: every persuasive line relies on unstated premises, such as a notice assuming people read notices, or a product campaign assuming its advertised feature matters to buyers. Valid assumptions are necessary for the statement to work and stay within its world; they must not be stronger than the statement. Advertisement logic adds effect claims, whose assessment checks whether the claimed effect follows from the stated mechanism at all.",
+    "analogy": "Assumptions are floor joists: invisible but load-bearing; your job is to tap each joist and decide whether the statement would collapse without it.",
+    "workedExamples": [
+      {
+        "title": "Notice assumption",
+        "problem": "Statement: Please switch off lights when leaving. An implicit assumption?",
+        "steps": [
+          "The notice is worth issuing only if someone reads it.",
+          "More precisely: people leaving the room will comply if asked.",
+          "Both are necessary for the request to function."
+        ],
+        "answer": "People read and follow such notices."
+      },
+      {
+        "title": "Over-strong assumption",
+        "problem": "Statement: Our new mixer uses less electricity. Candidate assumption: no other mixer brand sells in the market. Valid?",
+        "steps": [
+          "The statement functions without any claim about market structure.",
+          "The candidate assumption is neither necessary nor tied to the claim.",
+          "An honest necessary premise: buyers care about electricity use."
+        ],
+        "answer": "Invalid; too strong and irrelevant."
+      }
+    ],
+    "rule": [
+      { "title": "Necessary, not sufficient", "detail": "Assumptions must be required for the statement to make sense, not merely helpful." },
+      { "title": "Stay inside the world", "detail": "Market-wide or universal claims exceed a local statement's needs." },
+      { "title": "Effect follows mechanism", "detail": "Promotional effect claims need a stated mechanism that plausibly produces the effect." },
+      { "title": "Negation test", "detail": "Negate the candidate assumption; if the statement collapses, it is necessary." }
+    ],
+    "mistakes": [
+      { "mistake": "Listing helpful extras as assumptions.", "fix": "Apply the negation test; helpful-without-necessary fails." },
+      { "mistake": "Assuming universal follow-through ('everyone will comply').", "fix": "Assumptions stay proportionate: enough compliance for the statement to matter." },
+      { "mistake": "Grading persuasive tone instead of logical necessity.", "fix": "Structure beats style in these questions." }
+    ],
+    "memoryTip": "Joists tap test: necessary or nothing; proportionate strength; mechanisms must connect to effects.",
+    "practice": [
+      { "prompt": "Statement: Buy two, get one free. Necessary assumption?", "answer": "Customers respond to the offer, i.e. buyers exist and notice it." },
+      { "prompt": "Statement: The train will arrive on time. Assumption: weather will stay clear. Necessary?", "answer": "Yes when the statement's reliability depends on conditions; treated as necessary in exam conventions." },
+      { "prompt": "Candidate assumption: 'No one ever switches off lights.' Valid for the switch-off notice?", "answer": "No; it contradicts the notice's very premise of possible compliance." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "analogy",
+    "slug": "analogy-advanced",
+    "title": "Dual-relation and transformed-pair analogies",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Handle analogies whose relation is layered with two simultaneous rules and alphabet transforms such as mirror mappings and shifts.",
+    "explanation": "Advanced analogies layer two relations at once: worker-to-place plus tool, or category-plus-quantity, so the winning option must satisfy both layers. Letter transforms stack too: a pair may be mirrored through 27 - position, shifted by a constant, or combinations of both, so tests must apply the calibrated rule exactly and verify it on the second pair. Number analogies may chain operations across a ratio with different operations per slot; verification on both member pairs is the standing discipline.",
+    "analogy": "Advanced analogy pairs are duets: two instruments at once; the answer must play both parts, not merely echo the melody.",
+    "workedExamples": [
+      {
+        "title": "Dual-layer pair",
+        "problem": "Complete: Author : Novel :: Composer : ? with relation creator to major work.",
+        "steps": [
+          "Layer 1: a person creates a work.",
+          "Layer 2: the named work type matches the creator's art form (novel for author, symphony for composer).",
+          "Options: symphony, guitar, orchestra, sheet."
+        ],
+        "answer": "symphony."
+      },
+      {
+        "title": "Transform stack",
+        "problem": "Complete: ABC : ZYX :: DEF : ?",
+        "steps": [
+          "Compare A to Z: position 1 maps to 26; B 2 maps to 25; C 3 maps to 24.",
+          "The rule is the mirror mapping: each letter's position p becomes 27 - p, keeping the order.",
+          "Apply to DEF: D 4 maps to 23 = W, E 5 maps to 22 = V, F 6 maps to 21 = U.",
+          "So DEF maps to WVU."
+        ],
+        "answer": "WVU."
+      }
+    ],
+    "rule": [
+      { "title": "Both layers bind", "detail": "An option satisfying one layer only is wrong." },
+      { "title": "Stack order", "detail": "Apply the transform functions in the calibrated order; test on the second member pair." },
+      { "title": "Mirror arithmetic", "detail": "27 - position maps the alphabet inside out: A to Z, M to N; stack it with shifts when the example shows both." },
+      { "title": "Slot-chained numbers", "detail": "Each number pair may carry its own operation; read pairs as slots before generalising." }
+    ],
+    "mistakes": [
+      { "mistake": "Accepting topic-matching answers that miss one layer.", "fix": "Score options layer by layer." },
+      { "mistake": "Reordering transform steps inconsistently between pairs.", "fix": "Calibrate once and reuse exactly." },
+      { "mistake": "Extending a slot-specific number rule across all pairs.", "fix": "Confirm the rule is global, or state the per-slot table." }
+    ],
+    "memoryTip": "Duets bind both layers; transforms keep calibrated order; number rules must be global or per-slot explicit.",
+    "practice": [
+      { "prompt": "Novel : Author :: Film : ?", "answer": "Director; creator-of-work plus medium pairing." },
+      { "prompt": "ABC : ZYX :: GHI : ?", "answer": "TSR. Mirror each letter's position: G 7 maps to 27 - 7 = 20 = T, H 8 maps to 19 = S, I 9 maps to 18 = R." },
+      { "prompt": "Worker : Tool :: Chef : ?", "answer": "Knife; profession paired with its characteristic implement." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "grammar-and-usage",
+    "slug": "grammar-and-usage-advanced",
+    "title": "Voice shifts, gerunds and dangling modifiers",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Convert between active and passive voice cleanly, choose gerund or infinitive after signal verbs and repair dangling modifiers.",
+    "explanation": "Voice conversion keeps the verb's tense and object order honest: the object becomes the subject, by-agents may be added, and tense words like have, had or will remain attached. Certain verbs take gerunds (enjoy, avoid, finish + -ing) while others take infinitives (decide, hope, want + to); a small classification list beats guessing. Dangling modifiers occur when the non-finite opening phrase lacks its logical subject; repairing means re-anchoring the phrase to the sentence's true subject or converting it to a full clause.",
+    "analogy": "Voice is camera angle on the same scene, gerund-or-infinitive is a director's casting list, and dangling modifiers are credits aimed at actors not in the shot.",
+    "workedExamples": [
+      {
+        "title": "Passive without tense drift",
+        "problem": "Convert to passive: The committee has approved the plan.",
+        "steps": [
+          "Object becomes subject: The plan.",
+          "Keep the tense: has been approved.",
+          "Optional agent: by the committee."
+        ],
+        "answer": "The plan has been approved (by the committee)."
+      },
+      {
+        "title": "Dangling modifier repair",
+        "problem": "Fix: Walking along the road, the trees looked beautiful.",
+        "steps": [
+          "The opening phrase describes a person, but the sentence's subject is the trees.",
+          "Re-anchor: give the phrase its logical subject.",
+          "Repair: Walking along the road, I found the trees beautiful."
+        ],
+        "answer": "Walking along the road, I found the trees beautiful."
+      }
+    ],
+    "rule": [
+      { "title": "Verbs + gerund", "detail": "enjoy, avoid, finish, practise, postpone, suggest take -ing." },
+      { "title": "Verbs + infinitive", "detail": "decide, hope, plan, want, agree, refuse take to + verb." },
+      { "title": "Voice invariants", "detail": "Tense and fact must survive conversion; only participants swap seats." },
+      { "title": "Modifier anchor", "detail": "An opening phrase must attach to the sentence's grammatical subject." }
+    ],
+    "mistakes": [
+      { "mistake": "Changing tense during voice conversion.", "fix": "has approved becomes has been approved, not is approved." },
+      { "mistake": "Using decide + gerund or enjoy + infinitive.", "fix": "Follow the verb's fixed pattern list." },
+      { "mistake": "Leaving modifiers attached to non-actors.", "fix": "Re-anchor to the true subject or expand into a clause." }
+    ],
+    "memoryTip": "Voice keeps tense; casting lists are fixed verbs; opening phrases must hold their subject's hand.",
+    "practice": [
+      { "prompt": "Convert: She has written the report.", "answer": "The report has been written (by her)." },
+      { "prompt": "Choose: We decided going / to go early.", "answer": "to go; decide takes the infinitive." },
+      { "prompt": "Fix: After finishing the exam, the answers were checked.", "answer": "After finishing the exam, the invigilators checked the answers." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "vocabulary",
+    "slug": "vocabulary-advanced",
+    "title": "Idioms, one-word substitutions and register",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Use idioms in the right register, supply one-word substitutions precisely and avoid common idiom-meaning traps.",
+    "explanation": "Idioms carry fixed figurative meanings independent of their literal words: at sea means confused, once in a blue moon means rarely, and a red-letter day is a memorable one. One-word substitutions compress descriptions: a misanthrope hates humanity, an egotist talks about self, an infer... the precise substitutes are vocabulary category work. Register selects between plain and formal variants; exam sentences usually want the neutral-to-formal word unless the sentence's tone says otherwise.",
+    "analogy": "Idioms are frozen idiographic stamps, and they cannot be re-minted: either you know the exact stamp or you re-draw it wrong; one-word substitutions are the postal codes of meaning.",
+    "workedExamples": [
+      {
+        "title": "Idiom in context",
+        "problem": "Use correctly: His explanations left me completely ___. (at sea / at anchor)",
+        "steps": [
+          "At sea idiomatically means confused or lost.",
+          "At anchor is a literal marine state, unfit here.",
+          "Sentence: His explanations left me completely at sea."
+        ],
+        "answer": "at sea."
+      },
+      {
+        "title": "One-word substitution",
+        "problem": "Replace the description with one word: a person who hates mankind.",
+        "steps": [
+          "Misanthrope combines miso- (hate) and anthropos (mankind).",
+          "Check traps: misogynist hates women; pessimist expects bad outcomes.",
+          "Choose misanthrope."
+        ],
+        "answer": "misanthrope."
+      }
+    ],
+    "rule": [
+      { "title": "Fixed meanings", "detail": "Idioms cannot be re-worded without losing the meaning." },
+      { "title": "Core substitutions", "detail": "egoist talks self; altruist serves others; sceptic doubts; optimist hopes; pessimist dreads." },
+      { "title": "Register match", "detail": "Formal slots want formal words; idioms usually stay informal." },
+      { "title": "Trap pairs", "detail": "misanthrope vs misogynist; egotist vs egoist nuance; sceptic vs cynic." }
+    ],
+    "mistakes": [
+      { "mistake": "Reading idiom words literally.", "fix": "Recall the frozen meaning first: at sea is confusion, not navigation." },
+      { "mistake": "Swapping lookalike substitution words.", "fix": "Check the root and the object of the attitude." },
+      { "mistake": "Using an idiom in a formal clause whose register forbids it.", "fix": "Match sentence tone before inserting the stamp." }
+    ],
+    "memoryTip": "Frozen stamps, postal codes of meaning, register guards, and trap-pair roots.",
+    "practice": [
+      { "prompt": "One word: a person who talks about himself.", "answer": "egotist." },
+      { "prompt": "Use the idiom rarely: He visits us ___.", "answer": "once in a blue moon." },
+      { "prompt": "One word: a government by the people.", "answer": "democracy." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "calendars-and-clocks",
+    "slug": "calendars-and-clocks-advanced",
+    "title": "Gain-loss clocks and historical weekday recovery",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Recover the day a faulty clock next shows true time and compute weekdays for specific historical dates from the 400-year cycle.",
+    "explanation": "A clock that gains or loses a fixed rate per day only shows the correct time again when its accumulated error equals 12 hours (or often 6 or 12 by convention of the clock face): total days = delay... target error divided by daily rate. For a calibrating example, a clock gaining 6 minutes per day returns to true time after 720/6 = 120 days. Historical weekday recovery chains odd days: 1600 to 1900 years contribute fixed odd days, the target year adds its own months' odd days, and 15 August 1947 famously lands on Friday; the arithmetic works down to the same result.",
+    "analogy": "A drifting clock is money inflating at a fixed daily rate: equivalent-value re-meetings happen only when cumulative error completes one full 12-hour lap.",
+    "workedExamples": [
+      {
+        "title": "Gaining clock",
+        "problem": "A clock gains 6 minutes per day. Set right at noon on Monday, when will it again show correct time?",
+        "steps": [
+          "To show the true time again, the clock must gain one full lap of the dial: 12 hours = 720 minutes.",
+          "Days needed = 720 / 6 = 120.",
+          "So 120 days after that Monday noon the clock shows the correct time of day again (120 mod 7 = 1, the calendar day has the next weekday name)."
+        ],
+        "answer": "120 days later."
+      },
+      {
+        "title": "15 August 1947",
+        "problem": "What day of the week was 15 August 1947?",
+        "steps": [
+          "Days from 1 January 1900 (a Monday) to 15 August 1947: 47 fully elapsed years (1900-1946) with 11 leap years: 47 x 365 + 11 = 17166 days.",
+          "Plus days into 1947 up to 14 August: 31 + 28 + 31 + 30 + 31 + 30 + 31 + 14 = 226.",
+          "Total 17392 days; 17392 mod 7 = 4.",
+          "Monday + 4 = Friday."
+        ],
+        "answer": "Friday, matching the recorded history."
+      }
+    ],
+    "rule": [
+      { "title": "Error lap rule", "detail": "Correct-time re-meeting: total error = 12 hours (720 minutes) divided by daily rate." },
+      { "title": "Losing clock", "detail": "Same rule applies symmetrically for losing clocks." },
+      { "title": "Century anchors", "detail": "1 January 1900 was a Monday; 400-year weekday cycles repeat exactly." },
+      { "title": "Chain check", "detail": "Odd days: years contribute 1 or 2; months contribute 3 for 31-day months, 2 for 30-day, 0 or 1 for February." }
+    ],
+    "mistakes": [
+      { "mistake": "Dividing 12 hours by the rate but forgetting 60 minutes per hour.", "fix": "720 minutes total, not 12." },
+      { "mistake": "Counting 1900 as a leap year in historical chains.", "fix": "1900 is not a leap year; century rule applies." },
+      { "mistake": "Mixing elapsed versus completed years around January.", "fix": "Anchor dates and full-year counts must be stated explicitly." }
+    ],
+    "memoryTip": "Error laps of 720 minutes; 1900 is common; chain odd days from a Monday anchor.",
+    "practice": [
+      { "prompt": "A clock loses 4 minutes per day. Return-to-true interval?", "answer": "180 days. 720/4." },
+      { "prompt": "Fair clock gains 10 minutes per day; set at 6 AM Monday. Next exact true reading?", "answer": "72 days later (720/10)." },
+      { "prompt": "What weekday followed 1 January 1900 (Monday) after 57 days?", "answer": "57 mod 7 = 1; Tuesday." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

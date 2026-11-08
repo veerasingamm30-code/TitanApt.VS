@@ -38,7 +38,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let willRetry = false;
     async function bootstrap() {
       try {
-        attemptRef.current = BOOTSTRAP_ATTEMPTS;
         await ensureCsrf();
         const me = await apiData<{ user: PublicUser }>('/api/auth/me');
         if (active) {

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+﻿import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiError, apiData, ensureCsrf, messageFromError, newIdempotencyKey } from './api.js';
 
 function clearCsrfCookie() {
@@ -99,10 +99,13 @@ describe('API client', () => {
   it('attaches a default timeout signal to requests', async () => {
     document.cookie = 'ta_csrf=t; path=/';
     vi.useFakeTimers();
-    let capturedSignal: AbortSignal | undefined;
+    let capturedSignal: AbortSignal | null | undefined;
     vi.spyOn(globalThis, 'fetch').mockImplementation((_path, init) => {
       capturedSignal = init?.signal;
-      return new Promise(() => {}); // never responds (simulated hang)
+      return new Promise((_resolve, reject) => {
+        // real fetch rejects when its signal aborts
+        init?.signal?.addEventListener('abort', () => reject(new Error('The operation was aborted.')));
+      });
     });
 
     const pending = apiData('/api/hang').then(
@@ -125,10 +128,12 @@ describe('API client', () => {
   it('composes the timeout with a caller-provided abort signal', async () => {
     document.cookie = 'ta_csrf=t; path=/';
     const caller = new AbortController();
-    let capturedSignal: AbortSignal | undefined;
+    let capturedSignal: AbortSignal | null | undefined;
     vi.spyOn(globalThis, 'fetch').mockImplementation((_path, init) => {
       capturedSignal = init?.signal;
-      return new Promise(() => {});
+      return new Promise((_resolve, reject) => {
+        init?.signal?.addEventListener('abort', () => reject(new Error('The operation was aborted.')));
+      });
     });
 
     const pending = apiData('/api/hang', { signal: caller.signal }).then(

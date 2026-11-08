@@ -69,3 +69,13 @@ All items above were remediated in place; per-item root causes and verification 
 - New scope in this cycle: Lesson schema multilesson constraint dropped (Boolean Algebra / Programming Logic lesson sets, 6 lessons authored, siblings nav); public companies endpoint + landing marquee; mock category feature (completed collaboratively while another editor was concurrently modifying the same files — corrupted draft repaired, `Question.subject` groupBy replaced with a valid pool query).
 - Honest count provenance: Top25 PDF yields 25 companies; DB's 26th is Zoho from the companies guide; none invented.
 - Data preservation: no resets; migrations via `npm run db:deploy` because `prisma migrate dev` hits checksum drift and demands a reset; all pre-existing users intact.
+
+## 7. Status after the 2026-11-08 lesson expansion
+
+- Content totals upgraded to **28 topics / 136 lessons / 404 checkpoints** (was 31 lessons / 339 checkpoints).
+- 26 topics serve complete 5-level paths (BEGINNER, BASIC, INTERMEDIATE, ADVANCED, EXPERT, orders 1..5);
+  calendars-and-clocks went from zero lessons to a full path. boolean-algebra and programming-logic keep
+  their legacy 3-lesson paths verbatim (documented PARTIAL).
+- LessonLevel enum now has 5 values (migration 20261108090000); enum/level/row-count and per-topic lesson
+  continuity verified by scripts/qa/enum-final-check.cjs and scripts/qa/lesson-path-report.cjs.
+- Data preservation unchanged: no resets, no data loss; users=58 before and after seeding.

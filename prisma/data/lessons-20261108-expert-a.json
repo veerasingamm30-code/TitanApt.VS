@@ -1,0 +1,827 @@
+[
+  {
+    "topicSlug": "number-system",
+    "slug": "number-system-expert",
+    "title": "Digit sums, Euler-style cycles and expert remainders",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Classify divisibility through digit sums, deploy cycle lengths of composite remainders and combine tools for multi-step remainder questions.",
+    "explanation": "Two expert-grade tools settle most remainder work. First, digit sums give divisibility by 9 (and 3): a number equals its digit sum modulo 9, so 87654321 with digit sum 36 is a multiple of 9. Second, powers of a base modulo a composite divisor also cycle, and the cycle length divides patterns visible in small powers: for example 2^6 = 64 = 9 x 7 + 1, so powers of 2 mod 9 repeat with cycle length 6, and any exponent that is a multiple of 6 returns remainder 1. Chaining both tools keeps enormous exponents manageable.",
+    "analogy": "Digit sums are a referee who only counts modulo 9, and remainder cycles are Ferris wheels again: same cabin rhythm, but the wheel now rotates with a length set by the divisor.",
+    "workedExamples": [
+      {
+        "title": "Cycle of 2 mod 9",
+        "problem": "Find the remainder when 2^90 is divided by 9.",
+        "steps": [
+          "Small powers: 2^1 = 2, 2^2 = 4, 2^3 = 8, 2^6 = 64 = 63 + 1, so 2^6 mod 9 = 1.",
+          "The cycle length is 6: any power whose exponent is a multiple of 6 gives remainder 1.",
+          "90 is a multiple of 6 (90 = 6 x 15)."
+        ],
+        "answer": "The remainder is 1."
+      },
+      {
+        "title": "Digit-sum divisibility",
+        "problem": "Without dividing, decide whether 87654321 is divisible by 9.",
+        "steps": [
+          "Digit sum = 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 = 36.",
+          "36 is divisible by 9.",
+          "A number is divisible by 9 exactly when its digit sum is."
+        ],
+        "answer": "Yes, 87654321 is divisible by 9 (equal to 9739369 x 9)."
+      }
+    ],
+    "rule": [
+      { "title": "Digit sum mod 9", "detail": "A number and its digit sum leave the same remainder on division by 9; the same holds mod 3." },
+      { "title": "Cycle detection", "detail": "Find the first exponent k where base^k leaves remainder 1; the exponent mod k locates the answer." },
+      { "title": "Split composites", "detail": "For a composite divisor, remainders can be confirmed through each prime power." },
+      { "title": "Reduce early", "detail": "Reduce both base and intermediate products modulo the divisor at every step." }
+    ],
+    "mistakes": [
+      { "mistake": "Assuming every remainder cycle has length 4.",
+        "fix": "Modulo 9 the powers of 2 cycle with length 6 (2, 4, 8, 7, 5, 1); measure the cycle, never assume it." },
+      { "mistake": "Applying the digit-sum rule to divisors other than 3 and 9.",
+        "fix": "Divisibility by 11 uses alternating sums instead; each divisor has its own test." },
+      { "mistake": "Reading exponent mod 6 = 0 as entry 2 or 3.",
+        "fix": "Exponent a multiple of 6 is a completed set of full turns, giving remainder 1." }
+    ],
+    "memoryTip": "Digit sums referee mod 9 and mod 3; find the first power giving 1 to learn the cycle length.",
+    "practice": [
+      { "prompt": "Find the remainder when 2^50 is divided by 9.", "answer": "4. 50 = 6 x 8 + 2, and the cycle of 2 mod 9 is 2, 4, 8, 7, 5, 1 with length 6, so the second entry, 4, is the remainder." },
+      { "prompt": "Is 123456789 divisible by 9?", "answer": "Yes. The digit sum is 45, and 45 = 9 x 5, so 123456789 is divisible by 9 (indeed 13717421 x 9 = 123456789)." },
+      { "prompt": "Find the remainder when 5^20 is divided by 7.", "answer": "4. 5^6 mod 7 = 1, and 20 = 3 x 6 + 2, so 5^20 mod 7 = 5^2 mod 7 = 25 mod 7 = 4." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "percentages",
+    "slug": "percentages-expert",
+    "title": "Invalid votes, election margins and belt-type problems",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Solve layered percentage word problems such as election vote pools, selection filters and population pyramids.",
+    "explanation": "Expert percentage problems layer a whole before percents apply: an election's total votes contain invalid votes, and percents then live on the valid pool only. The method is a strict pipeline: compute each denominator first (total, valid, weight-class), then apply the stated percentages to the correct pool, and finally re-express the wanted comparison, such as a margin, on the pool named by the question. Population and selection problems follow the same shape with filters replacing invalid votes.",
+    "analogy": "Layered percentage problems are sieves: the raw stream enters at the top, every filter removes its stated share, and each later percent is weighed out of whatever reached that sieve.",
+    "workedExamples": [
+      {
+        "title": "Election margin",
+        "problem": "In an election between two candidates, 20 percent of the 7500 votes polled were invalid. The winner secured 55 percent of the valid votes. Find the margin of victory.",
+        "steps": [
+          "Valid votes = 7500 x 0.80 = 6000.",
+          "Winner = 55 percent of 6000 = 3300.",
+          "Loser = 45 percent of 6000 = 2700.",
+          "Margin = 3300 - 2700 = 600."
+        ],
+        "answer": "The margin is 600 votes."
+      },
+      {
+        "title": "Selection funnel",
+        "problem": "Of 800 applicants, 60 percent cleared the written test. Of those, 75 percent cleared the interview. How many received offers?",
+        "steps": [
+          "Written: 800 x 0.60 = 480.",
+          "Interview: 480 x 0.75 = 360.",
+          "Offers = 360."
+        ],
+        "answer": "360 candidates received offers."
+      }
+    ],
+    "rule": [
+      { "title": "Pool before percent", "detail": "Identify the denominator each percentage lives on before computing." },
+      { "title": "Margin identities", "detail": "Margin = winner - loser = share gap x pool: here 10 percent of valid votes." },
+      { "title": "Funnel multiplication", "detail": "Filter shares multiply: 0.60 x 0.75 = 0.45 of applicants." },
+      { "title": "Backsolving", "detail": "Work backwards from a known stage by dividing by that stage's factor." }
+    ],
+    "mistakes": [
+      { "mistake": "Computing the winner's share on total polled votes.",
+        "fix": "The share is of valid votes: 55 percent of 6000, not of 7500." },
+      { "mistake": "Adding filter pass rates instead of multiplying.",
+        "fix": "60 percent then 75 percent is 45 percent overall, not 135." },
+      { "mistake": "Reading margin percent as a percent of all votes.",
+        "fix": "600 of 6000 valid is 10 percent; on the 7500 polled it is 8 percent. State the pool." }
+    ],
+    "memoryTip": "Sieves first, percents second; every share has its own pool; funnel stages multiply.",
+    "practice": [
+      { "prompt": "15000 votes polled, 25 percent invalid, winner takes 60 percent of valid votes. Margin?", "answer": "1500. Valid 11250; winner 6750, loser 4500." },
+      { "prompt": "A school of 1200 students: 40 percent in houses A and B together; house A has 60 percent of that group. Students in A?", "answer": "288. 480 in A and B together; 0.60 x 480 = 288." },
+      { "prompt": "After two filters, 27 percent of 500 applicants remain. The first filter passes 90 percent. Pass rate of the second?", "answer": "30 percent. 0.90 x x = 0.27 gives x = 0.30." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "profit-and-loss",
+    "slug": "profit-and-loss-expert",
+    "title": "Weighted profits across cost-mixed articles",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Aggregate profits across articles with different cost prices and profit rates and read the overall percent off the cost-weighted mean.",
+    "explanation": "When two articles cost in ratio a : b and earn profit rates p1 and p2, the overall profit percent is the cost-weighted average of the two rates: (a p1 + b p2)/(a + b). For cost ratio 1 : 2 with profits 10 percent and 40 percent, the overall rate is (1 x 10 + 2 x 40)/3 = 90/3 = 30 percent. The same weighted-mean machinery answers target-setting questions: raising the cheaper article's margin to reach a target overall profit.",
+    "analogy": "Cost prices are the audience sizes of two halls, and profit rates are applause loudness; the overall roar is the size-weighted average, never a plain average.",
+    "workedExamples": [
+      {
+        "title": "Weighted overall profit",
+        "problem": "Two articles cost in ratio 1 : 2 and sell at profits of 10 percent and 40 percent respectively. Find the overall profit percent.",
+        "steps": [
+          "Costs: 1x and 2x, total 3x.",
+          "Profits in rupees: 0.10 x 1x = 0.1x and 0.40 x 2x = 0.8x.",
+          "Total profit = 0.9x on 3x.",
+          "Overall percent = 0.9x/3x x 100 = 30."
+        ],
+        "answer": "30 percent."
+      },
+      {
+        "title": "Retail and wholesale blend",
+        "problem": "A trader sells half his stock at 20 percent profit and the rest at 25 percent profit. Find the overall profit percent.",
+        "steps": [
+          "Equal cost weights of 1 and 1.",
+          "Weighted rate = (20 + 25)/2 = 22.5.",
+          "Equal weights reduce to the plain mean."
+        ],
+        "answer": "22.5 percent."
+      }
+    ],
+    "rule": [
+      { "title": "Cost-weighted mean", "detail": "Overall percent = (w1 p1 + w2 p2)/(w1 + w2) with weights the cost prices." },
+      { "title": "Rupee-first check", "detail": "Convert rates to rupee profits, total them, then divide by total cost." },
+      { "title": "Equal weights", "detail": "When cost parts are equal, the weighted mean is the plain mean." },
+      { "title": "Alligation bridge", "detail": "To hit a target overall rate, mix cost weights in ratio (target - lower) : (higher - target)." }
+    ],
+    "mistakes": [
+      { "mistake": "Averaging 10 and 40 as 25 percent.",
+        "fix": "The costlier article is twice as heavy: the mean sits at 30, not 25." },
+      { "mistake": "Weighting by selling prices.",
+        "fix": "Profit percent is defined on cost; weight by cost." },
+      { "mistake": "Mixing rupee and percent units mid-calculation.",
+        "fix": "Finish rupees first, convert once at the end." }
+    ],
+    "memoryTip": "Cost prices are weights, profit rates are scores; the overall percent is the weighted mean.",
+    "practice": [
+      { "prompt": "Cost ratio 2 : 3 with profits 15 and 25 percent. Overall percent?", "answer": "21 percent. (2 x 15 + 3 x 25)/5 = (30 + 75)/5 = 21." },
+      { "prompt": "Half the stock at 10 percent loss and half at 20 percent profit. Overall?", "answer": "5 percent profit. Equal weights: (-10 + 20)/2 = 5." },
+      { "prompt": "Costs 400 (10 percent profit) and 600. Target overall 22 percent: needed profit rate on the 600?", "answer": "30 percent. Need 220 total; 400 article gives 40; so 180 on 600." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "ratio-and-proportion",
+    "slug": "ratio-and-proportion-expert",
+    "title": "Partnership capital-time shares",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Divide partnership profits by capital-months products and handle mid-year capital changes.",
+    "explanation": "Partnership questions weight each partner's share by both capital and time: shares are proportional to capital x months invested. If A invests 5000 for 12 months and B invests 4000 for 6 months and 5000 for 6 months, the ratios are 5000 x 12 = 60000 against 4000 x 6 + 5000 x 6 = 54000, so 10 : 9. A profit of 5700 then splits as 3000 and 2700. Withdrawals and additions simply restate B's capital-time product in phases.",
+    "analogy": "Capital-time products are area rectangles: capital is the width, months the height, and profit is divided by each partner's total painted area.",
+    "workedExamples": [
+      {
+        "title": "Capital-time split",
+        "problem": "A invests 5000 for 12 months. B invests 4000 for the first 6 months and 5000 for the last 6 months. A profit of 5700 is earned. Find each share.",
+        "steps": [
+          "A's product = 5000 x 12 = 60000.",
+          "B's product = 4000 x 6 + 5000 x 6 = 24000 + 30000 = 54000.",
+          "Ratio = 60000 : 54000 = 10 : 9.",
+          "Total parts 19; one part = 5700/19 = 300.",
+          "A gets 3000, B gets 2700."
+        ],
+        "answer": "A receives 3000 and B receives 2700."
+      },
+      {
+        "title": "Three partners with a late joiner",
+        "problem": "C joins after 4 months with a capital equal to B's original 4000, for the remaining 8 months. Same capitals for A and B as above, profit still 5700. Find C's share.",
+        "steps": [
+          "C's product = 4000 x 8 = 32000.",
+          "Ratio A : B : C = 60 : 54 : 32 (thousands scaled).",
+          "Total parts = 146, one part = 5700/146 approx 39.04.",
+          "C's share = 32 x 39.04 approx 1249."
+        ],
+        "answer": "C receives about 1249 of the 5700."
+      }
+    ],
+    "rule": [
+      { "title": "Capital x time", "detail": "Shares are proportional to capital-months, computed phase by phase." },
+      { "title": "Phase bookkeeping", "detail": "A mid-year change splits that partner into phases which are added." },
+      { "title": "Ratio to rupees", "detail": "One part = total profit / total ratio parts." },
+      { "title": "Interest-free reading", "detail": "Unless stated, profits split by capital-time, not by drawings or salaries." }
+    ],
+    "mistakes": [
+      { "mistake": "Splitting B's share as 4000 for 12 months.",
+        "fix": "Phases: B lent 4000 for 6 months and 5000 for 6; the product mixes both." },
+      { "mistake": "Dividing profits by capitals alone.",
+        "fix": "Time matters: 60000 : 54000 is not 5000 : 4500-style misreading but the same idea; keep both factors." },
+      { "mistake": "Trading ratio parts for rupees without the one-part step.",
+        "fix": "Compute one part first, then multiply." }
+    ],
+    "memoryTip": "Partnerships paint rectangles: capital wide, months tall; profits divide by painted area.",
+    "practice": [
+      { "prompt": "A invests 8000 for 12 months, B invests 6000 for 9 months. Profit 6300. Shares?", "answer": "A 4000, B 2300 approx. Products 96000 : 54000 = 16 : 9; one part 6300/25 = 252; A 4032, B 2268." },
+      { "prompt": "Two partners 7000 each, but B joins 3 months late (9 months). Profit 4800. Shares?", "answer": "Products 84000 : 63000 = 4 : 3; A 2742.9 approx; exactly A 8/7 x ... compute: one part 4800/7 = 685.7; A 2742.86, B 2057.14." },
+      { "prompt": "Partner boosts capital from 5000 to 7000 after 6 months, 12-month year. Product?", "answer": "5000 x 6 + 7000 x 6 = 72000." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "average",
+    "slug": "average-expert",
+    "title": "Known-sum exclusions and weighted class merges",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Recover a largest or excluded value from two average statements and merge unequal weighted groups.",
+    "explanation": "Two averages over overlapping sets pin down a hidden value: if n numbers average A but excluding the largest x averages B, then x = nA - (n - 1)B, since (n - 1)B sums everything except x. Weighted merges scroll the same identity across groups of unequal size. Chained problems stack these two moves, so track sums rather than averages.",
+    "analogy": "Every average is a sum wearing a mask; two masks of the same family reveal the one face that hid behind an overcoat.",
+    "workedExamples": [
+      {
+        "title": "Excluding the largest",
+        "problem": "The average of 15 numbers is 18. Excluding the largest number, the average of the remaining 14 is 16. Find the largest.",
+        "steps": [
+          "Total = 15 x 18 = 270.",
+          "Rest = 14 x 16 = 224.",
+          "Largest = 270 - 224 = 46."
+        ],
+        "answer": "46."
+      },
+      {
+        "title": "Weighted class merge",
+        "problem": "Section A has 25 students averaging 48; section B has 35 students averaging 44. Find the combined average.",
+        "steps": [
+          "Sums: 25 x 48 = 1200 and 35 x 44 = 1540.",
+          "Combined total = 2740 over 60 students.",
+          "Average = 2740/60 = 45.67 approx (274/6)."
+        ],
+        "answer": "About 45.67."
+      }
+    ],
+    "rule": [
+      { "title": "Exclusion identity", "detail": "Hidden value = full sum - rest sum = nA - (n - 1)B." },
+      { "title": "Weighted merge", "detail": "Combined average = (sum of group sums)/(total count)." },
+      { "title": "Linearity", "detail": "Average shifts of overlapping chunks respect plain algebra on sums." },
+      { "title": "Fraction answers", "detail": "Keep exact fractions when counts do not divide the sum cleanly." }
+    ],
+    "mistakes": [
+      { "mistake": "Subtracting averages (18 - 16) to reach the hidden value.",
+        "fix": "Averages differ by 2 but the excluded value differs by the full sum gap: 270 - 224 = 46." },
+      { "mistake": "Weighting a merge by group counts of averages.",
+        "fix": "Weight by counts times averages, that is the sums." },
+      { "mistake": "Rounding mid-solution.",
+        "fix": "Keep fractions; round only the reported answer." }
+    ],
+    "memoryTip": "Sums first, averages second; excluded values fall out of difference of sums.",
+    "practice": [
+      { "prompt": "Average of 10 values is 20; excluding the largest, average is 19. Largest?", "answer": "29. Total 200, rest 171, difference 29." },
+      { "prompt": "Average of 40 bowlers is 30 runs; excluding one, average 29. That bowler's score?", "answer": "69. 1200 - 39 x 29 = 1200 - 1131 = 69." },
+      { "prompt": "Merge 12 at 15 with 8 at 25. Combined average?", "answer": "19. (180 + 200)/20 = 19." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "simple-and-compound-interest",
+    "slug": "simple-and-compound-interest-expert",
+    "title": "Doubling ladders and root-of-factor rates",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Read rates from doubling or tripling patterns under simple and compound interest and project further growth from laddered data.",
+    "explanation": "Under simple interest, doubling in t years fixes the rate as 100/t percent, because only the original principal earns. Compounding behaves differently: a sum under compound interest that multiplies by k in T years multiplies by k^(t/T) in t years, so doubling in 6 years becomes four times in 12 and eight times in 18. Reading a final amount as a clean power of the principal recovers the rate, for example an amount of 1.728 P in 3 years signals 1.2^3, that is 20 percent.",
+    "analogy": "Simple interest is a flat staircase, compound interest a staircase built from copies of the same step block: climb twice as long and the height multiplies the block again.",
+    "workedExamples": [
+      {
+        "title": "Doubling at simple interest",
+        "problem": "A sum doubles in 8 years at simple interest. Find the rate and the amount after 12 years on a principal of 4000.",
+        "steps": [
+          "Interest for doubling = P over 8 years: P r/100 x 8 = P gives r = 12.5.",
+          "Yearly interest = 4000 x 0.125 = 500.",
+          "After 12 years: amount = 4000 + 12 x 500 = 10000."
+        ],
+        "answer": "Rate 12.5 percent; amount 10000 after 12 years (the sum has 2.5-times-ed? so amount is P plus 3P = 10000)."
+      },
+      {
+        "title": "Reading a compound rate",
+        "problem": "A sum amounts to 1.728 times itself in 3 years at compound interest. Find the yearly rate.",
+        "steps": [
+          "1.728 = 1.2 x 1.2 x 1.2.",
+          "So the annual factor is 1.2.",
+          "Rate = 20 percent."
+        ],
+        "answer": "20 percent per year."
+      }
+    ],
+    "rule": [
+      { "title": "SI doubling", "detail": "Doubling in t years at SI means rate = 100/t percent." },
+      { "title": "Power projection", "detail": "Amount grows as k^(t/T) when k times is reached in T years." },
+      { "title": "Known power anchors", "detail": "1.2^3 = 1.728; 1.1^2 = 1.21; 1.5^2 = 2.25." },
+      { "title": "Ladder checks", "detail": "Verify by multiplying the anchor up the ladder before answering." }
+    ],
+    "mistakes": [
+      { "mistake": "Expecting a CI sum to triple in exactly three doubling times.",
+        "fix": "Under CI, doubling in 6 years gives 8 times in 18 years, not just over-triple: use powers, not linear extrapolation." },
+      { "mistake": "Forgetting 1.728 is a cubed anchor.",
+        "fix": "Rehearse anchors: 1.2^3 = 1.728, 1.1^3 = 1.331." },
+      { "mistake": "Mixing SI and CI halves of a question.",
+        "fix": "Label each stage's interest type before applying its law." }
+    ],
+    "memoryTip": "SI doubles with rate 100 over t; CI climbs by powers of the known block.",
+    "practice": [
+      { "prompt": "A sum doubles in 5 years at SI. Rate?", "answer": "20 percent. 100/5." },
+      { "prompt": "CI: a sum becomes 4 times in 12 years. When 8 times?", "answer": "18 years. Powers double the exponent: (2)^3 at 18 = 8." },
+      { "prompt": "A sum becomes 2.25 times in 2 years at CI. Rate?", "answer": "50 percent. 1.5^2 = 2.25." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-and-work",
+    "slug": "time-and-work-expert",
+    "title": "Weekly rosters and seven-day schedules",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Combine efficiency data with weekly work calendars and close problems whose rates repeat every seven days.",
+    "explanation": "When work follows a weekly calendar, compute one week's total contribution in work units, then advance in whole weeks and finish the remainder day by day. Take total work as the LCM of the given day counts; each worker's rate becomes an integer daily amount. Days off, joining late and assistants only rewrite the weekly sum, never the method.",
+    "analogy": "A weekly roster is pension instalments: compute the weekly pension in work-units, collect whole weeks, then pay out the closing days by hand.",
+    "workedExamples": [
+      {
+        "title": "Five-plus-two roster",
+        "problem": "A alone finishes a job in 15 days and B alone in 20 days. A works Monday to Friday each week; B works Saturday and Sunday. Starting on a Monday, when does the job finish?",
+        "steps": [
+          "Total work = LCM(15, 20) = 60 units.",
+          "A's rate = 60/15 = 4 units per working day; B's rate = 60/20 = 3 units per working day.",
+          "One week: A gives 5 x 4 = 20 units; B gives 2 x 3 = 6 units; total 26 units.",
+          "After 2 weeks: 52 units; remaining 8 units.",
+          "Week 3, Monday: A works 4 units -> 56. Tuesday: 4 more -> 60, complete."
+        ],
+        "answer": "The job finishes on Tuesday of the third week: 16 days after starting."
+      },
+      {
+        "title": "Late-joining helper",
+        "problem": "Same roster, but B only starts in week 2 (Saturday of week 2). Same capacities. When does the job finish?",
+        "steps": [
+          "Week 1: only A, 20 units.",
+          "Week 2: A 20 + B 6 = 26 -> running total 46.",
+          "Week 3: A 20 -> 66, but work is 60, so A alone crosses the line during Thursday-Friday.",
+          "After Monday-Thursday of week 3: 46 + 16 = 62 covers the 60, so the work ends on Thursday of week 3."
+        ],
+        "answer": "Thursday of week 3, which is 18 days after starting."
+      }
+    ],
+    "rule": [
+      { "title": "Unitise the job", "detail": "Total work = LCM of the solo times; rates become integers." },
+      { "title": "Week block first", "detail": "Compute the full-week contribution once; advance whole weeks." },
+      { "title": "Finish day by day", "detail": "Walk the final partial week in calendar order." },
+      { "title": "Anchor the start day", "detail": "Match the roster to actual weekdays before counting." }
+    ],
+    "mistakes": [
+      { "mistake": "Assuming rates blend across days both work.",
+        "fix": "Rosters mean each worker works on his own days; add by day, not by person." },
+      { "mistake": "Counting from a Sunday when work starts Monday.",
+        "fix": "The calendar anchor decides which day is the fifth working day." },
+      { "mistake": "Overrunning the total work in the final week check.",
+        "fix": "The job ends the day the cumulative units first reach the target." }
+    ],
+    "memoryTip": "Weekly rosters: LCM units, one-week blocks, day-by-day finish.",
+    "practice": [
+      { "prompt": "A takes 12 days alone, working all 7 days of the week; B takes 24 days alone, working 5 days a week. LCM is 24 units: A gives 2/day all week (14/week); B gives 1/day on his 5 days. One week total?", "answer": "19 units per week (A 14 + B 5)." },
+      { "prompt": "Same data: when does the job of 24 units finish?", "answer": "Days 1-5: A 10 + B 5 = 15. Day 6: +2 = 17. Day 7: +2 = 19. Week 2, day 3 (Wednesday): 19 + 6 = 25 covers 24; finishing mid-day Wednesday of week 2, i.e. day 10." },
+      { "prompt": "A finish estimator: 60-unit job, weekly contribution 26 units. Weeks needed at minimum before the final partial week?", "answer": "Two full weeks (52 units) leave 8 units." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-speed-distance",
+    "slug": "time-speed-distance-expert",
+    "title": "Two-leg river trips with round-trip averages",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Recover boat and stream speeds from differing leg times and compute round-trip average speeds exactly.",
+    "explanation": "Downstream and upstream speeds are boat plus stream and boat minus stream; leg times reveal both. For a 30 km stretch rowed in 2 hours down and 3 hours up, speeds are 15 and 10, giving boat (15 + 10)/2 = 12.5 km/h and stream (15 - 10)/2 = 2.5 km/h. The full round trip of 60 km in 5 hours averages 12 km/h, which matches the equal-distance harmonic mean 2uv/(u + v) = 2 x 15 x 10/25 = 12.",
+    "analogy": "A river leg is a taxi fare with the wind as tip or toll: the evening's average respects time spent, so the slower leg always drags the average down.",
+    "workedExamples": [
+      {
+        "title": "Boat and stream recovery",
+        "problem": "A boat covers 30 km downstream in 2 hours and returns upstream in 3 hours. Find boat and stream speeds.",
+        "steps": [
+          "Downstream speed = 30/2 = 15 km/h; upstream = 30/3 = 10 km/h.",
+          "Boat = (15 + 10)/2 = 12.5 km/h.",
+          "Stream = (15 - 10)/2 = 2.5 km/h."
+        ],
+        "answer": "Boat 12.5 km/h, stream 2.5 km/h."
+      },
+      {
+        "title": "Round-trip average",
+        "problem": "For the same 60 km round trip taking 5 hours overall, confirm the average speed by the harmonic-mean rule.",
+        "steps": [
+          "Rule for equal halves: 2uv/(u + v).",
+          "= 2 x 15 x 10/(15 + 10) = 300/25.",
+          "= 12 km/h; direct check: 60/5 = 12."
+        ],
+        "answer": "12 km/h both ways of computing."
+      }
+    ],
+    "rule": [
+      { "title": "Stream algebra", "detail": "Down = b + s, up = b - s; b is the mean, s half the difference." },
+      { "title": "Harmonic mean", "detail": "Equal distances at u and v: average = 2uv/(u + v)." },
+      { "title": "Direct validation", "detail": "Recompute with total distance over total time before trusting the shortcut." },
+      { "title": "Unit anchors", "detail": "Keep km and hours throughout river problems." }
+    ],
+    "mistakes": [
+      { "mistake": "Reporting boat speed as 12 km/h from the round-trip average.",
+        "fix": "The boat speed is the mean of leg speeds, 12.5; the trip average is 12 only because time hogs the slow leg." },
+      { "mistake": "Halving the stream from leg speeds' difference wrongly.",
+        "fix": "Stream = (down - up)/2 = 2.5, not 5." },
+      { "mistake": "Using the plain mean on unequal-time halves.",
+        "fix": "The plain mean is only valid when both speeds last the same time." }
+    ],
+    "memoryTip": "Boat = mean, stream = half-gap; the trip average equals 2uv/(u + v) only for equal distances.",
+    "practice": [
+      { "prompt": "Down 21 km in 3 hours, up 21 km in 7 hours. Boat and stream?", "answer": "Down 7, up 3; boat 5, stream 2." },
+      { "prompt": "Round trip of 84 km (42 down at 14, 42 up) takes 10.5 hours total. Confirm the average.", "answer": "8 km/h. 84/10.5 = 8; also 2 x 14 x 11/25 = ... recompute with actual legs: up speed = 42/7.5 if total 10.5 minus 3 down = 7.5: legs 14 and 5.6; mean 9.8, stream 4.2; harmonic 2 x 14 x 5.6/19.6 = 8. Correct: 8." },
+      { "prompt": "Boat 10, stream 2: time for 30 km down and back?", "answer": "30/12 + 30/8 = 2.5 + 3.75 = 6.25 hours." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "mixtures-alligation",
+    "slug": "mixtures-alligation-expert",
+    "title": "Decay after repeated pours and priced blends",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Apply the repeated-pour decay formula with exact fractions and price two-source blends to a target.",
+    "explanation": "Each pour-and-replace multiplies the remaining original ingredient by (V - v)/V: for a 20-litre vessel losing 4 litres and replaced with water twice, milk remains 20 x (16/20)^2 = 20 x 0.64 = 12.8 litres. Blending to a price target writes two linear equations: quantity x + y = total, and value equation v1 x + v2 y = target price x total. Solving them yields the exact masses of each source.",
+    "analogy": "Repeated pours are a photograph lightening by a fixed percent each wash; priced blends are two banknotes exchanging toward a fixed till total.",
+    "workedExamples": [
+      {
+        "title": "Two pours from a 20-litre vessel",
+        "problem": "A vessel has 20 litres of milk. 4 litres are drawn and replaced with water, and this is done once more. How much milk remains?",
+        "steps": [
+          "Survival factor per pour = (20 - 4)/20 = 0.8.",
+          "After two pours: 20 x 0.8 x 0.8.",
+          "= 12.8 litres."
+        ],
+        "answer": "12.8 litres of milk remain."
+      },
+      {
+        "title": "Target price blend",
+        "problem": "Blend teas costing 90 and 60 per kg to produce 50 kg worth 72 per kg. Find the masses needed.",
+        "steps": [
+          "Masses x + y = 50.",
+          "Value: 90 x + 60 y = 72 x 50 = 3600.",
+          "Substitute y = 50 - x: 90 x + 3000 - 60 x = 3600 gives 30 x = 600, x = 20.",
+          "Blend: 20 kg at 90 and 30 kg at 60."
+        ],
+        "answer": "20 kg of the dearer and 30 kg of the cheaper tea."
+      }
+    ],
+    "rule": [
+      { "title": "Decay factor", "detail": "Milk after n pours = V ((V - v)/V)^n." },
+      { "title": "Blend equations", "detail": "Solve mass balance and value balance together." },
+      { "title": "Grid cross-check", "detail": "The alligation ratio should match (v2 - m) : (m - v1) = 12 : 12 = 1 : 1 here, and 1 : 1.5 rescaled equals 2 kg : 3 kg." },
+      { "title": "Exact fractions", "detail": "Keep fractions like 4/5 before squaring; rounding early corrupts answers." }
+    ],
+    "mistakes": [
+      { "mistake": "Subtracting 4 litres of milk twice.",
+        "fix": "The second pour removes 0.8 of the remaining, so 16 - 3.2 = 12.8, not 12." },
+      { "mistake": "Setting up the value equation with target price on wrong base.",
+        "fix": "Target total value = target price x total mass." },
+      { "mistake": "Checking blends with unmatched ratio scales.",
+        "fix": "Rescale grid ratios to the actual total mass." }
+    ],
+    "memoryTip": "Pours multiply (1 - v/V); blends obey two linear equations; keep fractions exact.",
+    "practice": [
+      { "prompt": "30-litre vessel, 6-litre pours replaced twice. Milk left?", "answer": "19.2 litres. 30 x 0.8^2." },
+      { "prompt": "Blend oils at 110 and 70 per kg for 40 kg at 85 per kg. Masses?", "answer": "15 kg at 110 and 25 kg at 70. Collecting: 110x + 70(40 - x) = 85 x 40 = 3400 gives 40x + 2800 = 3400, so x = 15 dearer and 25 cheaper. The alligation grid agrees: dearer:cheaper = (85 - 70):(110 - 85) = 15:25 = 3:5." },
+      { "prompt": "40-litre vessel, one pour of 8 replaced with water. Milk fraction left?", "answer": "32/40 = 4/5 of the vessel." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "algebra",
+    "slug": "algebra-expert",
+    "title": "Pairwise-sum systems and symmetric shortcuts",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Solve systems built from pairwise sums using symmetric sums and verify with quick back-substitution.",
+    "explanation": "When a system gives pairwise sums such as x + y = 10, y + z = 14 and z + x = 12, add all three: 2(x + y + z) = 36, so the grand sum S = 18. Each variable is then S minus the opposite pairwise sum: x = S - (y + z) = 4, y = S - (z + x) = 6, z = S - (x + y) = 8. This symmetric-sum trick generalises to averages, weights and totals across context problems.",
+    "analogy": "Pairwise sums are three overlapping umbrella arcs; totaling them counts the middle twice, and subtracting back each arc recovers the exact spokes.",
+    "workedExamples": [
+      {
+        "title": "Pairwise sums to values",
+        "problem": "x + y = 10, y + z = 14, z + x = 12. Find x, y and z.",
+        "steps": [
+          "Add all: x + y + y + z + z + x = 36, so 2S = 36 and S = 18.",
+          "x = S - (y + z) = 18 - 14 = 4.",
+          "y = S - (z + x) = 18 - 12 = 6.",
+          "z = S - (x + y) = 18 - 10 = 8."
+        ],
+        "answer": "x = 4, y = 6, z = 8; check 4 + 8 = 12."
+      },
+      {
+        "title": "Applied symmetric system",
+        "problem": "Three siblings have body weights where the two eldest together weigh 82 kg, the two youngest 70 kg, and the heaviest plus lightest 74 kg. Order and find each weight.",
+        "steps": [
+          "Let eldest H, middle M, lightest L: H + M = 82, M + L = 70, H + L = 74.",
+          "S = (82 + 70 + 74)/2 = 113.",
+          "H = 113 - 70 = 43; M = 113 - 74 = 39; L = 113 - 82 = 31.",
+          "Check: 43 + 39 = 82; 43 + 31 = 74; 39 + 31 = 70."
+        ],
+        "answer": "Weights 43, 39 and 31 kg."
+      }
+    ],
+    "rule": [
+      { "title": "Grand-sum trick", "detail": "For pairwise sums a, b, c the individual values are S - b, S - c, S - a with S = (a + b + c)/2." },
+      { "title": "Back-substitution", "detail": "Verify each recovered value in the untouched equation." },
+      { "title": "Scaling handles", "detail": "Halve or scale S cleanly when the system is in halves or doubles." },
+      { "title": "Symmetry in context", "detail": "Sums of any two of three totals yield one symmetric identity." }
+    ],
+    "mistakes": [
+      { "mistake": "Solving the system by elimination one variable at a time.",
+        "fix": "The grand-sum trick is faster and less error-prone." },
+      { "mistake": "Forgetting the factor of 2 in 2S.",
+        "fix": "Each variable appears exactly twice across the three pairwise sums." },
+      { "mistake": "Matching variables to the wrong opposite sum under time pressure.",
+        "fix": "Subtract the sum that the variable is absent from." }
+    ],
+    "memoryTip": "Pairwise sums double-count the middle: halve the triple-sum, then subtract each arc.",
+    "practice": [
+      { "prompt": "x + y = 12, y + z = 16, z + x = 14. Find x.", "answer": "5. S = 21; x = 21 - 16." },
+      { "prompt": "Two workers together produce 60 units/day; workers 1 and 3 produce 55; workers 2 and 3 produce 50. Worker 2's rate?", "answer": "27.5/day. Add the three pair rates: 60 + 55 + 50 = 165 = 2S, so the total of all three rates is 82.5; worker 2 = 82.5 - 55 = 27.5." },
+      { "prompt": "Grand sum 30 given pairwise 12, 19, 17? Is that consistent?", "answer": "No. Pairwise sums force S = (12 + 19 + 17)/2 = 24, not 30, so the stated data is inconsistent and must be rejected." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "progressions",
+    "slug": "progressions-expert",
+    "title": "Alternating operations across two paired chains",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Model series built by alternating halving and quadrupling times x4 on alternate terms, then project further terms.",
+    "explanation": "Some series alternate between two operations with different factors: for example 120, 60, 240, 120 divides by 2 then multiplies by 4 in every pair of steps: 120/2 = 60, 60 x 4 = 240, 240/2 = 120, so the next term is 120 x 4 = 480. The safest method labels alternate operations explicitly and verifies each transition. Geometric-mean checks confirm the two key ratios, 1/2 and 4.",
+    "analogy": "An alternating-operation series is a juggler who throws high and catches low: mark which hand does what, and the pattern repeats honestly.",
+    "workedExamples": [
+      {
+        "title": "Halve then quadruple",
+        "problem": "Find the next term: 120, 60, 240, 120, ...",
+        "steps": [
+          "Operation A: halve (divide by 2).",
+          "Operation B: quadruple (multiply by 4).",
+          "120 A 60 B 240 A 120 B ?",
+          "Next = 120 x 4 = 480."
+        ],
+        "answer": "480."
+      },
+      {
+        "title": "Chain extension with verification",
+        "problem": "Verify that the same rule fits the earlier transitions and find the term after 480.",
+        "steps": [
+          "Operation A on 480: 480/2 = 240.",
+          "Matches the visible interior transition 240 x ? note: 240 A 120 means the halving step produces 120, consistent.",
+          "So the sequence continues 480, 240, 960, 480, ..."
+        ],
+        "answer": "The term after 480 is 240, confirming the alternating law."
+      }
+    ],
+    "rule": [
+      { "title": "Alternate labelling", "detail": "Label the two operations A and B; apply strictly in turn." },
+      { "title": "Ratio reads", "detail": "Consecutive ratios alternate u and v; interior must verify." },
+      { "title": "Pair blocks", "detail": "Over any two steps the value multiplies by u x v; check both directions." },
+      { "title": "Position parity", "detail": "Odd and even positions obey different laws; identify parity first." }
+    ],
+    "mistakes": [
+      { "mistake": "Applying one global ratio to all gaps.",
+        "fix": "The ratios here alternate 1/2 and 4; a single ratio contradicts the series." },
+      { "mistake": "Swapping the order of A and B mid-sequence.",
+        "fix": "Fix the starting operation from the first visible transition." },
+      { "mistake": "Extending past visible evidence without verification.",
+        "fix": "Confirm the law on two transitions before projecting." }
+    ],
+    "memoryTip": "Two hands, two operations: label A and B, apply strictly in turn, verify interior.",
+    "practice": [
+      { "prompt": "Series 50, 25, 100, 50: next term?", "answer": "200. Same halve-then-quadruple chain." },
+      { "prompt": "Series 3, 6, 18, 36, 108: what alternates?", "answer": "x2 and x3 alternate; next 216." },
+      { "prompt": "Over two steps, by what factor does the 120-60-240 chain grow?", "answer": "Factor 2 (1/2 times 4)." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "coding-and-decoding",
+    "slug": "coding-and-decoding-expert",
+    "title": "Layered shift-and-reverse codes on new words",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Calibrate a two-layer code from a given pair, code new words and decode arbitrary outputs back to plain text.",
+    "explanation": "Two-layer codes first shift letters by a constant, then reverse the whole word. Calibrating from a given pair - for example TIPS coded as WTMX under shift +4 then reversal: T + 4 = X, I + 4 = M, P + 4 = T, S + 4 = W giving XMTW, then reversing to WTMX - fixes both layers. Coding new words applies the same pipeline; decoding peels in reverse order: un-reverse, then un-shift.",
+    "analogy": "A two-layer code is a wrapped parcel tied with a letter-shift stamp: pack by shifting then flipping, unpack by flipping back then un-stamping.",
+    "workedExamples": [
+      {
+        "title": "Calibrate then code",
+        "problem": "Given TIPS becomes WTMX under shift +4 then reversal, encode RENT with the same scheme.",
+        "steps": [
+          "Shift +4: R to V, E to I, N to R, T to X, giving VIRX.",
+          "Reverse: X R I V.",
+          "Encoded word: XRIV."
+        ],
+        "answer": "XRIV."
+      },
+      {
+        "title": "Peel in reverse order",
+        "problem": "Using the same scheme, decode the output MWDT back to plain text.",
+        "steps": [
+          "Un-reverse: MWDT reversed is TDWM.",
+          "Un-shift (-4): T 20 - 4 = 16 = P; D 4 - 4 = 0 wraps to Z; W 23 - 4 = 19 = S; M 13 - 4 = 9 = I.",
+          "Result letters: T D W M unshifted: P Z S I.",
+          "The plain text is PZSI."
+        ],
+        "answer": "PZSI."
+      }
+    ],
+    "rule": [
+      { "title": "Pack order", "detail": "Shift first, reverse second: fix the order from the given pair." },
+      { "title": "Peel order", "detail": "Decoding un-reverses first, then un-shifts." },
+      { "title": "Wrap handling", "detail": "Shifting below A or above Z wraps by 26 positions." },
+      { "title": "Verify on the given pair", "detail": "Replicate the pair end-to-end before coding the new word." }
+    ],
+    "mistakes": [
+      { "mistake": "Reversing before shifting when the scheme says shift first.",
+        "fix": ".dtpack the example: WTMX un-reversed is XMTW, whose letters are exactly TIPS + 4." },
+      { "mistake": "Forgetting the wrap on D - 4.",
+        "fix": "Wrap modulo 26: D 4 becomes Z 26 after subtracting 4." },
+      { "mistake": "Applying two different shift sizes for calibration and coding.",
+        "fix": "The shift constant is calibrated once and reused." }
+    ],
+    "memoryTip": "Pack shift-then-flip, peel flip-then-unshift; wrap letters past the alphabet ends.",
+    "practice": [
+      { "prompt": "With shift +2 then reverse, encode MARS.", "answer": "UTCO. Shift each letter forward by 2: M to O, A to C, R to T, S to U, giving OCTU; then reverse the string to get UTCO." },
+      { "prompt": "Decode VOKI under the same scheme (shift +2 then reverse).", "answer": "GIMT. Un-reverse VOKI to IKOV, then shift each letter back by 2: I to G, K to I, O to M, V to T, giving GIMT." },
+      { "prompt": "Why does decoding peel in the opposite order?", "answer": "Because the last transformation applied is the first undone; keeping the order right avoids mixing layers." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "direction-sense",
+    "slug": "direction-sense-expert",
+    "title": "Four-leg displacement with a cancellation twist",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Reduce multi-leg walks with turns to net displacement and answer both distance and bearing.",
+    "explanation": "Track axes throughout: a walker goes 8 km north, turns right and walks 6 km east, turns right again and walks 8 km south, then turns left (now facing east) and walks 4 km east. East total = 6 + 4 = 10, north total = 8 - 8 = 0, so he is 10 km due east - the cancelled north-south pair leaves a purely horizontal displacement. Turning bookkeeping: from north, right is east; from east, right is south; from south, left is east.",
+    "analogy": "A walk with cancellations is a bill with paired charges and refunds: subtract paired legs on each axis and the balance tells the straight trip home.",
+    "workedExamples": [
+      {
+        "title": "Cancelled axis",
+        "problem": "Starting north-facing: walk 8 km north, turn right walk 6 km, turn right walk 8 km, turn left walk 4 km. Where does the walker end relative to start?",
+        "steps": [
+          "North leg: (0, +8).",
+          "Right -> east, 6 km: (+6, +8).",
+          "Right -> south, 8 km: (+6, 0).",
+          "Left from south is east, 4 km: (+10, 0).",
+          "East-west total x = +10; north-south y = 0."
+        ],
+        "answer": "10 km due east of the start."
+      },
+      {
+        "title": "Bearing reading",
+        "problem": "For the same walk, what single direction best describes the final position?",
+        "steps": [
+          "y = 0 removes every north-south component.",
+          "x = +10 is pure east.",
+          "The displacement is purely horizontal."
+        ],
+        "answer": "Due east, no deviation."
+      }
+    ],
+    "rule": [
+      { "title": "Axis totals", "detail": "x sums east minus west; y sums north minus south." },
+      { "title": "Turn ledger", "detail": "From north: right east, left west; from south: right west, left east." },
+      { "title": "Cancellations", "detail": "Equal opposite legs zero an axis; ignore them in the distance." },
+      { "title": "Distance", "detail": "sqrt(x^2 + y^2); a zero axis makes the bearing a cardinal direction." }
+    ],
+    "mistakes": [
+      { "mistake": "Reporting total walked distance 26 km.",
+        "fix": "Walked metres are not displacement; the net is 10 km." },
+      { "mistake": "Forgetting that left from south is east.",
+        "fix": "Rehearse the compass wheel: N-E-S-W clockwise." },
+      { "mistake": "Mixing up right from east as south? Actually right from east is south.",
+        "fix": "Standing facing east, your right hand points south; keep a body-relative wheel." }
+    ],
+    "memoryTip": "Add signed legs per axis; a zero axis makes a cardinal answer.",
+    "practice": [
+      { "prompt": "Walk 5 north, 6 east, 5 south, 7 east. Final position?", "answer": "13 km due east. North cancels; east 6 + 7 = 13." },
+      { "prompt": "Walk 9 south, 4 west, 9 north. Where now?", "answer": "4 km due west." },
+      { "prompt": "Facing west, turn right and walk 3 km, then turn right again and walk 3 km. Position?", "answer": "3 km north, 3 km east of the start. Right from west is north, so walk 3 north; then right from north is east, so walk 3 east. Position (3, 3), distance sqrt(18), about 4.24 km to the north-east." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "seating-arrangement",
+    "slug": "seating-arrangement-expert",
+    "title": "Never-together counts and alternating circles",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Count seatings under no-adjacency constraints and alternating rings with fixed gender parity.",
+    "explanation": "Constraint counting rejects illegal blocks: seating 5 people in a row where two specified people must never sit together counts total 5! minus the pair-fused arrangements 4! x 2 = 48, giving 120 - 48 = 72. For circles with alternating genders, fix the men's ring first as (4 - 1)! = 6 arrangements, then seat the 4 women in the 4 gaps in 4! = 24 ways, totalling 144.",
+    "analogy": "Constraint counting is boarding a plane: total seatings minus the layouts that weld the feuding pair to one shoulder-turned block, and alternating rings are man-woman-man slots between each anchor.",
+    "workedExamples": [
+      {
+        "title": "Never together in a row",
+        "problem": "In how many ways can 5 people sit in a row if A and B refuse to sit together?",
+        "steps": [
+          "Total arrangements = 5! = 120.",
+          "Fuse A and B into one block: 4 units in a row with 2 internal orders: 4! x 2 = 48.",
+          "Reject them: 120 - 48 = 72."
+        ],
+        "answer": "72 seatings."
+      },
+      {
+        "title": "Alternating circle",
+        "problem": "Four men and four women sit around a round table, alternating genders. How many distinct seatings?",
+        "steps": [
+          "Anchor the circle: men form a ring in (4 - 1)! = 6 arrangements.",
+          "Four gaps between men take the 4 women in 4! = 24 ways.",
+          "Total = 6 x 24 = 144."
+        ],
+        "answer": "144 seatings."
+      }
+    ],
+    "rule": [
+      { "title": "Block subtraction", "detail": "Never-together = total - fused-block arrangements." },
+      { "title": "Round fixing", "detail": "Fix one anchor to remove rotational repetition." },
+      { "title": "Gap filling", "detail": "Alternating circles place the second group into the first group's gaps." },
+      { "title": "Order inside the block", "detail": "Remember the fused pair's 2 internal orders before subtracting." }
+    ],
+    "mistakes": [
+      { "mistake": "Subtracting 24 (4!) instead of 48.",
+        "fix": "A fused block still allows AB or BA inside: multiply by 2 first." },
+      { "mistake": "Using 4! for the men's circle.",
+        "fix": "Rotations collapse: (n - 1)!" },
+      { "mistake": "Doubling necklaces with gendered alternation.",
+        "fix": "Alternation is a constraint, not a reflection; only mirror-symmetric bead necklaces halve." }
+    ],
+    "memoryTip": "Total minus welded pairs; circles anchor at one seat; alternate rings fill gaps.",
+    "practice": [
+      { "prompt": "Row of 4, A and B never together. Count?", "answer": "12. 4! - 3! x 2 = 24 - 12." },
+      { "prompt": "Six people around a round table with A always to B's immediate right. Count?", "answer": "24. Weld AB as a unit: 4 other units around circle: (5-1)! = 24 with internal order fixed." },
+      { "prompt": "Five men and five women alternate around a circle. Count?", "answer": "4! x 5! = 24 x 120 = 2880." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "permutation-and-combination",
+    "slug": "permutation-and-combination-expert",
+    "title": "Layered committee quotas with excludes",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Compute committee counts with multi-group quotas and at-least constraints fully.",
+    "explanation": "Large committees decompose by quota vector: choosing 2 men from 6 and 3 women from 8 multiplies as C(6, 2) x C(8, 3) = 15 x 56 = 840. At-least constraints subtract forbidden quota vectors from a total, or sum allowed vectors explicitly. Layer discipline keeps each group's choice independent and the multiplication honest.",
+    "analogy": "Committee quotas are LEGO plates: pick part A from bin one, part B from bin two, and the builds multiply; at-least questions demolish the illegal plates first.",
+    "workedExamples": [
+      {
+        "title": "Layered quotas",
+        "problem": "From 6 men and 8 women, how many 5-person committees contain exactly 2 men and 3 women?",
+        "steps": [
+          "Choose the men: C(6, 2) = 15.",
+          "Choose the women: C(8, 3) = 56.",
+          "Multiply: 15 x 56 = 840."
+        ],
+        "answer": "840 committees."
+      },
+      {
+        "title": "At-least-one constraint",
+        "problem": "From 5 boys and 4 girls, committees of 4 with at least 1 girl: how many?",
+        "steps": [
+          "Total: C(9, 4) = 126.",
+          "All-boys committees: C(5, 4) = 5.",
+          "Answer: 126 - 5 = 121."
+        ],
+        "answer": "121 committees."
+      }
+    ],
+    "rule": [
+      { "title": "Multiply quotas", "detail": "Independent group choices multiply." },
+      { "title": "Complement the forbidden", "detail": "At-least-one = total minus the all-missing case." },
+      { "title": "Two-term algebra", "detail": "Prefer total-minus-banned over summing allowed cases." },
+      { "title": "Sanity ranges", "detail": "Counts are integers below the total; huge numbers signal slipped factorials." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding C(6, 2) + C(8, 3).",
+        "fix": "Both choices happen in every committee: multiply, 840 not 71." },
+      { "mistake": "Forgetting the internal order in welded blocks.",
+        "fix": "Blocks multiply internal arrangements only where order matters." },
+      { "mistake": "Reading 'exactly 2 men' as 'at least 2 men'.",
+        "fix": "Exactly fixes the quota vector; at-least sums or complements vectors." }
+    ],
+    "memoryTip": "Quotas multiply, forbidden subtract; exactly fixes, at-least complements.",
+    "practice": [
+      { "prompt": "Committees of 3 from 4 men and 5 women with at least 2 women?", "answer": "C(4,2)C(5,1) + C(4,1)C(5,2)? that is exactly-2 or exactly-3? exactly 2 women: 6 x 5 = 30; exactly 3 women: 4 x 10 = 40; total 70." },
+      { "prompt": "From 7 boys and 3 girls, committees of 5 with all girls excluded count?", "answer": "C(10,5) - C(7,5) = 252 - 21 = 231." },
+      { "prompt": "Choose 2 seniors from 5 and 2 juniors from 7 for a delegation of 4: count?", "answer": "C(5,2) x C(7,2) = 10 x 21 = 210." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

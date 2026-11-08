@@ -1,34 +1,34 @@
 {
   "results": [
     {
-      "name": "signup (extended probe)",
+      "name": "signup or login (rate-limit aware)",
       "pass": true,
-      "detail": "status=201"
+      "detail": "status=200"
     },
     {
       "name": "config?category=QUANTITATIVE pools filtered",
       "pass": true,
-      "detail": "pool.any=71 easy=18 listed=true categories=1"
+      "detail": "pool.any=71 easy=18 listed=true categories=5"
     },
     {
       "name": "config?category=LOGICAL pools filtered",
       "pass": true,
-      "detail": "pool.any=30 easy=11 listed=true categories=1"
+      "detail": "pool.any=30 easy=11 listed=true categories=5"
     },
     {
       "name": "config?category=VERBAL pools filtered",
       "pass": true,
-      "detail": "pool.any=16 easy=6 listed=true categories=1"
+      "detail": "pool.any=16 easy=6 listed=true categories=5"
     },
     {
       "name": "config?category=DATA_INTERPRETATION pools filtered",
       "pass": true,
-      "detail": "pool.any=12 easy=9 listed=true categories=1"
+      "detail": "pool.any=12 easy=9 listed=true categories=5"
     },
     {
       "name": "config?category=TECHNICAL pools filtered",
       "pass": true,
-      "detail": "pool.any=8 easy=4 listed=true categories=1"
+      "detail": "pool.any=8 easy=4 listed=true categories=5"
     },
     {
       "name": "config without category shows every supported category",
@@ -43,7 +43,7 @@
     {
       "name": "attempt assembled (category -> engine path returned questions)",
       "pass": true,
-      "detail": "Average|Time, Speed and Distance|Time, Speed and Distance|Average|Time and Work"
+      "detail": "Time, Speed and Distance|Algebra|Number System|Time, Speed and Distance|Time and Work"
     },
     {
       "name": "category attempt submits and scores",
@@ -53,7 +53,7 @@
     {
       "name": "invalid configuration rejected honestly",
       "pass": true,
-      "detail": "status=409 err=[object Object]"
+      "detail": "status=409 err={\"code\":\"MOCK_POOL_TOO_SMALL\",\"message\":\"Only 16 verified questions match that f"
     }
   ]
 }

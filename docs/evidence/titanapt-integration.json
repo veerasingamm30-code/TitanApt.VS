@@ -27,14 +27,14 @@
       "detail": "status=401"
     },
     {
-      "name": "auth: signup creates account + session",
+      "name": "auth: signup or login of persisted probe account + session",
       "pass": true,
-      "detail": "status=201"
+      "detail": "status=200"
     },
     {
       "name": "auth: /api/auth/me returns session user",
       "pass": true,
-      "detail": "status=200 email=probe-1794040333078-xqru9i@example.com"
+      "detail": "status=200 email=probe-1794106718514-uy4uum@example.com"
     },
     {
       "name": "dashboard: streak fields present",
@@ -42,9 +42,9 @@
       "detail": "status=200 keys=user,stats,dailyGoal,streak,streakHistory,studyMinutesToday,activity,subjects,weakAreas,recommendation,focusTopics,recentAttempts,mockHistory,availableMocks,companies"
     },
     {
-      "name": "dashboard: new user streak is 0",
+      "name": "dashboard: streak is a sane non-negative number",
       "pass": true,
-      "detail": "current=0"
+      "detail": "current=1"
     },
     {
       "name": "topics: Boolean Algebra exposes 3 authored lessons",
@@ -79,7 +79,7 @@
     {
       "name": "practice: streak day qualified after >=4 unique correct answers",
       "pass": true,
-      "detail": "todayQualified=true todayCorrect=6 loops=4"
+      "detail": "todayQualified=true todayCorrect=5 loops=1"
     },
     {
       "name": "practice: today counts as a streak day (current=1, longest>=1)",
@@ -109,7 +109,7 @@
     {
       "name": "mock: submit returns server-computed results",
       "pass": true,
-      "detail": "c=8 i=12 u=0"
+      "detail": "c=6 i=14 u=0"
     },
     {
       "name": "mock: unanswered equals 20 minus attempted",
@@ -119,7 +119,7 @@
     {
       "name": "mock: submitted attempt persists as SUBMITTED with score",
       "pass": true,
-      "detail": "status=SUBMITTED score=5"
+      "detail": "status=SUBMITTED score=3"
     },
     {
       "name": "learning: 8 volumes with chapter data",
@@ -173,12 +173,7 @@
     }
   ],
   "events": [
-    "practice: correct answer registered",
-    "practice: correct answer registered",
-    "practice: correct answer registered",
-    "practice: correct answer registered",
-    "practice: correct answer registered",
-    "practice: correct answer registered",
+    "signup not available (status=409); falling back to login of the persisted probe account",
     "mock: 20 answers recorded"
   ]
 }

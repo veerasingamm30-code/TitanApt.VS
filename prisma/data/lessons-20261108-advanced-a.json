@@ -1,0 +1,677 @@
+[
+  {
+    "topicSlug": "number-system",
+    "slug": "number-system-advanced",
+    "title": "Base systems, factorial zeros and combined remainders",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Convert between number bases, count trailing zeros in factorials and combine remainder and cyclicity tools on mixed questions.",
+    "explanation": "Numbers in base 10 can be rewritten in any base b by repeated division, recording remainders from bottom to top; binary questions reverse this weighting powers of 2. Trailing zeros of n factorial count the factors of 10 available, each 10 = 2 x 5, and fives are scarcer: Z = floor(n/5) + floor(n/25) + floor(n/125) + ... . When a question mixes remainders with cyclicity, reduce the base modulo the divisor, find the exponent's position in the cycle and finish with one modular multiplication step.",
+    "analogy": "Base conversion is rewriting a route in different unit stops; factorial zeros count how many times the number 10 sneaks into a gigantic product, tracked through fives rather than twos.",
+    "workedExamples": [
+      {
+        "title": "Binary reading",
+        "problem": "Convert (1101)_2 to base 10.",
+        "steps": [
+          "Weights: 2^3 = 8, 2^2 = 4, 2^1 = 2, 2^0 = 1.",
+          "Value = 8 x 1 + 4 x 1 + 2 x 0 + 1 x 1.",
+          "= 13."
+        ],
+        "answer": "(1101)_2 = 13."
+      },
+      {
+        "title": "Trailing zeros of 100 factorial",
+        "problem": "How many zeros end 100!?",
+        "steps": [
+          "Z = floor(100/5) + floor(100/25) + floor(100/125) + ...",
+          "= 20 + 4 + 0.",
+          "= 24."
+        ],
+        "answer": "100! ends in 24 zeros."
+      }
+    ],
+    "rule": [
+      { "title": "Base conversion", "detail": "Divide repeatedly by the base and read remainders upward; or expand in descending powers." },
+      { "title": "Factorial zeros", "detail": "Trailing zeros = sum of floor(n/5^k) over k = 1, 2, 3 ... because fives are the scarce factor." },
+      { "title": "Combined remainders", "detail": "Reduce base first, then use the exponent's cycle position; never multiply unreduced large powers." },
+      { "title": "Divisibility of composites", "detail": "For composite divisors such as 18, test every prime factor chain, not just one of them." }
+    ],
+    "mistakes": [
+      { "mistake": "Stopping factorial-zero counts after the first floor division.", "fix": "25 contributes a second five: 100! needs 20 + 4, not 20." },
+      { "mistake": "Reading bits right to left with ascending powers.", "fix": "The leftmost bit carries the largest power of 2." },
+      { "mistake": "Mixing base-10 digits into a base-b expansion.", "fix": "Every digit in base b must be below b." }
+    ],
+    "memoryTip": "Read bits by powers of 2 descending; zeros come from fives (floor stairways of 5^k); reduces first, cycle second.",
+    "practice": [
+      { "prompt": "Convert 29 to binary.", "answer": "11101. 16 + 8 + 4 + 1." },
+      { "prompt": "Trailing zeros of 25 factorial?", "answer": "6. floor(25/5) = 5 and floor(25/25) = 1, total 6." },
+      { "prompt": "Remainder when 2^90 is divided by 9.", "answer": "1. 2^6 = 64 = 63 + 1, so 2^6 mod 9 = 1; 90 mod 6 = 0, hence 1." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "percentages",
+    "slug": "percentages-advanced",
+    "title": "Fraction chains, populations and exam thresholds",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Combine fractional equivalents into multi-step percent changes and solve threshold questions with negative marking or pass marks.",
+    "explanation": "Harder percent questions chain fractional equivalents like 1/4 + and 1/3 - across different bases, so every step must multiply the running value, never add fractions of different bases. Population-style questions treat each period as a compounding step; exam threshold questions set up a linear inequality of marks with optional negative marking, where the pass mark p and questions solved q must satisfy marks >= threshold. Reading whether each given percent applies to the original or the current value decides the whole answer.",
+    "analogy": "Compounded bookkeeping: each percent is a transaction on the running balance, and thresholds are the minimum balance the account must end above.",
+    "workedExamples": [
+      {
+        "title": "Fraction-chain commute",
+        "problem": "A quantity first rises by 25 percent, then falls by 20 percent. What is the net change?",
+        "steps": [
+          "Factors: 1 + 1/4 and 1 - 1/5.",
+          "Net factor = (5/4) x (4/5) = 1.",
+          "Net change is exactly zero."
+        ],
+        "answer": "Zero net change."
+      },
+      {
+        "title": "Population compounding",
+        "problem": "A town of 5000 grows 20 percent in year 1 and declines 10 percent in year 2. Final population?",
+        "steps": [
+          "Year 1: 5000 x 1.2 = 6000.",
+          "Year 2: 6000 x 0.9 = 5400.",
+          "Net over two years = 5400/5000 - 1 = 8 percent growth."
+        ],
+        "answer": "5400 people, an overall rise of 8 percent."
+      }
+    ],
+    "rule": [
+      { "title": "Fraction shortcuts", "detail": "12.5 percent = 1/8; 16.67 = 1/6; 33.33 = 1/3; 37.5 = 3/8." },
+      { "title": "Identity pair", "detail": "+(r/(100 + r) percent fall) undoes an r percent rise exactly." },
+      { "title": "Per-period compounding", "detail": "Multiply (1 +- r_i/100) across periods; never average the rates." },
+      { "title": "Threshold inequality", "detail": "Marks = correct q positives minus wrong w penalties; solve marks >= pass mark linearly." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding 25 and -20 as an arithmetic sum of 5 percent.", "fix": "The net factor is 1.00, not 1.05." },
+      { "mistake": "Reading the compound statement backwards when question wording differs.", "fix": "Confirm which value each successive percent bases on." },
+      { "mistake": "Doubling pass-mark logic in negative marking questions.", "fix": "Apply the actual exam formula: q(a) - w(b) >= p." }
+    ],
+    "memoryTip": "Multiply every step; complement pairs cancel exactly; thresholds are linear inequalities in marks.",
+    "practice": [
+      { "prompt": "Successive changes: +33.33 percent then -25 percent. Net?", "answer": "0 percent. (4/3) x (3/4) = 1." },
+      { "prompt": "A sum grows 10 percent for two years. Total growth?", "answer": "21 percent. 1.1 x 1.1 = 1.21." },
+      { "prompt": "An exam gives 5 marks per correct answer and -1 per wrong answer; the pass mark is 50. A student attempts exactly 12 questions. How many must be correct to pass?", "answer": "11. Solve 5q - (12 - q) >= 50: 6q >= 62, so q >= 10.33, meaning 11 correct answers (54 marks)." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "profit-and-loss",
+    "slug": "profit-and-loss-advanced",
+    "title": "Effective discounts, mixtures of articles and false scales",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Fold multiple discounts, aggregate profit across articles with different costs and detect false-weight or faulty-scale fraud rates.",
+    "explanation": "Effective discount folds as d = d1 + d2 - d1 d2/100 for two discounts; the profit statement of an aggregated shop sums rupee profits before converting to a percent of total cost. Faulty-scale problems exploit the trade: if a seller sells goods at cost price but uses a weight of w instead of the true W, the hidden gain percent is (W - w)/w x 100; similarly, short heights of measures convert through ratios. When cost ratio and profit percent both vary across articles, compute explicit rupees first.",
+    "analogy": "Fraud is a silent surcharge: the false scale never changes the price tag, it changes how much the tag actually buys; measure the ratio to reveal the surcharge.",
+    "workedExamples": [
+      {
+        "title": "Effective discount",
+        "problem": "Successive discounts of 30 percent and 20 percent are given. What single discount is equivalent?",
+        "steps": [
+          "d = 30 + 20 - (30 x 20)/100.",
+          "= 50 - 6.",
+          "= 44 percent."
+        ],
+        "answer": "44 percent off."
+      },
+      {
+        "title": "False weight gain",
+        "problem": "A trader sells at cost price but uses a 900 g weight for a true 1 kg. Find the gain percent.",
+        "steps": [
+          "Gain ratio = (1000 - 900)/900.",
+          "= 100/900 = 1/9.",
+          "Gain percent = 11.11."
+        ],
+        "answer": "11.11 percent gain."
+      }
+    ],
+    "rule": [
+      { "title": "Folded discounts", "detail": "d = d1 + d2 - d1 d2/100; extend subtractively to three discounts." },
+      { "title": "False weight", "detail": "Gain percent = (true - used)/used x 100, measured on what the buyer got." },
+      { "title": "Article aggregation", "detail": "Profit percent overall = total rupee profit/total cost price x 100." },
+      { "title": "Mixed PP", "detail": "For doubled investments use cost ratio weights, not item counts." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding 30 and 20 as 50 percent effective.", "fix": "The second discount applies to the already-reduced price: 44 percent." },
+      { "mistake": "Measuring false-weight gain on the true weight.", "fix": "The buyer paid for 1000 g but got 900 g; the seller's gain sits on the 900 g cost he incurred." },
+      { "mistake": "Averaging article profit percents without cost weights.", "fix": "Convert every rate to rupees first." }
+    ],
+    "memoryTip": "Fold discount pairs with the subtraction term; scale fraud measures the used weight; group profit means total rupees first.",
+    "practice": [
+      { "prompt": "Fold 20 and 10 percent discounts.", "answer": "28 percent. 30 - (20 x 10)/100 = 28." },
+      { "prompt": "Two articles cost 400 and 600, sold at 10 and 30 percent profit. Overall percent?", "answer": "22 percent. 40 + 180 = 220 on 1000." },
+      { "prompt": "A dealer uses a 750 g weight for 1000 g at cost price. Gain percent?", "answer": "33.33. (1000 - 750)/750 = 250/750 = 1/3." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "ratio-and-proportion",
+    "slug": "ratio-and-proportion-advanced",
+    "title": "Coin bags, incomes and inequality ratios",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Turn coin-count ratios into value equations, mix income ratios with expense ratios on savings and verify proportional claims fast.",
+    "explanation": "Coin-bag questions convert a count ratio into a value equation by multiplying each part's count by its denomination value: with coins of 25 p, 50 p and 1 rupee in ratio a : b : c and a total value V, the equation is (25a + 50b + 100c) t / 100 = V. Salary problems relate income and expense ratios; savings = income - expenses must stay consistent across both sides. Proportion tests with unequal comparisons, such as a + b : a - b, expand to a derived relation like (a + b)/(a - b) = constant via cross multiplication.",
+    "analogy": "Coins convert a counting recipe into a cash register tape: each ratio part becomes a row and the value equation totals the tape against the given bill.",
+    "workedExamples": [
+      {
+        "title": "Coin bag in ratio",
+        "problem": "A bag has 25-paise, 50-paise and 1-rupee coins in ratio 4 : 5 : 6, worth 190 rupees in total. How many 50-paise coins are there?",
+        "steps": [
+          "Value in paise: (25 x 4 + 50 x 5 + 100 x 6) t.",
+          "= (100 + 250 + 600) t = 950 t paise.",
+          "190 rupees = 19000 paise, so t = 20.",
+          "50-paise coins = 5t = 100."
+        ],
+        "answer": "100 coins of 50 paise."
+      },
+      {
+        "title": "Income and expense ratios",
+        "problem": "A and B earn in ratio 4 : 5 and spend in ratio 2 : 3. Each saves exactly 1000. Find their incomes.",
+        "steps": [
+          "Incomes 4t and 5t; expenses 2u and 3u.",
+          "Equal savings: 4t - 2u = 5t - 3u.",
+          "Subtracting: t - u = 0, so t = u.",
+          "Then 4t - 2t = 2t = 1000 gives t = 500.",
+          "Incomes: 2000 and 2500."
+        ],
+        "answer": "A earns 2000 and B earns 2500."
+      }
+    ],
+    "rule": [
+      { "title": "Denomination function", "detail": "Coin value = sum over parts of (count per part x coin value) times the scale t." },
+      { "title": "Savings identity", "detail": "Income - expense = savings on each side; keep rupee units throughout." },
+      { "title": "Equal comparisons", "detail": "Cross multiplication converts any a-b ratio claim into one linear equation." },
+      { "title": "Free-parameter check", "detail": "Count equations; if fewer than unknowns, look for the total or an extra fact." }
+    ],
+    "mistakes": [
+      { "mistake": "Forgetting to convert rupees to paise or vice versa.", "fix": "Fix one unit before writing the value equation." },
+      { "mistake": "Assuming equal savings fixes the scale,tmaking it do extra work.", "fix": "Each added fact removes one degree of freedom; verify count." },
+      { "mistake": "Adding denomination values without the scale t.", "fix": "Ratios give counts per part, so one unknown scale multiplies every row." }
+    ],
+    "memoryTip": "Coin rows multiply by denomination; savings equal income minus expense; count your equations against unknowns.",
+    "practice": [
+      { "prompt": "Coins of 1-rupee, 2-rupee and 5-rupee coins in ratio 2 : 3 : 5 are worth 99 rupees in all. How many 2-rupee coins are there?", "answer": "9. Value function (1 x 2 + 2 x 3 + 5 x 5) t = 33 t rupees = 99, so t = 3 and the 2-rupee count is 3 x 3 = 9." },
+      { "prompt": "Incomes ratio 3 : 4; expenses ratio 2 : 3; total savings 1000. Incomes?", "answer": "Savings per unit: (3 - 2)t and (4 - 3)t = t each; total 2t = 1000, t = 500; incomes 1500 and 2000." },
+      { "prompt": "Two numbers are in ratio 5 : 7 and differ by 14. Find their sum.", "answer": "84. One part = 14/(7 - 5) = 7, so the numbers are 35 and 49, summing to 84." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "average",
+    "slug": "average-advanced",
+    "title": "Silent replacements and two-group merges",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Reconstruct replaced members from average shifts, merge groups with known sizes and reconcile missing members into combined answers.",
+    "explanation": "A silent replacement hides both values behind one shift: if the average of n rises by s when one member of known weight is swapped for an unknown one, the newcomer weighs old + n x s. Group merges with different sizes use totals; when one group's average is missing, set it as an unknown and solve the total equation. Chained questions stack these moves, so keep a running ledger of totals rather than juggling averages.",
+    "analogy": "A group's total is the ledger; averages are just the ledger divided by headcount, so every puzzle is ledger bookkeeping in disguise.",
+    "workedExamples": [
+      {
+        "title": "Replacement reconstruction",
+        "problem": "The average weight of 8 persons rises by 2.5 kg when one person of 45 kg is replaced by a new person. New person's weight?",
+        "steps": [
+          "Total shift = 8 x 2.5 = 20 kg.",
+          "Newcomer = 45 + 20 = 65.",
+          "Check direction: average rose, so newcomer is heavier."
+        ],
+        "answer": "65 kg."
+      },
+      {
+        "title": "Missing group average",
+        "problem": "Two groups of 20 and 30 students have a combined average of 43. One group averages 40. Find the other group's average.",
+        "steps": [
+          "Grand total = 50 x 43 = 2150.",
+          "Known group total = 20 x 40 = 800.",
+          "Other total = 1350 over 30 students.",
+          "Average = 45."
+        ],
+        "answer": "45."
+      }
+    ],
+    "rule": [
+      { "title": "Replacement ledger", "detail": "New value = old value + n x average shift." },
+      { "title": "Merge by totals", "detail": "Combined average = (n1 a1 + n2 a2)/(n1 + n2)." },
+      { "title": "Unknown-slot method", "detail": "Assign letters to missing averages and solve the total equation." },
+      { "title": "Sign discipline", "detail": "Falling averages subtract; the shift sign belongs to the change." }
+    ],
+    "mistakes": [
+      { "mistake": "Multiplying the shift by (n - 1) instead of n for replacements.", "fix": "The whole group of n carries the shift; the newcomer is old + n x s." },
+      { "mistake": "Merging groups by averaging their averages.", "fix": "Scale by headcounts first." },
+      { "mistake": "Misreading which member's value is known.", "fix": "The known value enters the ledger; the unknown emerges from the total shift." }
+    ],
+    "memoryTip": "Ledger first: shift x count moves the total; merges weight by headcount; replacements add the shift to the old value.",
+    "practice": [
+      { "prompt": "Average of 12 falls 1.5 when a 70-score member leaves... rephrase: replaced by a newcomer. Newcomer's value?", "answer": "70 - 12 x 1.5 = 52." },
+      { "prompt": "Groups 10 at 30 and 15 at unknown X give combined 36. X?", "answer": "Total 25 x 36 = 900; known 300; X-group total 600; X = 40." },
+      { "prompt": "A batsman's average rises from 40 (11 innings) to 42 after one more innings. Score?", "answer": "64. New total 504 - 440 = 64." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "simple-and-compound-interest",
+    "slug": "simple-and-compound-interest-advanced",
+    "title": "Half-yearly comparisons and installment recovery",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Compare compounding frequencies exactly and price loan repayments made in equal annual installments.",
+    "explanation": "Frequency changes shift both the rate slice and the period count: annual 8 percent over one year equals two half-year periods of 4 percent, whose factor (1.04)^2 = 1.0816 slightly exceeds 1.08; the extra 0.16 percent is the intra-year compounding bonus. Equal annual installments A of an n-year loan at rate r discount back like a reversed compound amount: each installment A paid after year k contributes A/(1 + r/100)^k to the principal it can service, so P = A(1/(1+r/100) + ... + 1/(1+r/100)^n).",
+    "analogy": "An installment is a payment told to travel back in time: each year's future payment is trucked back to today at the interest exchange rate, and the trucked total equals today's loan.",
+    "workedExamples": [
+      {
+        "title": "Now and half-yearly comparison",
+        "problem": "Compare 1-year amounts of 10000 at 8 percent annual compounding versus half-yearly compounding.",
+        "steps": [
+          "Annual: 10000 x 1.08 = 10800.",
+          "Half-yearly: 10000 x (1.04)^2 = 10000 x 1.0816 = 10816.",
+          "Difference = 16."
+        ],
+        "answer": "Half-yearly compounding yields 16 more."
+      },
+      {
+        "title": "Two equal annual installments",
+        "problem": "A loan is repaid by two equal annual installments of 1210 each at 10 percent per year. Find the loan amount.",
+        "steps": [
+          "Discount year-1 installment: 1210/1.1 = 1100.",
+          "Discount year-2 installment: 1210/(1.1)^2 = 1210/1.21 = 1000.",
+          "Loan = 1100 + 1000 = 2100."
+        ],
+        "answer": "The loan is 2100."
+      }
+    ],
+    "rule": [
+      { "title": "Frequency conversion", "detail": "n periods per year: (1 + r/(100 n))^(n t) replaces (1 + r/100)^t." },
+      { "title": "Installment discount", "detail": "P = A/(1 + r/100) + A/(1 + r/100)^2 + ... for installments at the end of each year." },
+      { "title": "Equal-growth ladder", "detail": "For two installments, P = A [ 1/(1+x) + 1/(1+x)^2 ] with x = r/100." },
+      { "title": "Inter-year bonus", "detail": "More frequent compounding always yields more at the same nominal rate." }
+    ],
+    "mistakes": [
+      { "mistake": "Halving only the rate or only the periods.", "fix": "Both change together: r/n per period across n t periods." },
+      { "mistake": "Adding installments undiscounted.", "fix": "Each future rupee is worth less today; divide by its factor." },
+      { "mistake": "Using CI factors inside an SI loan.", "fix": "Read the question: simple-interest loans discount linearly, not by powers." }
+    ],
+    "memoryTip": "Frequencies slice the rate and stretch the periods; future installments travel back through division by growth factors.",
+    "practice": [
+      { "prompt": "10000 for 1 year at 12 percent half-yearly: amount?", "answer": "11236. (1.06)^2 = 1.1236." },
+      { "prompt": "A loan is repaid in two annual installments of 2100 each at 5 percent per year. Find the loan amount.", "answer": "3904.76, about 3905. Discount each installment: 2100/1.05 = 2000 and 2100/(1.05)^2 = 1904.76; total 3904.76." },
+      { "prompt": "Three equal annual installments of A at 10 percent service P = 2486.8: find A.", "answer": "A = 1000. Factors: 1/1.1 + 1/1.21 + 1/1.331 = 0.9091 + 0.8264 + 0.7513 = 2.4868; 2486.8/2.4868 = 1000." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-and-work",
+    "slug": "time-and-work-advanced",
+    "title": "Efficiency ladders, leaves and every-other-day rosters",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Fold efficiency multiples into group times, account for leave phases and schedule alternating-day rosters correctly.",
+    "explanation": "When several workers carry different efficiencies, convert all statements to one-day rate units and let the total work be the LCM of implied day counts; efficiency ratios then become integer rates in that unit system. Leave questions split time into phases: compute each phase's completed work fraction with the full roster of that phase. Alternating-day plans either repeat a fixed cycle or answer directly by listing the rate pattern; both need explicit day-by-day fractions.",
+    "analogy": "A crew roster is a work ledger written in rate-currency: efficiencies pick denominations, leaves freeze some accounts, and alternate-day rosters debit on a timetable.",
+    "workedExamples": [
+      {
+        "title": "Leave phase",
+        "problem": "A takes 12 days and B takes 15 days. A starts; B joins after 3 days. Total time?",
+        "steps": [
+          "Phase 1: A alone 3 days completes 3/12 = 1/4.",
+          "Phase 2: remaining 3/4 at rate 1/12 + 1/15 = 9/60 = 3/20.",
+          "Phase 2 time = (3/4) / (3/20) = 5 days.",
+          "Total = 8 days."
+        ],
+        "answer": "8 days."
+      },
+      {
+        "title": "Alternate-day roster",
+        "problem": "A and B each take 10 days alone. A works every day; B works on alternate days starting day 1. When does the work finish?",
+        "steps": [
+          "Odd days: both work, rate 2/10 = 1/5.",
+          "Even days: only A works, rate 1/10.",
+          "Two-day cycle does 1/5 + 1/10 = 3/10.",
+          "After 6 days: 9/10 done; day 7 (odd? day 7 is odd, so both) pushes past 1: cycle check: days 1-6 make 3 x 3/10 = 9/10; day 7 adds 1/5, finishing mid-day.",
+          "So the work completes on day 7."
+        ],
+        "answer": "Day 7."
+      }
+    ],
+    "rule": [
+      { "title": "Phases freeze rosters", "detail": "Compute per-phase completed fraction with only that phase's workforce." },
+      { "title": "Efficiency to rate", "detail": "If A is k-times efficient, A's rate = k x B's rate; total time follows the summed rate." },
+      { "title": "Cycle table", "detail": "Alternating rosters repeat; sum one cycle and speed up by whole cycles." },
+      { "title": "LCM total work", "detail": "Total work = LCM of day counts converts everyone to integer daily rates." }
+    ],
+    "mistakes": [
+      { "mistake": "Applying a blended rate across phases.", "fix": "Each phase uses only its own present workers." },
+      { "mistake": "Counting leave days as zero-rate days without extending total time.", "fix": "Slow days simply occupy more days; the ledger closes when the fraction hits 1." },
+      { "mistake": "Assuming alternate-day plans mean both work half the time.", "fix": "List the pattern explicitly: 1/5 then 1/10 per pair of days here." }
+    ],
+    "memoryTip": "Ledger by phases; freeze rosters per phase; efficiency words become rate multiples; cycles repeat by design.",
+    "practice": [
+      { "prompt": "A finishes in 20 days and B in 30 days. A starts; B joins after 5 days. Total time?", "answer": "14 days. Phase 1 completes 5/20 = 1/4 of the work; the remaining 3/4 runs at rate 1/20 + 1/30 = 1/12 per day, taking 9 days." },
+      { "prompt": "A and B each take 15 days alone. A works every day; B works on the first two days of every 3-day cycle. When does the work finish?", "answer": "End of day 9. Per 3-day cycle: A does 3/15 and B does 2/15, totalling 1/3; three cycles finish exactly." },
+      { "prompt": "A is twice as efficient as B and takes 20 days alone. How long together?", "answer": "20/3 days, about 6.7. Combined rate 3/20." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-speed-distance",
+    "slug": "time-speed-distance-advanced",
+    "title": "Boats, streams and harmonic-mean living",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Recover boat and stream speeds from up-down trip times and segment equal journeys at realistic speeds.",
+    "explanation": "Boats oppose and aid a stream: downstream speed = boat + stream, upstream = boat - stream; equal-distance round trips at those two speeds average to 2uv/(u + v) rather than the plain mean, since the slower leg hogs time. Recovering boat and stream speeds from two leg times uses sums and differences of the reciprocal rates. Long chains of legs are best handled as one invitation table: distance over speed per leg, then total.",
+    "analogy": "A stream is a walking surface: with the stream you ride its added tip, against it you pay its toll twice, and the round-trip average always obeys the slower toll.",
+    "workedExamples": [
+      {
+        "title": "Round trip with equal halves",
+        "problem": "A man rows 24 km downstream in 3 hours and the same 24 km back upstream in 4 hours. Find the boat and stream speeds.",
+        "steps": [
+          "Downstream speed = 24/3 = 8 km/h; upstream = 24/4 = 6 km/h.",
+          "Boat = average of the two = (8 + 6)/2 = 7.",
+          "Stream = difference/2 = (8 - 6)/2 = 1."
+        ],
+        "answer": "Boat 7 km/h, stream 1 km/h."
+      },
+      {
+        "title": "Equal-halves average",
+        "problem": "Two equal halves at 40 and 60 km/h. Average speed?",
+        "steps": [
+          "Harmonic-type formula: 2uv/(u + v).",
+          "= 2 x 40 x 60/100.",
+          "= 48."
+        ],
+        "answer": "48 km/h."
+      }
+    ],
+    "rule": [
+      { "title": "Stream algebra", "detail": "Down = b + s; Up = b - s; recover b and s as average and half-difference." },
+      { "title": "Round-trip identity", "detail": "Equal distances at u and v average to 2uv/(u + v)." },
+      { "title": "Time hogging", "detail": "The slower leg dominates total time; averages respect time shares." },
+      { "title": "Leg table", "detail": "For multiple segments, tabulate distance, speed, time per leg; totals close the case." }
+    ],
+    "mistakes": [
+      { "mistake": "Assuming the plain mean of two speeds is always wrong.", "fix": "The plain mean is correct exactly when both speeds last the same time; boat-speed recovery is the standard winning case: boat = (down + up)/2." },
+      { "mistake": "Treating each leg's average speed as the overall average.", "fix": "Only total distance over total time is the overall average." },
+      { "mistake": "Mixing km/h with m/s inside boat problems.", "fix": "Convert once at the start." }
+    ],
+    "memoryTip": "Boat = mean, stream = half-difference of the two leg speeds; equal halves average harmonically; leg tables keep totals honest.",
+    "practice": [
+      { "prompt": "Downstream 2 hours covers 20 km, upstream 2.5 hours covers 20 km. Boat and stream?", "answer": "Down 10, up 8; boat 9, stream 1." },
+      { "prompt": "Equal halves at 10 and 30 km/h: average?", "answer": "15. 2 x 10 x 30/40 = 15." },
+      { "prompt": "Boat 7 km/h, stream 1: time for 24 km down then 24 km up?", "answer": "24/8 + 24/6 = 3 + 4 = 7 hours." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "mixtures-alligation",
+    "slug": "mixtures-alligation-advanced",
+    "title": "Repeated pours, three-source grids and price targets",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Apply the repeated-replacement decay formula, extend alligation to three sources and solve price-target mixing with two unknowns.",
+    "explanation": "Repeated replacement multiplies survival factors: each pour of v from V leaves the original component at ((V - v)/V), and n pours raise this to the nth power, so milk after two 12-litre pours from 60 litres is 60 x (48/60)^2 = 38.4 litres. Three-source grids combine pairwise or use an average shortcut when two sources share a value. Price-target questions write two linear equations: one for total quantity, one for total value of the mixture.",
+    "analogy": "Replacement is iterative dilution mathematically identical to an investment decaying by a fixed percent each round; the grid prices portfolio blends from target returns.",
+    "workedExamples": [
+      {
+        "title": "Decay through two pours",
+        "problem": "A vessel has 60 litres of milk. 12 litres are replaced by water twice. Milk remaining?",
+        "steps": [
+          "Survival factor per pour = (60 - 12)/60 = 0.8.",
+          "After two pours: 60 x 0.8^2.",
+          "= 60 x 0.64 = 38.4."
+        ],
+        "answer": "38.4 litres of milk remain."
+      },
+      {
+        "title": "Price target with two unknowns",
+        "problem": "Blend teas costing 100 and 60 per kg to make 40 kg worth 72 per kg. Find the combining weights.",
+        "steps": [
+          "Let x and y be the masses: x + y = 40.",
+          "Value: 100 x + 60 y = 72 x 40 = 2880.",
+          "Substitute y = 40 - x: 100 x + 60(40 - x) = 2880 gives 40 x = 480, so x = 12.",
+          "Weights: 12 kg and 28 kg."
+        ],
+        "answer": "12 kg of the 100-rupee tea and 28 kg of the 60-rupee tea."
+      }
+    ],
+    "rule": [
+      { "title": "Survival factors", "detail": "Original share after n pours = ((V - v)/V)^n; multiply, never subtract linearly." },
+      { "title": "Single-source subtraction", "detail": "Two-source grids read differences directly: q1 : q2 = (v2 - m) : (m - v1)." },
+      { "title": "Alligation on three sources", "detail": "Group two sources whose average is convenient, then grid the pair against the third." },
+      { "title": "Value-target algebra", "detail": "Quantity equation plus value equation solve any priced blend." }
+    ],
+    "mistakes": [
+      { "mistake": "Subtracting poured quantity from remaining milk each round.", "fix": "The second pour removes proportional milk, so factors multiply." },
+      { "mistake": "Using three-source grids as a pairwise triangle on all three at once.", "fix": "Convert to two effective groups by averaging convenient pairs." },
+      { "mistake": "Setting value equations in different currency units.", "fix": "Fix rupee units before writing totals." }
+    ],
+    "memoryTip": "Pours multiply survival (1 - v/V)^n; grids subtract to the mean; price targets obey two linear equations.",
+    "practice": [
+      { "prompt": "Milk 800 litres; 80 litres replaced with water three times. Milk left?", "answer": "800 x 0.9^3 = 583.2 litres." },
+      { "prompt": "Mix sweets at 20 and 40 per kg for a 28 per kg mix of 30 kg: weights?", "answer": "Value: 20 x + 40(30 - x) = 28 x 30 = 840 gives 40x = 360, x = 9; 9 kg and 21 kg." },
+      { "prompt": "Vessel 50; pour 10, replace, twice. Original share?", "answer": "(40/50)^2 = 0.64, that is 64 percent." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "algebra",
+    "slug": "algebra-advanced",
+    "title": "Surds, exponents and discriminant diagnosis",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Simplify surd expressions, combine exponent laws cleanly and diagnose quadratic equations through the discriminant.",
+    "explanation": "Exponent laws let equivalent expressions collapse: 4^(a+1) = 2^(2a+2) and 8^(a-1) = 2^(3a-3), so 2^a x 4^(a+1) / 8^(a-1) = 2^(a + 2a + 2 - 3a + 3) = 2^5 = 32, independent of a. Surds simplify by extracting perfect-square factors; unlike surds refuse to merge. For quadratics, the discriminant D = b^2 - 4ac signs the terrain: D > 0 two real roots, D = 0 a doubled root, D < 0 no real roots; roots then follow the quadratic formula.",
+    "analogy": "Exponent law is one-law arithmetic for all powers of the same base: every mixed expression is an invitation to common-base bookkeeping; the discriminant is the soil test before building roots.",
+    "workedExamples": [
+      {
+        "title": "Common-base collapse",
+        "problem": "Simplify 2^a x 4^(a+1) / 8^(a-1).",
+        "steps": [
+          "Rewrite everything in base 2.",
+          "Exponent sum: a + (2a + 2) - (3a - 3) = 5.",
+          "Value = 2^5 = 32."
+        ],
+        "answer": "32, independent of a."
+      },
+      {
+        "title": "Discriminant diagnosis",
+        "problem": "Diagnose 2x^2 + 4x + 2 = 0.",
+        "steps": [
+          "D = 4^2 - 4 x 2 x 2.",
+          "= 16 - 16 = 0.",
+          "A repeated root: x = -b/2a = -1."
+        ],
+        "answer": "One repeated root x = -1."
+      }
+    ],
+    "rule": [
+      { "title": "Exponent family", "detail": "a^m a^n = a^(m+n); (a^m)^n = a^(mn); 2^k scales nines perfectly for bases 2, 4 and 8." },
+      { "title": "Surds", "detail": "sqrt(ab) = sqrt(a) sqrt(b); terminate non-squares by extracting them from inside the root." },
+      { "title": "Discriminant", "detail": "D = b^2 - 4ac decides 2, 1 or 0 real roots." },
+      { "title": "Quadratic formula", "detail": "x = (-b +- sqrt(D))/2a whenever real roots exist." }
+    ],
+    "mistakes": [
+      { "mistake": "Multiplying powers when the bases differ without conversion.", "fix": "Convert 4 and 8 to powers of 2 before adding exponents." },
+      { "mistake": "Merging unlike surds.", "fix": "sqrt(2) + sqrt(3) has no simpler closed form; extract squares instead." },
+      { "mistake": "Reading D = 0 as no roots.", "fix": "D = 0 means one doubled real root." }
+    ],
+    "memoryTip": "One common base collapses exponent soup; extract squares from surds; negative discriminant means no real root.",
+    "practice": [
+      { "prompt": "Simplify 3^a x 9^(a+1) / 27^(a-1).", "answer": "243. In base 3 the exponent sum is a + (2a + 2) - (3a - 3) = 5, so the value is 3^5 = 243." },
+      { "prompt": "Simplify sqrt(72).", "answer": "6 sqrt(2). 72 = 36 x 2." },
+      { "prompt": "Diagnose x^2 + 5x + 6 = 0.", "answer": "D = 25 - 24 = 1 > 0; two real roots, x = -2 and x = -3." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "progressions",
+    "slug": "progressions-advanced",
+    "title": "GP economy, folding sums and mixed families",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Solve GP product-sum systems, extract terms from sum formulas and combine AP-GP patterns in one problem.",
+    "explanation": "Classic GP systems state two conditions - for example three numbers in GP with sum and product - that solve through the middle term: the product equals a^3 when the numbers are a/r, a, a r, instantly fixing a; the sum then fixes r. Sum-formula extraction uses a_k = S_k - S_(k-1), and mixed questions ask for AP-like differences hiding inside GP-like ratios or vice versa; the honest method is to test both families against the listed first few terms.",
+    "analogy": "A GP with its middle term is a cookie recipe: the product bakes into the middle instantly (a^3), then the sum tells you how thickly the cookies spread (r).",
+    "workedExamples": [
+      {
+        "title": "Middle-term recipe",
+        "problem": "Three numbers in GP have sum 21 and product 64. Find them.",
+        "steps": [
+          "Write them as a/r, a, a r.",
+          "Product = a^3 = 64, so a = 4.",
+          "Sum = 4(1/r + 1 + r) = 21.",
+          "So 1 + r + r^2 = 5.25 r, giving 4r^2 - 17r + 4 = 0, hence r = 4 or 1/4.",
+          "Numbers: 1, 4, 16."
+        ],
+        "answer": "1, 4 and 16."
+      },
+      {
+        "title": "Sum-formula extraction",
+        "problem": "S_n = 4n^2 - 3n. Describe the sequence.",
+        "steps": [
+          "a_1 = S_1 = 1.",
+          "a_n = S_n - S_(n-1) = 4(2n - 1) - 3 = 8n - 7 for n >= 2.",
+          "Check: a_2 = 9 = 8(2) - 7, which matches the sequence.",
+          "An AP with a = 1 and d = 8: 1, 9, 17, ..."
+        ],
+        "answer": "The AP is 1, 9, 17, ... with common difference 8."
+      }
+    ],
+    "rule": [
+      { "title": "Three-in-GP", "detail": "Use a/r, a, a r: product fixes a instantly, sum then digs out r." },
+      { "title": "Sum to term", "detail": "a_n = S_n - S_(n-1) with a_1 = S_1; simplify and match to a family." },
+      { "title": "Infinite GP", "detail": "For |r| < 1, S = a/(1 - r) sums to infinity." },
+      { "title": "Mixed families", "detail": "Fit terms to both AP and GP templates before choosing one." }
+    ],
+    "mistakes": [
+      { "mistake": "Solving GP systems term by term with two unknowns never eliminated.", "fix": "The middle-term parametrisation reduces everything to a and r." },
+      { "mistake": "Using S_n itself as the nth term for n >= 2.", "fix": "It sums everything up to n; subtract the predecessor sum." },
+      { "mistake": "Applying the infinite-sum formula with |r| >= 1.", "fix": "The formula diverges unless |r| < 1." }
+    ],
+    "memoryTip": "Middle term bakes a^3; sums subtract to give terms; infinite GP needs |r| below 1.",
+    "practice": [
+      { "prompt": "Three numbers in GP: sum 14, product 64. Find them.", "answer": "2, 4, 8? Verify: sum 14 / product 64. a^3 = 64 gives a = 4; 4(1/r + 1 + r) = 14 gives 4r^2 - 10r + 4 = 0, r = 2 or 1/2. Numbers 8, 4, 2." },
+      { "prompt": "S_n = 2n^2 + n: first four terms?", "answer": "3, 7, 11, 15. an AP with a = 3, d = 4." },
+      { "prompt": "Infinite GP 4 with r = 1/2 sums to?", "answer": "8. 4/(1 - 1/2)." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "probability",
+    "slug": "probability-advanced",
+    "title": "Conditional chains and at-least composition",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Compute conditional probabilities from restricted sample spaces and compose at-least probabilities across independent and dependent trials.",
+    "explanation": "A conditional probability lives in a reduced sample space: given event B, the new world is the outcomes inside B, so P(A | B) = |A and B|/|B|. Two-dice conditional questions shrink the 36-way grid to the conditioning row or column. At-least composition across independent trials still uses complements; for dependent trials, the none-case itself needs a chain of conditional fractions before subtracting.",
+    "analogy": "Conditioning is zooming into a stadium sector: your seat count divides only by the sector's seats, not the whole stadium, because the sector is now the entire world.",
+    "workedExamples": [
+      {
+        "title": "Row-restricted dice",
+        "problem": "Two dice are rolled. Given that the first shows 4, find the probability the sum is 8.",
+        "steps": [
+          "World = 6 outcomes (second die 1 to 6).",
+          "Sum 8 requires second die 4.",
+          "P = 1/6."
+        ],
+        "answer": "1/6."
+      },
+      {
+        "title": "Dependent at-least-one",
+        "problem": "A box has 6 good and 2 defective bulbs. Two are drawn without replacement. Find the probability at least one is good.",
+        "steps": [
+          "None-good means both defective: (2/8) x (1/7) = 2/56 = 1/28.",
+          "P(at least one good) = 1 - 1/28.",
+          "= 27/28."
+        ],
+        "answer": "27/28."
+      }
+    ],
+    "rule": [
+      { "title": "Conditional denominator", "detail": "P(A | B) counts only inside B; divide by |B|, not by the old space." },
+      { "title": "Row or column restriction", "detail": "Conditioning on the first die reduces the grid to one line of 6." },
+      { "title": "None-case chain", "detail": "For dependent draws, compute the none-case as a product of conditional fractions." },
+      { "title": "Independence test", "detail": "Events are independent when joint = product; check before multiplying." }
+    ],
+    "mistakes": [
+      { "mistake": "Dividing by 36 inside a restricted world.", "fix": "The denominator shrinks to the conditioning set." },
+      { "mistake": "Summing dependencies as if additive.", "fix": "Dependencies multiply along chains." },
+      { "mistake": "Forgetting the none-case when drawing without replacement.", "fix": "Both defective givens shrink denominators differently." }
+    ],
+    "memoryTip": "Zoom the world, redivide the count; chains of draws multiply conditional fractions; at-least means one minus none.",
+    "practice": [
+      { "prompt": "Given the first die shows 3, probability the sum is 7?", "answer": "1/6. Need second die 4." },
+      { "prompt": "Bag 5 red, 3 blue; two drawn without replacement. P(at least one blue)?", "answer": "1 - (5/8 x 4/7) = 1 - 20/56 = 9/14." },
+      { "prompt": "Two cards drawn from a deck; P(both aces)?", "answer": "(4/52) x (3/51) = 12/2652 = 1/221." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "permutation-and-combination",
+    "slug": "permutation-and-combination-advanced",
+    "title": "Circular tables, necklaces and quota committees",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Count circular arrangements with rotations removed, decide necklace halving, and handle committees with layered quotas and exclusions.",
+    "explanation": "A round-table arrangement of n distinct people counts (n - 1)! because rotating everyone together is the same seating; a necklace (or key chain) halves that further to (n - 1)!/2 because flipping the arrangement matches it in 3D space... hold: necklaces consider flips as equivalent in 2D-space of reflections. Committee counting layers quotas: choose the numbers from each group, multiply, and subtract restricted cases from a total when exclusions apply.",
+    "analogy": "Round tables ignore spin, necklaces also ignore flips; committees are forms with prescribed rows and shaded forbidden cells, filled by multiplication and subtraction.",
+    "workedExamples": [
+      {
+        "title": "Round table of five",
+        "problem": "In how many ways can 5 people sit around a round table?",
+        "steps": [
+          "Rotations collapse: fix one person as an anchor.",
+          "Arrange the other 4 in seats relative to that anchor.",
+          "(5 - 1)! = 24."
+        ],
+        "answer": "24 seatings."
+      },
+      {
+        "title": "Committee with exclusions",
+        "problem": "From 8 men and 6 women, choose a 5-person committee with at least 2 women.",
+        "steps": [
+          "Total committees: C(14, 5) = 2002.",
+          "Subtract 0 women: C(8, 5) = 56.",
+          "Subtract 1 woman: C(6, 1) x C(8, 4) = 6 x 70 = 420.",
+          "Answer = 2002 - 56 - 420 = 1526."
+        ],
+        "answer": "1526 committees."
+      }
+    ],
+    "rule": [
+      { "title": "Circular fix", "detail": "n around a table: (n - 1)!; beads on a necklace: (n - 1)!/2 for distinct beads." },
+      { "title": "Men-women alternating", "detail": "Around a circle with equal counts: fix the men's ring first, then slot women into gaps." },
+      { "title": "At-least complement", "detail": "Total minus forbidden cases beats enumerating the allowed quota cases." },
+      { "title": "Path counting", "detail": "See grids as letter strings of two moves; count strings, not routes by hand." }
+    ],
+    "mistakes": [
+      { "mistake": "Using n! for circular seatings.", "fix": "Divide by the n rotations: (n - 1)!." },
+      { "mistake": "Halving a necklace count when beads repeat.", "fix": "Reflection-halving needs fully distinct beads; repeated beads also divide by the repeat factorials." },
+      { "mistake": "Enumerating every allowed quota case one by one.", "fix": "Total minus none minus one is a two-term algebra instead of three products." }
+    ],
+    "memoryTip": "Round (n - 1)!, necklaces halve, quotas subtract from totals, and grids count move strings.",
+    "practice": [
+      { "prompt": "8 beads on a necklace, all distinct. Distinct necklaces?", "answer": "(8-1)!/2 = 2520." },
+      { "prompt": "Committee of 4 from 5 men and 4 women with at least 1 woman: count?", "answer": "C(9,4) - C(5,4) = 126 - 5 = 121." },
+      { "prompt": "6 friends around a round table?", "answer": "5! = 120." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

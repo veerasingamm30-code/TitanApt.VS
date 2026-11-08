@@ -158,24 +158,37 @@ async function locateVolumeTwoPages(
   fallbackPages: Map<string, number>,
   pageCache: Map<number, string>,
 ): Promise<Map<string, number>> {
-  /** One sequential pass over the document instead of one scan per section:
-   *  the previous per-section scans re-extracted every page up to 37 times,
-   *  which made a cold volume-2 index take tens of seconds. */
+  /** One sweep in declared section order with a monotonically advancing
+   *  cursor. The old per-section scans re-extracted every page up to 37 times
+   *  (a cold volume-2 index took ~20s) and could bind a top-level title to an
+   *  end-of-book "study plan" listing instead of its real heading. Sections
+   *  with an audited fallback page use it directly; the scan locates the rest
+   *  from the cursor onward, and the page cache keeps total extraction at
+   *  one pass per page. */
   const results = new Map<string, number>();
-  const targets = sections
-    .map((title) => ({ title, normalized: normalizeText(title.replace(/^\d+(?:\.\d+)*\.\s*/, '')) }))
-    .filter((target) => target.normalized.length >= 6);
   const total = document.numPages;
-  for (let pageNumber = 4; pageNumber <= total && results.size < targets.length;pageNumber += 1) {
-    const text = normalizeText(await pageText(document, pageNumber, pageCache));
-    for (const target of targets) {
-      if (results.has(target.title)) continue;
-      if (text.indexOf(target.normalized) >= 0) results.set(target.title, pageNumber);
+  let cursor = 4;
+  for (const title of sections) {
+    const normalized = normalizeText(title.replace(/^\d+(?:\.\d+)*\.\s*/, ''));
+    let found: number | null = null;
+    const fallbackPage = fallbackPages.get(title) ?? null;
+    if (fallbackPage !== null && fallbackPage >= 4 && fallbackPage <= total) {
+      // Audited heading location: deterministic and immune to mention-only
+      // matches (e.g. syllabus/coverage listings repeating the title).
+      found = fallbackPage;
+    } else if (normalized.length >= 6) {
+      for (let pageNumber = cursor; pageNumber <= total; pageNumber += 1) {
+        const text = normalizeText(await pageText(document, pageNumber, pageCache));
+        if (text.indexOf(normalized) >= 0) {
+          found = pageNumber;
+          break;
+        }
+      }
     }
-  }
-  for (const [title, fallbackPage] of fallbackPages) {
-    if (results.has(title)) continue;
-    if (fallbackPage !== null && fallbackPage >= 4 && fallbackPage <= total) results.set(title, fallbackPage);
+    if (found !== null) {
+      results.set(title, found);
+      if (found >= cursor) cursor = found; // sibling sections may share a page
+    }
   }
   return results;
 }
@@ -286,6 +299,11 @@ async function buildVolumeIndex(volumeSlug: string): Promise<VolumeIndexEntry> {
   } finally {
     await document.destroy();
   }
+}
+
+/** Exposed for the learning regression test suite. */
+export async function buildVolumeIndexForTest(volumeSlug: string): Promise<VolumeIndexEntry> {
+  return buildVolumeIndex(volumeSlug);
 }
 
 function getVolumeIndex(volumeSlug: string): Promise<VolumeIndexEntry> {

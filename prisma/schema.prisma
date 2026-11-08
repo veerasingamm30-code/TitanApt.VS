@@ -29,8 +29,10 @@ enum Difficulty {
 
 enum LessonLevel {
   BEGINNER
+  BASIC
   INTERMEDIATE
   ADVANCED
+  EXPERT
 }
 
 enum LessonStatus {

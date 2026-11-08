@@ -1,0 +1,668 @@
+[
+  {
+    "topicSlug": "number-system",
+    "slug": "number-system-intermediate",
+    "title": "Cyclicity of powers and smart remainders",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Find last digits and remainders of large powers using digit cycles and reduce exponents before multiplying.",
+    "explanation": "The last digit of a power follows a repeating cycle determined by the base's last digit: digits 0, 1, 5 and 6 are self-copies, while 2, 3, 7 and 8 repeat in cycles of length 4. So the last digit of a^b depends only on b mod 4 (with care for the wrap when the remainder is 0, which means the fourth entry of the cycle). For remainders, reduce the base modulo the divisor first, then multiply the reduced parts; powers modular arithmetic keeps every intermediate number small.",
+    "analogy": "Units-digit cycles are clock hands: a base hand sweeps rounds of 1 or 4 positions, so only the remainder of the exponent matters, never its size.",
+    "workedExamples": [
+      {
+        "title": "Last digit of a big power",
+        "problem": "Find the last digit of 3^43.",
+        "steps": [
+          "Units cycle of 3: 3, 9, 7, 1, of length 4.",
+          "43 mod 4 = 3.",
+          "Take the third entry of the cycle: 7."
+        ],
+        "answer": "The last digit of 3^43 is 7."
+      },
+      {
+        "title": "Remainder by reduction",
+        "problem": "Find the remainder when 17^2 is divided by 5, and hence when 17^200 is divided by 5.",
+        "steps": [
+          "Reduce the base: 17 mod 5 = 2.",
+          "Cycle of 2 mod 5: 2, 4, 3, 1, length 4.",
+          "200 mod 4 = 0, which reads as the fourth entry of the cycle: 1."
+        ],
+        "answer": "17^200 leaves remainder 1 when divided by 5."
+      }
+    ],
+    "rule": [
+      { "title": "Units cycles", "detail": "2: 2,4,8,6; 3: 3,9,7,1; 7: 7,9,3,1; 8: 8,4,2,6; length 4 each; 4 cycles as 4,6; 9 as 9,1." },
+      { "title": "Exponent modulo", "detail": "For a cycle of length 4, use exponent mod 4; a remainder of 0 means the last (fourth) cycle entry." },
+      { "title": "Base reduction", "detail": "(a mod m)^n mod m = a^n mod m; always shrink the base first." },
+      { "title": "Product mod m", "detail": "Remainder of a product = product of remainders, reduced again after multiplying." }
+    ],
+    "mistakes": [
+      { "mistake": "Reading exponent mod 4 = 0 as the first cycle entry.", "fix": "Remainder 0 means the cycle has completed full turns, so pick the last entry of the cycle." },
+      { "mistake": "Multiplying huge powers before reducing.", "fix": "Reduce the base modulo m first; 17 mod 5 = 2 keeps work tiny." },
+      { "mistake": "Mixing the units-digit cycle with a remainder cycle.", "fix": "Units cycles are modulo 10 only; other divisors need their own cycles." }
+    ],
+    "memoryTip": "Cycle length 4 for 2, 3, 7, 8; pick cycle[exponent mod 4] with 0 meaning cycle[4]; reduce bases before raising.",
+    "practice": [
+      { "prompt": "Find the last digit of 7^100.", "answer": "1. Cycle 7, 9, 3, 1; 100 mod 4 = 0, so the fourth entry is 1." },
+      { "prompt": "Find the remainder when 24^5 is divided by 7.", "answer": "5. Reduce the base: 24 mod 7 = 3, and 3^5 = 243; 243 mod 7 = 5 because 242 = 7 x 34." },
+      { "prompt": "Find the units digit of 9^53.", "answer": "9. Cycle of 9: 9, 1; odd exponent keeps 9." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "percentages",
+    "slug": "percentages-intermediate",
+    "title": "Successive changes and reverse percentage",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Compose multiple percentage changes into one net factor and reverse a percentage change to restore the original value.",
+    "explanation": "Every percentage change multiplies the current value by a factor, so n successive changes compose by multiplication: +a percent then -b percent leaves the value times (1 + a/100)(1 - b/100), and the net change is read off the product. Reversing is division: if a value is the original times (1 +- r/100), then the original is the new value divided by that factor, and the common error of adding or subtracting the percentage from the new value overcorrects because the base changed.",
+    "analogy": "Two successive changes are two exchange-rate hops: multiply the rates for the journey, and to find where you started, divide by the same combined rate, never re-apply it backwards.",
+    "workedExamples": [
+      {
+        "title": "Net of rise then fall",
+        "problem": "A price is raised by 20 percent and then the new price is reduced by 25 percent. Find the net change.",
+        "steps": [
+          "Factors: 1.20 and 0.75.",
+          "Net factor = 1.20 x 0.75 = 0.90.",
+          "Net change = -10 percent."
+        ],
+        "answer": "The price ends 10 percent lower."
+      },
+      {
+        "title": "Reverse a discount",
+        "problem": "After a 20 percent discount an article sells for 960. Find its marked price.",
+        "steps": [
+          "960 = MP x 0.80.",
+          "MP = 960/0.80 = 1200.",
+          "Check: 1200 less 20 percent is 960."
+        ],
+        "answer": "The marked price is 1200."
+      }
+    ],
+    "rule": [
+      { "title": "Compose factors", "detail": "Multiply (1 +- r1/100)(1 +- r2/100)... and read the net percent from the product." },
+      { "title": "Reverse by division", "detail": "Original = final / (1 +- r/100)." },
+      { "title": "Order independence", "detail": "Successive multiplications commute; +20 then -25 equals -25 then +20." },
+      { "title": "Break-even pair", "detail": "A rise of r percent is undone by a fall of 100r/(100 + r) percent." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding percentages of successive changes.", "fix": "+20 then -25 is not -5 percent; the correct net is -10 percent." },
+      { "mistake": "Reversing a discount by adding the same percentage to the sale price.", "fix": "960 plus 20 percent is 1152, not 1200; divide by 0.80 instead." },
+      { "mistake": "Ignoring which value the second change bases on.", "fix": "After the first change, the base is the new value, so all factors chain multiplicatively." }
+    ],
+    "memoryTip": "Chain factors multiply; undo by dividing; a percent rise and an equal percent fall never cancel.",
+    "practice": [
+      { "prompt": "A town's population grows 10 percent then falls 10 percent. Net change?", "answer": "-1 percent. 1.10 x 0.90 = 0.99." },
+      { "prompt": "After 25 percent depreciation a bike is worth 36000. Original price?", "answer": "48000. 36000/0.75 = 48000." },
+      { "prompt": "A number rose 25 percent, then fell 20 percent. Net?", "answer": "0 percent. 1.25 x 0.80 = 1.00." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "profit-and-loss",
+    "slug": "profit-and-loss-intermediate",
+    "title": "Moving between CP, discount and target profit",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Recover the cost price from a known selling price and profit, chain marked price and discounts, and hit a target profit percentage.",
+    "explanation": "The chain SP = CP(1 + p/100) = MP(1 - d/100) can be traversed in either direction: a selling price plus a profit rate recovers the cost price by division; a target profit percentage fixes the required selling price by multiplication. Successive discounts multiply like percentage changes: two discounts of a and b percent equal one discount of a + b - ab/100 percent. When two items share a cost ratio and are sold at different profit rates, compute each rupee flow separately before summing.",
+    "analogy": "Think of CP, SP and MP as three stations on one line with fixed exchange rates between them; any two stations and one rate locate the third.",
+    "workedExamples": [
+      {
+        "title": "Recover CP, then retarget profit",
+        "problem": "An article sold for 960 yields a 20 percent profit. At what price should it be sold to gain 30 percent?",
+        "steps": [
+          "CP = 960/1.20 = 800.",
+          "Target SP = 800 x 1.30 = 1040.",
+          "Check: 240 gain on 800 is exactly 30 percent."
+        ],
+        "answer": "Sell at 1040."
+      },
+      {
+        "title": "Two discounts in one",
+        "problem": "A shop offers 20 percent and then 10 percent on the dealing price. What single discount is equivalent?",
+        "steps": [
+          "Net factor = 0.80 x 0.90 = 0.72.",
+          "Single discount = 1 - 0.72 = 0.28.",
+          "So the double discount equals 28 percent off."
+        ],
+        "answer": "28 percent."
+      }
+    ],
+    "rule": [
+      { "title": "Back to CP", "detail": "CP = SP/(1 + p/100) = SP/(1 - l/100)." },
+      { "title": "Forward to SP", "detail": "SP = CP(1 + p/100); profit in rupees = SP - CP." },
+      { "title": "Discount folding", "detail": "Discounts d1 then d2 fold into d = d1 + d2 - (d1 d2)/100." },
+      { "title": "Two-item totals", "detail": "Compute each item's rupee profit before forming the overall percent." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding the target profit percent to the known selling price.", "fix": "+30 percent of 960 is not the way; first undo the original 20 percent to reach CP." },
+      { "mistake": "Adding two discounts directly.", "fix": "20 and 10 add to 31 only in the folded formula; the true net is 28." },
+      { "mistake": "Averaging profit percentages of two items equally.", "fix": "Weights are cost prices, not item counts." }
+    ],
+    "memoryTip": "Divide to CP, multiply to target; fold discounts with a + b - ab/100; total rupees before total percent.",
+    "practice": [
+      { "prompt": "Sold at 690 with 15 percent profit. Find CP.", "answer": "600. 690/1.15 = 600." },
+      { "prompt": "A dealer wants 25 percent profit after a single equivalent of his 25 percent markup disappearing through a 20 percent discount path: MP with CP 640 such that SP after 20 percent discount gives 25 percent profit.", "answer": "MP = 1000. SP needed = 640 x 1.25 = 800, and 800 = MP x 0.80, so MP = 1000." },
+      { "prompt": "Two goods cost 300 and 500 and are sold at 10 and 20 percent profit. Overall profit percent?", "answer": "16.25. Profit 30 + 100 = 130 on 800." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "ratio-and-proportion",
+    "slug": "ratio-and-proportion-intermediate",
+    "title": "Change problems built on ratios",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Solve problems where equal additions move one pair into another ratio, and chain three-way ratios through a common term.",
+    "explanation": "Many ratio word problems describe quantities x and y with x : y = a : b now, and after adding k to both, x : y = c : d. Write x = ab... no: write x = a t and y = b t, then solve (a t + k)/(b t + k) = c/d as one linear equation in t. Three-part ratios sharing a middle term combine by scaling each ratio so the shared entry values match. Difference ratios (how much more one part is than another) convert directly from the ratio parts.",
+    "analogy": "Ratio problems are two pans on a balance whose pans both get the same extra weight; the tilt changes, and the original weights are recovered by one letter standing for a whole unit of the first ratio.",
+    "workedExamples": [
+      {
+        "title": "Equal addition changes the ratio",
+        "problem": "Two numbers are in the ratio 3 : 4. When 8 is added to each, the ratio becomes 4 : 5. Find the numbers.",
+        "steps": [
+          "Let the numbers be 3t and 4t.",
+          "(3t + 8)/(4t + 8) = 4/5.",
+          "Cross multiply: 5(3t + 8) = 4(4t + 8) gives 15t + 40 = 16t + 32, so t = 8.",
+          "Numbers: 24 and 32."
+        ],
+        "answer": "The numbers are 24 and 32; indeed (24 + 8)/(32 + 8) = 32/40 = 4/5."
+      },
+      {
+        "title": "Three-way chain",
+        "problem": "A : B = 2 : 3 and B : C = 4 : 5. Find A : B : C.",
+        "steps": [
+          "Match B: LCM(3, 4) = 12.",
+          "Scale first ratio by 4: A : B = 8 : 12. Scale second by 3: B : C = 12 : 15.",
+          "Join through B: A : B : C = 8 : 12 : 15."
+        ],
+        "answer": "A : B : C = 8 : 12 : 15."
+      }
+    ],
+    "rule": [
+      { "title": "Parametrise", "detail": "Write quantities as a t and b t; one unknown t solves nearly every change problem." },
+      { "title": "Added-equal template", "detail": "(a t + k)/(b t + k) = c/d cross-multiplied gives one linear equation." },
+      { "title": "Middle-term scaling", "detail": "Scale ratios so shared terms match, then read off the joined ratio." },
+      { "title": "Difference reading", "detail": "Ratio a : b with difference n between parts means one part = n/(b - a)." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding k to the ratio numbers instead of the quantities.", "fix": "The addition applies to the actual amounts 3t and 4t, not to the ratio." },
+      { "mistake": "Combining A : B = 2 : 3 and B : C = 4 : 5 directly.", "fix": "B appears as 3 in one and 4 in the other; scale first." },
+      { "mistake": "Treating ratio of differences as ratio of quantities.", "fix": "Differences scale by t as well: (4t - 3t)/(2t) is 1/2 regardless of t." }
+    ],
+    "memoryTip": "Let t absorb the ratio, add k to real amounts, cross-multiply once; match middles by LCM before joining ratios.",
+    "practice": [
+      { "prompt": "A number pair is 2 : 3; after adding 6 to each the ratio is 3 : 4. Find them.", "answer": "12 and 18. (2t + 6)/(3t + 6) = 3/4 gives 8t + 24 = 9t + 18, so t = 6." },
+      { "prompt": "X : Y = 3 : 5 and Y : Z = 10 : 7. Find X : Y : Z.", "answer": "6 : 10 : 7. Scale first ratio by 2 so Y matches at 10." },
+      { "prompt": "Two numbers differ by 14 and are in ratio 5 : 7. Find them.", "answer": "35 and 49. One part = 14/(7 - 5) = 7." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "average",
+    "slug": "average-intermediate",
+    "title": "Entries that join, leave and reset the average",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Recover a missing value from an average shift, handle teacher-typ/leader cases and combine groups of unequal sizes.",
+    "explanation": "An average shift by s over n members means the total shifted by n x s, so a newcomer whose joining raises the average from a1 to a2 carries value a2 + n x s... precisely: if the average of n values is a1 and one more member lifts it to a2, the newcomer's value is a1 + (n + 1)(a2 - a1) - no: newcomer value = a2(n+1) - a1 n, i.e. a1 + (n + 1) s where s = a2 - a1. A member leaving works symmetrically. Combining two groups needs weighted totals, not plain averages.",
+    "analogy": "The average is a yardstick nailed at the mean of a group; one new entry lifts or drops the nail by the entry's distance from it, spread over all members.",
+    "workedExamples": [
+      {
+        "title": "Newcomer value from a rise",
+        "problem": "The average of 11 cricketers is 40. A 12th player joins and the average becomes 41. Find the 12th player's score.",
+        "steps": [
+          "Old total = 11 x 40 = 440.",
+          "New total = 12 x 41 = 492.",
+          "Newcomer = 492 - 440 = 52."
+        ],
+        "answer": "The 12th player scores 52."
+      },
+      {
+        "title": "Combining unequal groups",
+        "problem": "Class A has 20 students averaging 40 and class B has 30 students averaging 45. Find the overall average.",
+        "steps": [
+          "Totals: 20 x 40 = 800 and 30 x 45 = 1350.",
+          "Grand total = 2150 over 50 students.",
+          "Overall average = 2150/50 = 43."
+        ],
+        "answer": "43."
+      }
+    ],
+    "rule": [
+      { "title": "Shift = n x rise", "detail": "Average rise s over n kept members means the changed entry moved by (n + 1) s when joining." },
+      { "title": "Joining formula", "detail": "Newcomer value = new average x new count - old average x old count." },
+      { "title": "Leaving formula", "detail": "Leaver value = old total - new total after the exit." },
+      { "title": "Weighted combination", "detail": "Combined average = (n1 a1 + n2 a2)/(n1 + n2) when each group has a single average." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding the average-rise on to the newcomer value in one step.", "fix": "A rise from 40 to 41 with 11 old members is a total shift of 12 over 12 members; compute totals first and only then read the newcomer value." },
+      { "mistake": "Averaging 40 and 45 as 42.5 for unequal groups.", "fix": "Weights are group sizes: (800 + 1350)/50 = 43." },
+      { "mistake": "Mis-tracking which count the shift divides by.", "fix": "The newcomer adds one member, so the multiplier is n + 1, not n." }
+    ],
+    "memoryTip": "Translate every average shift into a total shift; totals reconcile everything, averages never add directly.",
+    "practice": [
+      { "prompt": "Average of 30 students is 15; the teacher joins and the average becomes 16. Teacher's age?", "answer": "46. New total 496 minus old 450 = 46." },
+      { "prompt": "11 players average 40; one leaves and the average falls to 39. Leaver's score?", "answer": "50. Old total 440; after the exit 10 players average 39, totalling 390; the leaver carried 440 - 390 = 50." },
+      { "prompt": "Group 1: 8 people at weight 60; group 2: 12 people at 55. Combined average?", "answer": "57. (480 + 660)/20 = 1140/20 = 57." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "simple-and-compound-interest",
+    "slug": "simple-and-compound-interest-intermediate",
+    "title": "CI-SI gaps, rates hidden in amounts",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Compute the CI-SI gap for two years, recover rates or principals from amounts, and convert compounding frequencies.",
+    "explanation": "For two years the compound interest exceeds the simple interest by exactly P (r/100)^2, the interest-on-interest effect; this identity solves countless two-year questions instantly. An amount after t years is P(1 + r/100)^t, so hidden rates come from dividing the amount by the principal and reading the power. When compounding switches to half-yearly, the yearly rate halves and the period doubles, giving factor (1 + r/200)^(2t).",
+    "analogy": "SI is a straight road; CI is the same road with each year's junction boosting speed by r percent; the CI-SI gap after two years is precisely the bonus earned on the first boost.",
+    "workedExamples": [
+      {
+        "title": "Two-year gap identity",
+        "problem": "P = 10000, r = 10 percent, t = 2 years. Find the CI-SI difference.",
+        "steps": [
+          "Gap = P (r/100)^2.",
+          "= 10000 x (0.10)^2 = 10000 x 0.01.",
+          "= 100."
+        ],
+        "answer": "The compound interest exceeds the simple interest by 100."
+      },
+      {
+        "title": "Half-yearly compounding",
+        "problem": "Find the amount on 5000 for 1 year at 8 percent per annum compounded half-yearly.",
+        "steps": [
+          "Half-yearly rate = 4 percent, two periods.",
+          "Amount = 5000 x (1.04)^2 = 5000 x 1.0816.",
+          "= 5408."
+        ],
+        "answer": "The amount is 5408."
+      }
+    ],
+    "rule": [
+      { "title": "Two-year gap", "detail": "CI - SI (2 years) = P r^2/100^2." },
+      { "title": "Three-year gap", "detail": "CI - SI (3 years) = P (r/100)^2 (3 + r/100)." },
+      { "title": "Amount identity", "detail": "A/P = (1 + r/100)^t; take ratios to dig out r or t." },
+      { "title": "Frequency change", "detail": "n times a year: rate r/n per period,  n t periods, factor (1 + r/(100n))^(nt)." }
+    ],
+    "mistakes": [
+      { "mistake": "Using the gap formula for one year.", "fix": "CI and SI agree for one year; the gap formula applies from two years." },
+      { "mistake": "Halving the period when switching frequency.", "fix": "Half-yearly compounding doubles the periods; the rate halves." },
+      { "mistake": "Entering 10 as 0.10 once and as 10 elsewhere in the same formula.", "fix": "Fix one convention per line: (1 + r/100) with r in percent units." }
+    ],
+    "memoryTip": "Two-year gap = P (r/100)^2; frequency n splits rate r/n across n t periods; total factor reveals hidden rates.",
+    "practice": [
+      { "prompt": "P = 20000, r = 10, 2 years. Find CI - SI.", "answer": "200. 20000 x 0.01 = 200." },
+      { "prompt": "Which yields more on 10000 at 10 percent for 3 years: SI or CI?", "answer": "CI. SI = 3000; CI = 10000(1.331 - 1) = 3310." },
+      { "prompt": "An amount triples at SI in 20 years. Find the rate.", "answer": "10 percent. Interest = 2P over 20 years means yearly P r/100 = 2P/20 = 0.1P, so r = 10." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-and-work",
+    "slug": "time-and-work-intermediate",
+    "title": "Late starters, leaky pipes and efficiency ratios",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Combine partial work phases, include outlets and leaks as negative rates, and convert efficiency ratios into times.",
+    "explanation": "Work often happens in phases: one worker starts, another joins, or one stops. Track cumulative completed work phase by phase, never as one blended rate. Pipes and leaks obey the same law with a draining rate subtracted; a pipe that empties the tank has one-day work with a minus sign. When the statement gives an efficiency ratio like A is twice as efficient as B, write rates as ratio parts and fix total time through the sum.",
+    "analogy": "A tank with a filling tap and an open drain is a bank account with a salary and expenses; what counts is the net monthly rate, computed phase by phase when either changes.",
+    "workedExamples": [
+      {
+        "title": "Phased work",
+        "problem": "A alone takes 12 days and B alone takes 15 days. A starts; after 3 days B joins. How long does the work take in total?",
+        "steps": [
+          "A's first 3 days complete 3/12 = 1/4 of the work.",
+          "Remaining = 3/4; combined one-day rate = 1/12 + 1/15 = 5/60 + 4/60 = 9/60 = 3/20.",
+          "Time together = (3/4)/(3/20) = 5 days.",
+          "Total time = 3 + 5 = 8 days."
+        ],
+        "answer": "The work finishes in 8 days."
+      },
+      {
+        "title": "Pipe with a leak",
+        "problem": "A pipe fills a tank in 6 hours and a leak empties it in 9 hours. With both open, how long to fill an empty tank?",
+        "steps": [
+          "Net one-hour fill = 1/6 - 1/9 = 3/18 - 2/18 = 1/18.",
+          "Time = 1/(1/18) = 18 hours.",
+          "Verify logic: the slow leak means the tank still fills, but slower."
+        ],
+        "answer": "18 hours."
+      }
+    ],
+    "rule": [
+      { "title": "Phase accounting", "detail": "Complete fraction = rate x phase-time; add fractions across phases." },
+      { "title": "Negative rates", "detail": "Any draining outlet subtracts its 1/d from the sum." },
+      { "title": "Efficiency ratio", "detail": "If A is k times B's efficiency, then A's time = B's time / k." },
+      { "title": "Return to rates", "detail": "Convert every statement into one-day work before combining." }
+    ],
+    "mistakes": [
+      { "mistake": "Blending phases into one average rate.", "fix": "Compute each phase's completed fraction separately and add." },
+      { "mistake": "Adding the leak's rate instead of subtracting.", "fix": "Outlet means negative contribution: 1/6 - 1/9, not 1/6 + 1/9." },
+      { "mistake": "Halving time when efficiency doubles for one worker's share only.", "fix": "Recompute combined rate from both workers' new rates." }
+    ],
+    "memoryTip": "Phases add fractions; outlets subtract; efficiency words become rate multiples before any addition.",
+    "practice": [
+      { "prompt": "A can build in 10 days, B in 10 days. B works only on alternate days starting day 1; A works daily. Days to finish?", "answer": "7. Per 2 days: 2/10 + 1/10 = 3/10; after 6 days 9/10; day 7 (A alone) closes it." },
+      { "prompt": "2 pipes: fill in 4 h and 12 h; both open. Time?", "answer": "3 hours. 1/4 + 1/12 = 1/3." },
+      { "prompt": "A is 3 times as efficient as B and finishes 4 days earlier. B's time?", "answer": "6 days. A's time is B/3, and B/3 + 4 = B gives B = 6 days; indeed A takes 2 days and B takes 6." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "time-speed-distance",
+    "slug": "time-speed-distance-intermediate",
+    "title": "Trains, relative speed and equal-part averages",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Use relative speed for crossing trains, convert train length and bridge cases, and apply the harmonic-mean shortcut for equal distances at two speeds.",
+    "explanation": "When two objects move on the same line, the closing speed is the sum of their speeds if opposite or the difference if the same direction; crossing time equals (sum of lengths) divided by relative speed, with all lengths in metres and speeds in m/s. A train crossing a bridge covers bridge length plus its own. When two equal distances are travelled at speeds u and v, the average speed is the harmonic-type mean 2uv/(u + v), not the plain average.",
+    "analogy": "Crossing a train is two rulers sliding towards one another: only their total length and how fast the gap closes decide the meeting second.",
+    "workedExamples": [
+      {
+        "title": "Train past a bridge",
+        "problem": "A 150 m train at 90 km/h crosses a 200 m bridge. Find the time.",
+        "steps": [
+          "Speed = 90 x 5/18 = 25 m/s.",
+          "Total length = 150 + 200 = 350 m.",
+          "Time = 350/25 = 14 s."
+        ],
+        "answer": "14 seconds."
+      },
+      {
+        "title": "Opposite trains",
+        "problem": "Trains of 120 m at 54 km/h and 80 m at 36 km/h run towards each other. Crossing time?",
+        "steps": [
+          "Relative speed = 54 + 36 = 90 km/h = 25 m/s.",
+          "Total length = 120 + 80 = 200 m.",
+          "Time = 200/25 = 8 s."
+        ],
+        "answer": "8 seconds."
+      }
+    ],
+    "rule": [
+      { "title": "Relative speed", "detail": "Opposite: add speeds. Same direction: subtract. Pole: only train length; bridge or platform: both lengths." },
+      { "title": "Crossing time", "detail": "t = (combined lengths) / (relative speed in m/s)." },
+      { "title": "Equal-distance average", "detail": "Average over equal parts = 2uv/(u + v)." },
+      { "title": "Overtake", "detail": "Same-direction crossing of two trains uses speed difference with both lengths." }
+    ],
+    "mistakes": [
+      { "mistake": "Forgetting to add the train's own length at a bridge or platform.", "fix": "The train must cover itself plus the structure." },
+      { "mistake": "Leaving km/h inside a metre equation.", "fix": "Convert with 5/18 before dividing lengths." },
+      { "mistake": "Averaging 40 and 60 as 50 across equal distances.", "fix": "Same distances at 40 and 60 give average 48, not 50." }
+    ],
+    "memoryTip": "Close the gap: lengths add, speeds add or subtract; equal distances average as 2uv/(u+v).",
+    "practice": [
+      { "prompt": "A train of 100 m at 36 km/h passes a pole. Time?", "answer": "10 s. 36 km/h = 10 m/s." },
+      { "prompt": "Two trains 150 m and 100 m at 20 and 10 m/s in the same direction. Crossing time?", "answer": "25 s. Relative speed 10 m/s, length 250 m." },
+      { "prompt": "A car covers a lap of two equal halves at 30 and 60 km/h. Average speed?", "answer": "40 km/h. 2 x 30 x 60/90 = 40." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "mixtures-alligation",
+    "slug": "mixtures-alligation-intermediate",
+    "title": "Dilution, strengthening and the alligation grid",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Handle water additions and milk removals that change concentration, and use the alligation grid to find mixing ratios and prices.",
+    "explanation": "Adding water dilutes a mixture: quantities change but milk's litres are unchanged, so recompute the ratio from fixed milk over new total. Removing some mixture and replacing it carries away each ingredient proportionally, which powers the replacement formula: after repeating pour-outs of volume v from a vessel of volume V, the original component remains V x ((V - v)/V)^n. The alligation grid places the two source values left, the desired mean in the middle, and reads differences to get the mixing ratio of quantities.",
+    "analogy": "Replacement is mortgage amortisation for chemistry: every repayment removes an equal share of all remaining wealth, so the original asset decays by a constant factor each round.",
+    "workedExamples": [
+      {
+        "title": "Adding water",
+        "problem": "A 40 litre milk-water mixture has milk : water = 5 : 3. Adding 5 litres of water, find the new ratio.",
+        "steps": [
+          "Milk = 40 x 5/8 = 25 litres; water = 15 litres.",
+          "After adding water: water = 20 litres, milk still 25.",
+          "New ratio = 25 : 20 = 5 : 4."
+        ],
+        "answer": "The new ratio is 5 : 4."
+      },
+      {
+        "title": "Alligation grid",
+        "problem": "In what ratio must rice at 25 per kg be mixed with rice at 30 per kg so the mixture costs 27 per kg?",
+        "steps": [
+          "Grid: left values 25 and 30; middle 27.",
+          "Ratio = (30 - 27) : (27 - 25) = 3 : 2.",
+          "Verify: (25 x 3 + 30 x 2)/5 = (75 + 60)/5 = 27."
+        ],
+        "answer": "Mix in the ratio 3 : 2."
+      }
+    ],
+    "rule": [
+      { "title": "Fixed component anchor", "detail": "When water is added, track the unchanged component and recompute the ratio." },
+      { "title": "Replacement decay", "detail": "After n pour-outs of v from V, remaining original component = V ((V - v)/V)^n." },
+      { "title": "Alligation differences", "detail": "Quantity ratio = (dearer - mean) : (mean - cheaper)." },
+      { "title": "Concentration fractions", "detail": "Keep working with fractions of the total; only the reporter converts to percentages." }
+    ],
+    "mistakes": [
+      { "mistake": "Recomputing concentration from the changed total only.", "fix": "Identify which ingredient's litres are unchanged and anchor on it." },
+      { "mistake": "Reversing the alligation differences.", "fix": "Cheaper side gets the difference with the dearer value; check by substituting back." },
+      { "mistake": "Subtracting the poured quantity from each ingredient directly across repeats.", "fix": "The second pour removes some of the remaining, not the original; multiply factors." }
+    ],
+    "memoryTip": "Anchor the unchanging litres; pour-outs multiply (V - v)/V; the alligation grid reads differences outward.",
+    "practice": [
+      { "prompt": "A vessel has 60 litres of milk. 12 litres poured off and replaced with water, twice. Milk left?", "answer": "38.4 litres. 60 x (48/60)^2 = 60 x 0.64 = 38.4." },
+      { "prompt": "Water costing nothing is mixed with milk costing 30 per litre to produce a mixture worth 24 per litre. What is the milk-water ratio?", "answer": "4 : 1. Grid differences: (24 - 0) : (30 - 24) = 24 : 6 = 4 : 1; check (30 x 4 + 0 x 1)/5 = 24." },
+      { "prompt": "Rice at 40 per kg is mixed with rice at 60 per kg so the mixture averages 50. What ratio is needed?", "answer": "1 : 1. (60 - 50) : (50 - 40) = 1 : 1." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "algebra",
+    "slug": "algebra-intermediate",
+    "title": "Identities and two-variable word setups",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Apply the standard algebraic identities without expansion and translate word problems into two correct linear equations.",
+    "explanation": "Memorised identities turn long multiplications into instant evaluations: (a + b)^2 = a^2 + 2ab + b^2, (a - b)^2 = a^2 - 2ab + b^2, a^2 - b^2 = (a + b)(a - b) and (a + b)^3 or a^3 + b^3 in their factorised forms. Word problems convert each sentence about totals and differences into an equation; two sentences in two unknowns give two equations, solved by elimination. The reverse reading of x^2 - (p + q)x + pq = (x - p)(x - q) also factorises wide trinomials mentally.",
+    "analogy": "Identities are prefabricated walls: measuring piece by piece takes minutes, but dropping the finished wall takes seconds, provided you know you needed that wall.",
+    "workedExamples": [
+      {
+        "title": "Identity at work",
+        "problem": "Evaluate 102^2 - 98^2 without expanding.",
+        "steps": [
+          "Use a^2 - b^2 = (a + b)(a - b).",
+          "= (102 + 98)(102 - 98) = 200 x 4.",
+          "= 800."
+        ],
+        "answer": "800."
+      },
+      {
+        "title": "Words to equations",
+        "problem": "The sum of two numbers is 35 and their difference is 7. Find them.",
+        "steps": [
+          "Equations: x + y = 35, x - y = 7.",
+          "Add: 2x = 42, so x = 21.",
+          "Then y = 14."
+        ],
+        "answer": "21 and 14."
+      }
+    ],
+    "rule": [
+      { "title": "Squared identities", "detail": "(a +- b)^2 = a^2 +- 2ab + b^2; the middle term is always 2ab." },
+      { "title": "Difference of squares", "detail": "a^2 - b^2 = (a + b)(a - b): the minimal-work path for such expressions." },
+      { "title": "Split middle trinomial", "detail": "x^2 - (p + q)x + pq = (x - p)(x - q): find two numbers whose product is the constant and sum is the middle coefficient." },
+      { "title": "Two-sentence rule", "detail": "Each independent sentence about two unknowns yields one equation; two such sentences suffice." }
+    ],
+    "mistakes": [
+      { "mistake": "Writing (a + b)^2 = a^2 + b^2.", "fix": "The middle 2ab never disappears; verify with a = b = 1 giving 4, not 2." },
+      { "mistake": "Choosing the wrong pair p and q for the trinomial split.", "fix": "Match both product and sum conditions simultaneously." },
+      { "mistake": "Using one word sentence for both equations.", "fix": "Parallel statements must be independent; restate check on solutions." }
+    ],
+    "memoryTip": "Middle term 2ab always; difference of squares factors; trinomial split wants product-constant and sum-middle; two equations from two sentences.",
+    "practice": [
+      { "prompt": "Evaluate 45^2 - 44^2 mentally.", "answer": "89. (45 + 44)(45 - 44) = 89." },
+      { "prompt": "Factorise x^2 - 9x + 20.", "answer": "(x - 4)(x - 5). Product 20, sum 9 with both numbers negative." },
+      { "prompt": "Solve 2x/3 - x/4 = 15.", "answer": "x = 36. Common denominator 12: (8x - 3x)/12 = 15 gives 5x = 180." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "progressions",
+    "slug": "progressions-intermediate",
+    "title": "Series arithmetic beyond the nth term",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Work with geometric progressions, recover series from given sums, and use special formulas for sums of evens, odds and squares.",
+    "explanation": "A geometric progression (GP) multiplies by a constant ratio r; the nth term is a r^(n-1) and sums of a fixed number of terms follow S_n = a (r^n - 1)/(r - 1) when r differs from 1. The reverse skill also matters: given a sum formula S_n, the kth term is S_k - S_(k-1). Three classical families keep recurring: sum of the first n natural numbers n(n+1)/2, the first n even numbers n(n+1), the first n odd numbers n^2, and the squares 1^2 + ... + n^2 = n(n+1)(2n+1)/6.",
+    "analogy": "AP adds a fixed stair step each floor; GP repaints whole floors by one tint factor; special families are the spiral staircases architects build ready-made.",
+    "workedExamples": [
+      {
+        "title": "GP term and sum",
+        "problem": "For the GP 2, 6, 18, ..., find the 4th term and the sum of the first 4 terms.",
+        "steps": [
+          "Ratio r = 3.",
+          "4th term = 2 x 3^3 = 54.",
+          "Sum = 2 + 6 + 18 + 54 = 80."
+        ],
+        "answer": "The 4th term is 54 and the 4-term sum is 80."
+      },
+      {
+        "title": "Term from a sum formula",
+        "problem": "Given S_n = 3n^2 + 2n, find the first three terms and the common difference.",
+        "steps": [
+          "First term = S_1 = 3 + 2 = 5.",
+          "Second = S_2 - S_1 = (12 + 4) - 5 = 16 - 5 = 11.",
+          "Third = S_3 - S_2 = (27 + 6) - 16 = 17.",
+          "So the AP is 5, 11, 17 with d = 6."
+        ],
+        "answer": "The series is 5, 11, 17, ... with common difference 6."
+      }
+    ],
+    "rule": [
+      { "title": "GP basics", "detail": "t_n = a r^(n-1); S_n = a (r^n - 1)/(r - 1) for r != 1." },
+      { "title": "Sum-difference identity", "detail": "a_k = S_k - S_(k-1) for k >= 2 and a_1 = S_1." },
+      { "title": "Evans and odds", "detail": "First n evens sum to n(n+1); first n odds to n^2; first n numbers to n(n+1)/2." },
+      { "title": "Squares and cubes", "detail": "Sum of squares = n(n+1)(2n+1)/6; sum of cubes = [n(n+1)/2]^2." }
+    ],
+    "mistakes": [
+      { "mistake": "Applying the GP sum formula with r = 1.", "fix": "When r = 1 all terms equal a, so the sum is n a." },
+      { "mistake": "Using S_n alone as the nth term.", "fix": "Only S_1 is a term; later terms need S_k - S_(k-1)." },
+      { "mistake": "Confusing n(n+1) for odds with n^2.", "fix": "Odds alone make perfect squares: 1, 4, 9, 16." }
+    ],
+    "memoryTip": "GP multiplies; terms hide between successive sums; evens n(n+1), odds n^2, squares as the 1-6 formula.",
+    "practice": [
+      { "prompt": "Find the sum of the first 20 even numbers.", "answer": "420. 20 x 21 = 420." },
+      { "prompt": "A GP starts 3 with r = 2. Find the 6th term.", "answer": "96. 3 x 2^5 = 96." },
+      { "prompt": "Given S_n = n^2, find the first four terms.", "answer": "1, 3, 5, 7. Differences of successive squares are the odd numbers." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "probability",
+    "slug": "probability-intermediate",
+    "title": "At-least-one events and drawing without replacement",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Use complements for at-least-one questions and multiply conditional fractions when items are drawn without replacement.",
+    "explanation": "At-least-one events are almost always easier from the complement: P(at least one success) = 1 - P(no successes), computed as a single clean subtraction. When items leave the population after each draw, the second draw's probability changes: multiplying the two conditional fractions models this without replacement. Order of draws matters in the multiplication but not in the question, so any specified order gives the same product.",
+    "analogy": "At-least-one is a spare tyre problem: instead of counting every useful combination, find the single no-spare situation and subtract it from certainty.",
+    "workedExamples": [
+      {
+        "title": "At least one head",
+        "problem": "Three coins are tossed. Find the probability of at least one head.",
+        "steps": [
+          "Total outcomes = 2^3 = 8.",
+          "No heads = exactly 1 outcome (TTT), probability 1/8.",
+          "P(at least one head) = 1 - 1/8 = 7/8."
+        ],
+        "answer": "7/8."
+      },
+      {
+        "title": "Without replacement",
+        "problem": "A bag has 5 red and 3 blue balls. Two are drawn without replacement. Find the probability both are red.",
+        "steps": [
+          "First red: 5/8.",
+          "Second red: 4/7 remotes... precisely 4 reds remain among 7 balls.",
+          "Product = 5/8 x 4/7 = 20/56 = 5/14."
+        ],
+        "answer": "5/14."
+      }
+    ],
+    "rule": [
+      { "title": "Complement shortcut", "detail": "For at-least-one questions use 1 - P(none)." },
+      { "title": "Sequential draws", "detail": "Without replacement, multiply the current conditional fractions draw by draw." },
+      { "title": "Independent tries", "detail": "With replacement, every draw keeps the original fractions and powers apply." },
+      { "title": "Any order", "detail": "For a combination question with different compositions per slot, sum the ordered cases or use combinations directly." }
+    ],
+    "mistakes": [
+      { "mistake": "Enumerating every at-least-one case by hand.", "fix": "One minus none is faster and safer." },
+      { "mistake": "Keeping the original denominator after a draw.", "fix": "The pool shrinks: 8 then 7 balls in the example." },
+      { "mistake": "Using the without-replacement product when replacement holds.", "fix": "Check the question: with replacement means the same fraction repeats." }
+    ],
+    "memoryTip": "1 minus none for at-least; shrink the pool draw by draw; with replacement freezes fractions.",
+    "practice": [
+      { "prompt": "Four coins tossed: probability of at least one tail?", "answer": "15/16. Only HHHH fails." },
+      { "prompt": "Bag: 6 white, 4 black. Two drawn without replacement. P(both black)?", "answer": "2/15. 4/10 x 3/9 = 12/90 = 2/15." },
+      { "prompt": "A die is rolled twice with replacement. P(both throws show 6)?", "answer": "1/36. (1/6)^2 with replacement." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "permutation-and-combination",
+    "slug": "permutation-and-combination-intermediate",
+    "title": "Repeating letters and committee mixing",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Arrange words with repeated letters using the division rule and size committees with layered combination counts.",
+    "explanation": "Arrangements of a word's letters divide n! by the factorials of each letter's repetition count, because swapping identical items does not create a new word; BANANA with three As and two Ns gives 6!/(3! 2!) = 60. Committee questions layer choices: first choose how many come from each group, then multiply the group-wise combinations. When an at-least-one condition appears across groups, complementary counting or a case split is honest bookkeeping.",
+    "analogy": "Counting words with repeats is pricing a necklace with identical beads: the recipe divides by each bead type's self-swaps; committees are flights with prescribed leg counts per airline.",
+    "workedExamples": [
+      {
+        "title": "Word with repeats",
+        "problem": "In how many distinguishable ways can the letters of BANANA be arranged?",
+        "steps": [
+          "Six letters with A repeated 3 times and N repeated 2 times.",
+          "Count = 6!/(3! x 2!).",
+          "= 720/(6 x 2) = 60."
+        ],
+        "answer": "60 distinguishable arrangements."
+      },
+      {
+        "title": "Committee with structure",
+        "problem": "From 5 men and 4 women, form a committee of 5 with exactly 3 men. How many committees?",
+        "steps": [
+          "Choose 3 of 5 men: C(5,3) = 10.",
+          "Choose 2 of 4 women: C(4,2) = 6.",
+          "Multiply: 10 x 6 = 60."
+        ],
+        "answer": "60 committees."
+      }
+    ],
+    "rule": [
+      { "title": "Division rule", "detail": "Arrangements with repeats = n!/(n1! n2! ... nk!) for each letter's multiplicity." },
+      { "title": "Layered choices", "detail": "Committees with group quotas multiply the within-group combinations." },
+      { "title": "At-least-one split", "detail": "Either subtract the all-missing case from the total or split cases explicitly." },
+      { "title": "Identical-object counting", "detail": "The same division counts binary strings, dice-eyes patterns and seating of twins." }
+    ],
+    "mistakes": [
+      { "mistake": "Counting repeated letters as distinct.", "fix": "Divide by repeated-letter factorials; BANANA is not 720 but 60." },
+      { "mistake": "Adding group choices instead of multiplying.", "fix": "Each group contributes one jointly-required part; multiply across parts." },
+      { "mistake": "Overcounting at-least-one cases as separate quotas.", "fix": "Total minus none, or explicit case sums, keeps the count honest." }
+    ],
+    "memoryTip": "Divide by repeat factorials; committees multiply quotas; at-least-one means total minus none.",
+    "practice": [
+      { "prompt": "Distinguishable arrangements of MISSISSIPPI.", "answer": "11!/(4! 4! 2!) = 34650." },
+      { "prompt": "From 6 boys and 5 girls, committees of 6 with 4 boys?", "answer": "C(6,4) x C(5,2) = 15 x 10 = 150." },
+      { "prompt": "How many 4-digit codes from digits 1-9 without repetition?", "answer": "9 x 8 x 7 x 6 = 3024." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

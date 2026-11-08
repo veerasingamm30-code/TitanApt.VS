@@ -28,7 +28,10 @@ if (!creds) {
 let r = await req('/api/auth/csrf');
 if (r.json?.data?.csrfToken) jar['ta_csrf'] = r.json.data.csrfToken;
 r = await req('/api/auth/signup', { method: 'POST', body: creds });
-if (r.status === 429) r = await req('/api/auth/login', { method: 'POST', body: { email: creds.email, password: creds.password } });
+if (r.status === 429 || r.status === 409) {
+  // limiter tripped, or the shared probe account already exists -> login
+  r = await req('/api/auth/login', { method: 'POST', body: { email: creds.email, password: creds.password } });
+}
 if (r.status !== 201 && r.status !== 200) { console.log('auth failed', r.status, JSON.stringify(r.json).slice(0, 200)); process.exit(2); }
 if (r.json?.data) {} // noop
 // refresh csrf token issued at login

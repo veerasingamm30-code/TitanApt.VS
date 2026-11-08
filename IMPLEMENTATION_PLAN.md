@@ -42,3 +42,12 @@ Added workitems executed beyond the original list:
 | A4 | Public companies endpoint (pre-login, no user data) | `apps/api/src/routes/public.ts`, `app.ts` | 26 companies public; protected routes still 401 | PASS |
 | A5 | Landing right-to-left company marquee | `apps/web/src/components/CompanyMarquee.tsx`, `marquee.css` | seamless loop, pause, reduced-motion, signed-in-safe mock CTA | PASS |
 | A6 | Mock category row (server + client, completed after concurrent-editor draft repair; Question-subject grouping fixed to pool query) | `apps/api/src/routes/mock.ts`, `apps/web/src/pages/MockPages.tsx` | category probe 11/11; impossible config 409 | PASS |
+
+## 2026-11-08 addendum: lesson-path expansion delivered
+
+Ordered workitems all PASS as of 2026-11-07 (see TEST_RESULTS.md). New scope executed 2026-11-08:
+- Expand all 25 single-lesson topics + calendars-and-clocks to 5-level paths; 105 lessons authored,
+  merged, seeded (136 total). PASS per Cycle G in TEST_RESULTS.md.
+- Migration `20261108090000_add_lesson_levels_basic_expert` applied; shared LESSON_LEVELS constant and
+  web level chips extended to 5 values. PASS.
+Remaining PARTIAL: boolean-algebra / programming-logic 3-lesson paths (legacy data kept).

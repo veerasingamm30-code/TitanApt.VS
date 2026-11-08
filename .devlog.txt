@@ -11,12 +11,12 @@
 > node scripts/with-db.mjs npm run dev:services
 
 [database] PostgreSQL ready on localhost:55432
-node.exe : (node:16044) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead 
+node.exe : (node:10696) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead 
 to security vulnerabilities, as the arguments are not escaped, only concatenated.
 At line:1 char:1
 + & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
 + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: ((node:16044) [D...y concatenated.:String) [], RemoteException
+    + CategoryInfo          : NotSpecified: ((node:10696) [D...y concatenated.:String) [], RemoteException
     + FullyQualifiedErrorId : NativeCommandError
  
 (Use `node --trace-deprecation ...` to show where the warning was created)
@@ -24,29 +24,39 @@ At line:1 char:1
 > titanapt@1.0.0 dev:services
 > concurrently -k -n API,WEB -c yellow,cyan "npm:dev:api" "npm:dev:web"
 
+[WEB] 
+[WEB] > titanapt@1.0.0 dev:web
+[WEB] > npm run dev -w @titanapt/web
+[WEB] 
 [API] 
 [API] > titanapt@1.0.0 dev:api
 [API] > npm run dev -w @titanapt/api
 [API] 
 [WEB] 
-[WEB] > titanapt@1.0.0 dev:web
-[WEB] > npm run dev -w @titanapt/web
+[WEB] > @titanapt/web@1.0.0 dev
+[WEB] > vite
 [WEB] 
 [API] 
 [API] > @titanapt/api@1.0.0 dev
 [API] > tsx watch src/index.ts
 [API] 
 [WEB] 
-[WEB] > @titanapt/web@1.0.0 dev
-[WEB] > vite
-[WEB] 
-[WEB] 
-[WEB]   [32m[1mVITE[22m v6.4.5[39m  [2mready in [0m[1m2147[22m[2m[0m ms[22m
+[WEB]   [32m[1mVITE[22m v6.4.5[39m  [2mready in [0m[1m2683[22m[2m[0m ms[22m
 [WEB] 
 [WEB]   [32mΓ₧£[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
 [WEB] [2m  [32mΓ₧£[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
 [API] TitanApt API listening on http://localhost:4000 (development)
-[API] 7:21:27 am [tsx] change in ./src\index.ts Restarting...
+[API] [learning] warmed volume index: volume-1
+[API] [learning] warmed volume index: volume-2
+[API] [learning] warmed volume index: volume-3
+[API] [learning] warmed volume index: volume-4
+[API] [learning] warmed volume index: volume-5
+[API] [learning] warmed volume index: volume-6
+[API] [learning] warmed volume index: volume-7
+[API] [learning] warmed volume index: volume-8
+[WEB] [2m11:37:14 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AuthPages.tsx[22m
+[WEB] [2m11:37:14 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AuthPages.tsx[22m
+[API] 11:37:14 am [tsx] change in ./..\..\packages\shared\dist\index.js Restarting...
 [API] TitanApt API listening on http://localhost:4000 (development)
 [API] [learning] warmed volume index: volume-1
 [API] [learning] warmed volume index: volume-2
@@ -56,69 +66,9 @@ At line:1 char:1
 [API] [learning] warmed volume index: volume-6
 [API] [learning] warmed volume index: volume-7
 [API] [learning] warmed volume index: volume-8
-[API] 7:24:07 am [tsx] change in ./src\index.ts Restarting...
-[API] TitanApt API listening on http://localhost:4000 (development)
-[API] [learning] warmed volume index: volume-1
-[API] [learning] warmed volume index: volume-2
-[API] [learning] warmed volume index: volume-3
-[API] [learning] warmed volume index: volume-4
-[API] [learning] warmed volume index: volume-5
-[API] [learning] warmed volume index: volume-6
-[API] [learning] warmed volume index: volume-7
-[API] [learning] warmed volume index: volume-8
-[API] 7:24:39 am [tsx] change in ./src\routes\learning.ts Restarting...
-[API] TitanApt API listening on http://localhost:4000 (development)
-[API] [learning] warmed volume index: volume-1
-[API] [learning] warmed volume index: volume-2
-[API] [learning] warmed volume index: volume-3
-[API] [learning] warmed volume index: volume-4
-[API] [learning] warmed volume index: volume-5
-[API] [learning] warmed volume index: volume-6
-[API] [learning] warmed volume index: volume-7
-[API] [learning] warmed volume index: volume-8
-[API] 7:24:55 am [tsx] change in ./src\index.ts Restarting...
-[API] TitanApt API listening on http://localhost:4000 (development)
-[API] [learning] warmed volume index: volume-1
-[API] [learning] warmed volume index: volume-2
-[API] [learning] warmed volume index: volume-3
-[API] [learning] warmed volume index: volume-4
-[API] [learning] warmed volume index: volume-5
-[API] [learning] warmed volume index: volume-6
-[API] [learning] warmed volume index: volume-7
-[API] [learning] warmed volume index: volume-8
-[API] 7:27:01 am [tsx] change in ./src\index.ts Restarting...
-[API] TitanApt API listening on http://localhost:4000 (development)
-[API] [learning] warmed volume index: volume-1
-[API] [learning] warmed volume index: volume-2
-[API] [learning] warmed volume index: volume-3
-[API] [learning] warmed volume index: volume-4
-[API] [learning] warmed volume index: volume-5
-[API] [learning] warmed volume index: volume-6
-[API] [learning] warmed volume index: volume-7
-[API] [learning] warmed volume index: volume-8
-[API] 7:27:14 am [tsx] change in ./src\index.ts Restarting...
-[API] TitanApt API listening on http://localhost:4000 (development)
-[API] [learning] warmed volume index: volume-1
-[API] [learning] warmed volume index: volume-2
-[API] [learning] warmed volume index: volume-3
-[API] [learning] warmed volume index: volume-4
-[API] [learning] warmed volume index: volume-5
-[API] [learning] warmed volume index: volume-6
-[API] [learning] warmed volume index: volume-7
-[API] [learning] warmed volume index: volume-8
-[WEB] [2m7:28:45 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx[22m
-[WEB] [2m7:29:26 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx[22m
-[WEB] [2m7:29:52 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx[22m
-[WEB] [2m7:30:15 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx[22m
-[WEB] [2m7:30:36 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx[22m
-[WEB] [2m7:30:58 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ProtectedRoute.tsx[22m
-[WEB] [2m7:34:29 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx, /src/pages/BookmarksPage.tsx, /src/pages/AuthPages.tsx, /src/pages/LearningHubPage.tsx, /src/pages/ReadinessPage.tsx, /src/components/AppShell.tsx, /src/pages/SettingsPage.tsx, /src/pages/LearnPages.tsx, /src/pages/CrackTimePage.tsx, /src/pages/PracticePages.tsx, /src/pages/MockPages.tsx, /src/pages/AdminPages.tsx, /src/pages/CompanyPages.tsx, /src/pages/NotFoundPage.tsx, /src/pages/DashboardPage.tsx, /src/pages/LandingPage.tsx, /src/pages/ProgressPage.tsx, /src/components/CompanyMarquee.tsx[22m
-[WEB] [2m7:34:48 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx, /src/pages/BookmarksPage.tsx, /src/pages/AuthPages.tsx, /src/pages/LearningHubPage.tsx, /src/pages/ReadinessPage.tsx, /src/components/AppShell.tsx, /src/pages/SettingsPage.tsx, /src/pages/LearnPages.tsx, /src/pages/CrackTimePage.tsx, /src/pages/PracticePages.tsx, /src/pages/MockPages.tsx, /src/pages/AdminPages.tsx, /src/pages/CompanyPages.tsx, /src/pages/NotFoundPage.tsx, /src/pages/DashboardPage.tsx, /src/pages/LandingPage.tsx, /src/pages/ProgressPage.tsx, /src/components/CompanyMarquee.tsx[22m
-[WEB] [2m7:35:10 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx, /src/pages/BookmarksPage.tsx, /src/pages/AuthPages.tsx, /src/pages/LearningHubPage.tsx, /src/pages/ReadinessPage.tsx, /src/components/AppShell.tsx, /src/pages/SettingsPage.tsx, /src/pages/LearnPages.tsx, /src/pages/CrackTimePage.tsx, /src/pages/PracticePages.tsx, /src/pages/MockPages.tsx, /src/pages/AdminPages.tsx, /src/pages/CompanyPages.tsx, /src/pages/NotFoundPage.tsx, /src/pages/DashboardPage.tsx, /src/pages/LandingPage.tsx, /src/pages/ProgressPage.tsx, /src/components/CompanyMarquee.tsx[22m
-[WEB] [2m7:35:29 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/auth/AuthContext.tsx, /src/pages/BookmarksPage.tsx, /src/pages/AuthPages.tsx, /src/pages/LearningHubPage.tsx, /src/pages/ReadinessPage.tsx, /src/components/AppShell.tsx, /src/pages/SettingsPage.tsx, /src/pages/LearnPages.tsx, /src/pages/CrackTimePage.tsx, /src/pages/PracticePages.tsx, /src/pages/MockPages.tsx, /src/pages/AdminPages.tsx, /src/pages/CompanyPages.tsx, /src/pages/NotFoundPage.tsx, /src/pages/DashboardPage.tsx, /src/pages/LandingPage.tsx, /src/pages/ProgressPage.tsx, /src/components/CompanyMarquee.tsx[22m
-[WEB] [2m7:35:41 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AuthPages.tsx[22m
-[WEB] [2m7:35:41 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AuthPages.tsx[22m
-[API] 7:35:41 am [tsx] change in ./..\..\packages\shared\dist\index.js Restarting...
+[WEB] [2m11:38:30 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AuthPages.tsx[22m
+[WEB] [2m11:38:30 am[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AuthPages.tsx[22m
+[API] 11:38:30 am [tsx] change in ./..\..\packages\shared\dist\index.js Restarting...
 [API] TitanApt API listening on http://localhost:4000 (development)
 [API] [learning] warmed volume index: volume-1
 [API] [learning] warmed volume index: volume-2

@@ -32,7 +32,7 @@ describe('TitanApt HTTP integration', () => {
     expect(response.body.data.content).toMatchObject({
       topics: 28,
       approvedQuestions: 1675,
-      approvedLessons: 31,
+      approvedLessons: 136,
       publishedMocks: 27,
     });
   });

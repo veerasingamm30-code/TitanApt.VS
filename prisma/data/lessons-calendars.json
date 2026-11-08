@@ -1,0 +1,56 @@
+[
+  {
+    "topicSlug": "calendars-and-clocks",
+    "slug": "calendars-and-clocks-foundations",
+    "title": "Days, weeks and reading a clock",
+    "level": "BEGINNER",
+    "order": 1,
+    "objective": "Count days and weeks on a calendar, jump weekdays forward with the 7-day cycle and read clock time to the hour and half hour.",
+    "explanation": "A week is a repeating cycle of 7 weekday names: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday. Any question that moves a date forward or backward is settled by dividing the number of days by 7 and using only the remainder. A calendar month shows whole weeks plus a few spare days, which is why a fixed date lands on different weekdays in different months. A clock has a short hour hand and a long minute hand: the minute hand makes one full lap of 60 minutes per hour while the hour hand moves to the next hour mark.",
+    "analogy": "Think of weekdays as seven seats on a rotating wheel. Whole turns (multiples of 7 days) bring you back to the same seat, so only the leftover days move you to a new seat.",
+    "workedExamples": [
+      {
+        "title": "Counting days between two dates",
+        "problem": "How many days are there from 5 March to 21 March?",
+        "steps": [
+          "21 - 5 = 16.",
+          "A subtraction inside the same month gives the gap directly.",
+          "So the gap is 16 days."
+        ],
+        "answer": "16 days."
+      },
+      {
+        "title": "Weekday after 20 days",
+        "problem": "Today is Saturday. Which weekday falls 20 days later?",
+        "steps": [
+          "Divide 20 by 7: 20 = 7 x 2 + 6, remainder 6.",
+          "Two whole weeks bring us back to Saturday.",
+          "Move 6 seats forward: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday."
+        ],
+        "answer": "Friday."
+      }
+    ],
+    "rule": [
+      { "title": "Week cycle", "detail": "There are exactly 7 days in a week; the weekday repeats every 7 days." },
+      { "title": "Remainder rule", "detail": "The weekday shifts by (number of days mod 7); both directions use the same idea." },
+      { "title": "Weeks and leftover days", "detail": "n days = floor(n/7) weeks plus n mod 7 leftover days." },
+      { "title": "Clock face", "detail": "The long hand counts minutes (one lap = 60 minutes); the short hand counts hours (one lap = 12 hours)." }
+    ],
+    "mistakes": [
+      { "mistake": "Counting 20 days as 20 weekday hops.",
+        "fix": "Only the remainder after dividing by 7 matters: 20 mod 7 = 6." },
+      { "mistake": "Counting the first date itself when counting between dates.",
+        "fix": "From 5 to 21 March, the 5th itself is not counted: 21 - 5 = 16 days." },
+      { "mistake": "Mixing up the hour hand and minute hand.",
+        "fix": "The hour hand is short and slow; the minute hand is long and makes a full lap every hour." }
+    ],
+    "memoryTip": "Whole weeks vanish, leftovers move the weekday; gaps inside a month are simple subtraction.",
+    "practice": [
+      { "prompt": "How many days are there from 4 June to 30 June?", "answer": "26 days. 30 - 4 = 26." },
+      { "prompt": "Today is Wednesday. Which weekday comes 10 days later?", "answer": "Saturday. 10 mod 7 = 3; Wednesday plus 3 days is Saturday." },
+      { "prompt": "Break 25 days into weeks and leftover days.", "answer": "3 weeks and 4 days. 25 = 7 x 3 + 4." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

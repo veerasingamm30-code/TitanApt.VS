@@ -213,7 +213,7 @@ record('network: no endless refetch loop detected', storm.length === 0, JSON.str
 // ---------- 8. Sidebar navigation ----------
 await page.goto(BASE + '/app/dashboard', { waitUntil: 'domcontentloaded' });
 await page.waitForTimeout(1000);
-const navPairs = [['Dashboard', '/app/dashboard'], ['Topic lessons', '/app/learn'], ['Learning Hub', '/app/learning'], ['Practice', '/app/practice'], ['Crack Time', '/app/crack-time'], ['Mock tests', '/app/mocks']];
+const navPairs = [['Dashboard', '/app'], ['Topic lessons', '/app/learn'], ['Learning Hub', '/app/learning'], ['Practice', '/app/practice'], ['Crack Time', '/app/crack-time'], ['Mock tests', '/app/mocks']];
 for (const [label, href] of navPairs) {
   const link = page.locator(`aside a[href="${href}"]`).first();
   if (await link.count() === 0) { record(`nav: sidebar link "${label}"`, false, 'link not found'); continue; }

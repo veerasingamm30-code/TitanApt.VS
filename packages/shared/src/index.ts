@@ -26,7 +26,7 @@ export const SUBJECT_LABELS: Record<Subject, string> = {
 export const DIFFICULTIES = ['EASY', 'MEDIUM', 'HARD'] as const;
 export type Difficulty = (typeof DIFFICULTIES)[number];
 
-export const LESSON_LEVELS = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'] as const;
+export const LESSON_LEVELS = ['BEGINNER', 'BASIC', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'] as const;
 export type LessonLevel = (typeof LESSON_LEVELS)[number];
 
 export const REVIEW_STATUSES = [

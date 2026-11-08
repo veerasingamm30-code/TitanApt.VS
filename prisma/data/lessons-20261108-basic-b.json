@@ -1,0 +1,661 @@
+[
+  {
+    "topicSlug": "geometry-and-mensuration",
+    "slug": "geometry-and-mensuration-basic",
+    "title": "Perimeters and areas of plane figures",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Compute perimeters and areas of rectangles, squares, triangles and circles, and apply the Pythagoras theorem to right triangles.",
+    "explanation": "Perimeter measures the boundary length of a figure and area measures the surface it covers, so perimeter is measured in units and area in square units. A rectangle with sides l and b has perimeter 2(l + b) and area l x b; a square with side a has perimeter 4a and area a^2. A triangle has area one-half base times height, and a circle of radius r has circumference 2 x pi x r and area pi x r^2, using pi = 22/7 in exams. In a right triangle the square on the hypotenuse equals the sum of the squares on the legs.",
+    "analogy": "Perimeter is the fence around a farm, area is the crop that fits inside; the fence follows the edge while the crop spreads over every square patch.",
+    "workedExamples": [
+      {
+        "title": "Rectangle from both sides",
+        "problem": "Find the perimeter and area of a rectangle 12 cm by 8 cm.",
+        "steps": [
+          "Perimeter = 2(12 + 8) = 2 x 20 = 40 cm.",
+          "Area = 12 x 8 = 96 square cm."
+        ],
+        "answer": "Perimeter 40 cm, area 96 square cm."
+      },
+      {
+        "title": "Circle with radius 7",
+        "problem": "Find the circumference and area of a circle of radius 7 cm, taking pi = 22/7.",
+        "steps": [
+          "Circumference = 2 x (22/7) x 7 = 44 cm.",
+          "Area = (22/7) x 7 x 7 = 154 square cm."
+        ],
+        "answer": "Circumference 44 cm and area 154 square cm."
+      }
+    ],
+    "rule": [
+      { "title": "Rectangle", "detail": "P = 2(l + b), A = l x b." },
+      { "title": "Square and triangle", "detail": "Square: P = 4a, A = a^2. Triangle: A = (1/2) x base x height." },
+      { "title": "Circle", "detail": "C = 2 x pi x r; A = pi x r^2; pi = 22/7 or 3.14." },
+      { "title": "Pythagoras", "detail": "For a right triangle with legs a, b and hypotenuse c, a^2 + b^2 = c^2; remember the triples 3-4-5 and 5-12-13." }
+    ],
+    "mistakes": [
+      { "mistake": "Using half of the slant side instead of the perpendicular height for a triangle area.", "fix": "The height is measured perpendicular to the chosen base." },
+      { "mistake": "Mixing radius and diameter in circle problems.", "fix": "All circle formulas use radius; a diameter of 14 means radius 7." },
+      { "mistake": "Reporting perimeter in square units.", "fix": "Perimeter is a length; only area uses square units." }
+    ],
+    "memoryTip": "Fence = perimeter, crop = area; square everything once for squares and circles; Pythagoras for every right angle.",
+    "practice": [
+      { "prompt": "A square has area 81. Find its perimeter.", "answer": "36. Side = 9, so 4 x 9 = 36." },
+      { "prompt": "A circle has diameter 14. Find its circumference, taking pi = 22/7.", "answer": "44. Radius 7, so 2 x (22/7) x 7 = 44." },
+      { "prompt": "Find the hypotenuse of a right triangle with legs 9 and 12.", "answer": "15. 9^2 + 12^2 = 81 + 144 = 225, and 15^2 = 225." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "data-interpretation",
+    "slug": "data-interpretation-basic",
+    "title": "Reading tables, totals and shares",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Extract values from a table, compute totals, percentage shares and simple growth between entries.",
+    "explanation": "Data interpretation (DI) questions rarely need new mathematics; they test careful reading of a table or chart plus percentage and ratio arithmetic. Always note the units, read the exact row or column named, and compute shares as part divided by whole. Growth between two periods is measured as change over the older value, and average values are totals spread over the number of periods.",
+    "analogy": "A table is an answer bank: the numbers are already there, and the exam checks whether you can find the right cells fast and calculate a share or a change without slipping.",
+    "workedExamples": [
+      {
+        "title": "Totals and shares from quarterly sales",
+        "problem": "Sales were 1200 in Q1, 1500 in Q2, 900 in Q3 and 1800 in Q4. Find the annual total and Q4's percentage share.",
+        "steps": [
+          "Total = 1200 + 1500 + 900 + 1800 = 5400.",
+          "Q4 share = 1800/5400 x 100 = 33.33 percent.",
+          "Q4 is the largest single quarter; the smallest is Q3 with 900/5400 x 100 = 16.67 percent."
+        ],
+        "answer": "Total 5400; Q4 contributes 33.33 percent."
+      },
+      {
+        "title": "Growth between quarters",
+        "problem": "Using the same table, find the percentage growth from Q3 to Q4.",
+        "steps": [
+          "Change = 1800 - 900 = 900.",
+          "Growth = 900/900 x 100 = 100 percent.",
+          "Growth is measured on the older value, Q3."
+        ],
+        "answer": "Sales grew 100 percent from Q3 to Q4."
+      }
+    ],
+    "rule": [
+      { "title": "Read units first", "detail": "A wrong unit multiplies every answer wrongly; check the header row." },
+      { "title": "Share formula", "detail": "Share percent = part/whole x 100." },
+      { "title": "Growth formula", "detail": "Growth percent = (new - old)/old x 100." },
+      { "title": "Averages in DI", "detail": "Average = total of the listed periods / number of periods." }
+    ],
+    "mistakes": [
+      { "mistake": "Computing growth on the newer value.", "fix": "From 900 to 1800 the growth is 100 percent on 900, not 50 percent on 1800." },
+      { "mistake": "Adding values from the wrong column in a wide table.", "fix": "Trace with a finger or ruler across the named row." },
+      { "mistake": "Mixing millions with thousands.", "fix": "Convert all values to one unit before totals." }
+    ],
+    "memoryTip": "Units first, correct cells second, then share = part/whole and growth = change/old.",
+    "practice": [
+      { "prompt": "Three divisions earn 20, 45 and 60. Find the total and the share of the middle one.", "answer": "Total 125; share of 45 = 45/125 x 100 = 36 percent." },
+      { "prompt": "From 20 to 45, what is the percentage increase?", "answer": "125 percent. 25/20 x 100 = 125." },
+      { "prompt": "Which rose more: from 20 to 45 or from 45 to 60?", "answer": "The first, by 25 units (rising 125 percent) versus 15 units (33.33 percent)." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "number-series",
+    "slug": "number-series-basic",
+    "title": "Differences and ratios in short series",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Identify constant-difference, constant-ratio and growing-gap patterns in short number series and find the missing term.",
+    "explanation": "Most entry-level series questions use one of three patterns: a constant difference, such as +5 every time; a constant ratio, such as doubling; or a growing gap, where the differences themselves form a simple series. The standard method is to compute consecutive differences first, then ratios if differences are not constant, then look at the differences of the differences. Alternating patterns place two interleaved series side by side.",
+    "analogy": "A number series is a dance: step size may stay fixed (walk), multiply (run) or grow (accelerate); reading the step size each turn identifies the dance.",
+    "workedExamples": [
+      {
+        "title": "Constant difference",
+        "problem": "Find the next term: 4, 9, 14, 19, ...",
+        "steps": [
+          "Differences: 9 - 4 = 5, 14 - 9 = 5, 19 - 14 = 5.",
+          "Constant difference 5.",
+          "Next term = 19 + 5 = 24."
+        ],
+        "answer": "24."
+      },
+      {
+        "title": "Growing gaps",
+        "problem": "Find the next term: 2, 5, 10, 17, ...",
+        "steps": [
+          "First differences: 3, 5, 7, which grow by 2.",
+          "Next first difference = 9.",
+          "Next term = 17 + 9 = 26."
+        ],
+        "answer": "26."
+      }
+    ],
+    "rule": [
+      { "title": "Differences first", "detail": "Compute consecutive differences before anything else." },
+      { "title": "Ratios second", "detail": "If differences vary irregularly, check ratios like x2 or /3." },
+      { "title": "Second differences", "detail": "If first differences grow by a constant, extend the difference list one step." },
+      { "title": "Alternating series", "detail": "Split alternate terms into two independent mini-series." }
+    ],
+    "mistakes": [
+      { "mistake": "Assuming doubling on a list that only adds.", "fix": "3, 6, 12, 24 doubles, but 2, 5, 10, 17 grows by odd numbers; measure before guessing." },
+      { "mistake": "Extending only one step of a two-level pattern.", "fix": "Both the terms and their differences may follow rules; write both rows." },
+      { "mistake": "Reading the series backwards for a missing early term.", "fix": "Work outwards from both ends and meet in the middle." }
+    ],
+    "memoryTip": "Measure the step: same-size step is arithmetic, same-ratio step is geometric, growing step needs one more row.",
+    "practice": [
+      { "prompt": "Find the next term: 11, 13, 15, ...", "answer": "17. Constant difference 2." },
+      { "prompt": "Find the next term: 1, 4, 9, 16, ...", "answer": "25. These are perfect squares 1^2 to 5^2." },
+      { "prompt": "Find the next term: 96, 48, 24, ...", "answer": "12. Each term is half the previous one." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "coding-and-decoding",
+    "slug": "coding-and-decoding-basic",
+    "title": "Fixed-shift letter codes",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Encode and decode words with fixed positional letter shifts, numeric letter positions and simple reversal codes.",
+    "explanation": "Coding questions map letters or numbers through one visible rule. The most common are fixed shifts, where every letter moves k positions ahead or back in the alphabet, and A1Z26 numbering, where A = 1 up to Z = 26. Reversal codes write the word backwards. Given one coded pair, compare word and code letter by letter to derive the shift, then apply the same rule consistently to the asked word.",
+    "analogy": "A fixed-shift code is a Caesar wheel: every letter slides along the same rim distance; once the rim is calibrated from one pair, the wheel never moves again.",
+    "workedExamples": [
+      {
+        "title": "Encoding with a plus-two shift",
+        "problem": "If CAT is coded as ECV, how will MANGO be coded with the same rule?",
+        "steps": [
+          "Compare: C to E is +2, A to C is +2, T to V is +2.",
+          "The shift is +2 for every letter.",
+          "M + 2 = O, A + 2 = C, N + 2 = P, G + 2 = I, O + 2 = Q."
+        ],
+        "answer": "MANGO becomes OCPIQ."
+      },
+      {
+        "title": "A1Z26 numbering",
+        "problem": "Decode 8-5-12-12-15.",
+        "steps": [
+          "Map each number to its alphabet position: 8 = H, 5 = E, 12 = L, 12 = L, 15 = O.",
+          "Join the letters in order."
+        ],
+        "answer": "The word is HELLO."
+      }
+    ],
+    "rule": [
+      { "title": "Calibrate first", "detail": "Use the given word-code pair to find the shift before coding anything new." },
+      { "title": "A1Z26", "detail": "A = 1, B = 2, ..., Z = 26; know the pillars E = 5, J = 10, O = 15, T = 20, Z = 26." },
+      { "title": "Reversal", "detail": "Some codes simply reverse the word: TITAN becomes NATIT." },
+      { "title": "Consistency", "detail": "Apply one rule uniformly unless the question states step sizes that vary." }
+    ],
+    "mistakes": [
+      { "mistake": "Guessing the shift from only the first letter pair.", "fix": "Check at least two pairs; an alternating pattern may hide behind a lucky first match." },
+      { "mistake": "Slipping one letter past pillar positions under time pressure.", "fix": "Count from a pillar: N is one past O (15), so N = 14." },
+      { "mistake": "Assuming a wrap is intended.", "fix": "Only wrap letters if the stated rule or an observed cross-Z pair proves it." }
+    ],
+    "memoryTip": "Calibrate the wheel from a given pair, keep A1Z26 pillars E J O T Z, and watch for plain reversal.",
+    "practice": [
+      { "prompt": "With shift +3, code the word DOG.", "answer": "GRJ. D + 3 = G, O + 3 = R, G + 3 = J." },
+      { "prompt": "Decode 4-9-7.", "answer": "DIG. 4 = D, 9 = I, 7 = G." },
+      { "prompt": "Code TITAN by reversal.", "answer": "NATIT." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "blood-relations",
+    "slug": "blood-relations-basic",
+    "title": "Two-line family statements",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Convert short chains of everyday family statements into relations, using tree diagrams and standard exam assumptions.",
+    "explanation": "Blood-relation questions describe a family through a few statements and ask for the relation between two members. The reliable method is to draw a small tree: one row per generation, with vertical lines for parent-child and horizontal links for couples or siblings. Standard exam conventions apply: statements like spouse pairs are taken in the usual way, and no gender is ever assumed unless stated. Never infer a relation the statements do not force.",
+    "analogy": "Each statement is one plank of a bridge between two people; the answer is the full walk across planks, not a leap between distant towers.",
+    "workedExamples": [
+      {
+        "title": "Uncle through a sibling chain",
+        "problem": "A is the brother of B. B is the mother of C. What is A to C?",
+        "steps": [
+          "Draw: A and B on the same row (siblings); C one row below B.",
+          "B is the parent of C; A is a sibling of C's parent.",
+          "A is male, so A is the uncle of C."
+        ],
+        "answer": "A is C's uncle."
+      },
+      {
+        "title": "Parents as spouses",
+        "problem": "P is the father of Q. Q is the daughter of R. What is R to P?",
+        "steps": [
+          "Q has two parents named: father P and parent R.",
+          "Under standard exam assumptions the two parents of the same child are spouses.",
+          "So R is the wife of P."
+        ],
+        "answer": "R is P's spouse (wife)."
+      }
+    ],
+    "rule": [
+      { "title": "Draw before answering", "detail": "A two-row sketch of generations settles most questions instantly." },
+      { "title": "Gender discipline", "detail": "Never assume gender; uncles, nieces and grandfathers are only males because the statement says so." },
+      { "title": "Sibling bridge", "detail": "Sibling of a parent is an uncle or aunt; sibling of a grandparent is a great-uncle or great-aunt." },
+      { "title": "Spouse convention", "detail": "Two named parents of one child are treated as a couple unless stated otherwise." }
+    ],
+    "mistakes": [
+      { "mistake": "Assuming gender from names or roles.", "fix": "Only conclusions forced by stated genders are valid." },
+      { "mistake": "Skipping a generation link.", "fix": "Require one clear parent-child step per generation, grouped by row." },
+      { "mistake": "Confusing 'brother of my mother' with 'brother of my father'.", "fix": "Mark which side of the family each branch belongs to before naming the relation." }
+    ],
+    "memoryTip": "Rows are generations, lines are facts, and no male symbol without a stated gender.",
+    "practice": [
+      { "prompt": "M is the son of N. N is the sister of O. What is M to O?", "answer": "Nephew. M is male and a child of O's sibling." },
+      { "prompt": "X's mother is the only daughter of Y. What is Y to X?", "answer": "Grandmother. Y is the parent of X's mother." },
+      { "prompt": "A is the brother of B, and B is the son of C. What is A to C?", "answer": "Son. Both A and B are children of C." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "direction-sense",
+    "slug": "direction-sense-basic",
+    "title": "Two-leg walks and quarter-turns",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Track short walks on north-east-south-west lines and answer where a person ends up or how far they are from the start.",
+    "explanation": "Direction questions track a walker along compass directions. Keep a running coordinate: north and east increase y and x, south and west decrease them. The distance from the start is the straight displacement, often a Pythagorean pair like 3-4-5. Turns are quarter-changes: right from north is east, and two rights from north is south. Always track which way the walker is facing after each turn.",
+    "analogy": "Think of the walker as a chess rook moving on invisible graph paper: the path may twist, but the final displacement is one straight rook-and-bishop shot from square to square.",
+    "workedExamples": [
+      {
+        "title": "A 3-4-5 walk",
+        "problem": "A man walks 3 km north, then 4 km east. How far is he from the start?",
+        "steps": [
+          "Net position: 3 km north and 4 km east.",
+          "Displacement = sqrt(3^2 + 4^2).",
+          "Compute: sqrt(9 + 16) = 5."
+        ],
+        "answer": "He is 5 km from the start, towards the north-east."
+      },
+      {
+        "title": "Facing after turns",
+        "problem": "A person facing north turns right twice. Which way does she face now?",
+        "steps": [
+          "Right once from north: east.",
+          "Right again: south."
+        ],
+        "answer": "She faces south."
+      }
+    ],
+    "rule": [
+      { "title": "Compass discipline", "detail": "North up, east right, south down, west left; turn right 90 degrees clockwise." },
+      { "title": "Pythagorean displacement", "detail": "Perpendicular legs use a^2 + b^2 = c^2; know 3-4-5 and 6-8-10." },
+      { "title": "Opposite legs cancel", "detail": "10 north then 10 south returns to the start: zero displacement." },
+      { "title": "Facing upkeep", "detail": "Update the facing direction after every turn; the next move follows the new direction." }
+    ],
+    "mistakes": [
+      { "mistake": "Adding walked distance to answer distance from start.", "fix": "15 walked km can end 3 km from the start if the path folds back." },
+      { "mistake": "Turning the map instead of the person.", "fix": "Right and left belong to the walker facing their own direction." },
+      { "mistake": "Ignoring the second turn's new base direction.", "fix": "Two rights from north is south, not west." }
+    ],
+    "memoryTip": "Keep x and y counters, remember 3-4-5, turn 90 degrees with the walker not the map.",
+    "practice": [
+      { "prompt": "A boy walks 3 km west then 4 km south. Distance from start?", "answer": "5 km, towards the south-west." },
+      { "prompt": "Facing east, a person turns right. Which way now?", "answer": "South." },
+      { "prompt": "A walker goes 10 km north then 10 km south. How far is she from the start?", "answer": "0 km; the two legs cancel." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "seating-arrangement",
+    "slug": "seating-arrangement-d-basic",
+    "title": "Linear rows of three to five people",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Fix positions in small linear rows using positional statements and produce the full order.",
+    "explanation": "In linear seating, statements pin people to edges or relative positions: 'immediately left of', 'extreme right', or 'between'. Convert each clue into one or two fixed seats on a drawn strip. For someone facing you, their left is your right, so note the facing direction before translating left and right. Work from the most fixed clue (edges and middles) outward, then place flexible people last.",
+    "analogy": "A row of seats is a film strip: each clue is one still frame; anchoring the clearest frame first lets every other frame snap into place beside it.",
+    "workedExamples": [
+      {
+        "title": "Three in a row",
+        "problem": "A, B and C sit in a row. C is not at an extreme end. A is to the left of C. Who sits at the right end?",
+        "steps": [
+          "Three seats: 1, 2, 3; C is at seat 2.",
+          "A is left of C, so A is at seat 1.",
+          "B takes the remaining seat 3."
+        ],
+        "answer": "B sits at the right end."
+      },
+      {
+        "title": "Four seats from three clues",
+        "problem": "D, A, C, B and E sit in a row of five. C is in the middle. A is immediately left of C. D is at the extreme left. E is to the right of B. Find the order.",
+        "steps": [
+          "C is seat 3; A is seat 2; D is seat 1.",
+          "Remaining seats 4 and 5 hold B and E.",
+          "E is right of B, so B = 4 and E = 5."
+        ],
+        "answer": "The order is D, A, C, B, E."
+      }
+    ],
+    "rule": [
+      { "title": "Anchor first", "detail": "Fix extreme and middle positions before relative clues." },
+      { "title": "Facing matters", "detail": "A person facing you has their left on your right side." },
+      { "title": "Fill leftovers", "detail": "After anchors, remaining people fill the remaining seats with clues deciding ties." },
+      { "title": "Verify all clues", "detail": "Read every clue against the final order once before answering." }
+    ],
+    "mistakes": [
+      { "mistake": "Placing a relative clue before the anchor clue.", "fix": "'Immediately left of C' is useless until C's seat exists." },
+      { "mistake": "Ignoring facing direction in circle or face-to-face rows.", "fix": "For facing-center circles, right-hand side appears clockwise/left is anticlockwise; check conventions each time." },
+      { "mistake": "Contradicting a clue with a leftover guess.", "fix": "Re-check every clue; one violated clue invalidates the whole order." }
+    ],
+    "memoryTip": "Seats first for anchors, relations next, leftovers last, and a final clue-by-clue audit.",
+    "practice": [
+      { "prompt": "Q is left of R and S is right of R in a 3-seat row. Who is in the middle?", "answer": "R. Order is Q, R, S." },
+      { "prompt": "Five people: P is 2nd from left; Q is at an end; P is left of Q. Is Q's end determinable?", "answer": "No: Q can be at either end in the stated form unless more clues fix the others." },
+      { "prompt": "In a row of 3, A is left of B and B is left of C. Who is at the left end?", "answer": "A. Order A, B, C." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "syllogism",
+    "slug": "syllogism-basic",
+    "title": "Chain syllogisms in two lines",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Derive valid conclusions from two linked statements involving All and Some, and avoid the classic conversion traps.",
+    "explanation": "A syllogism gives two statements and asks which conclusion must follow. All A are B is a chain arrow from A into B: linking two arrows through a shared middle term transfers from one end to the other, so All A are B and All B are C force All A are C. Some A are B is a two-way overlap, so it links forward and backward. A safe conversion rule: All A are B implies Some B are A, but the reverse and the symmetric reading are invalid.",
+    "analogy": "Statements are roads: All is a one-way express lane, Some is a two-way street; a conclusion is valid only if you can drive it entirely on existing roads without paving new ones.",
+    "workedExamples": [
+      {
+        "title": "Two chains joined",
+        "problem": "Statements: All pens are books. All books are red. Conclusion: All pens are red. Valid or invalid?",
+        "steps": [
+          "Arrow 1 points pens into books; arrow 2 points books into red.",
+          "The middle term books connects the two chains.",
+          "The combined arrow runs pens into red."
+        ],
+        "answer": "Valid: all pens are red."
+      },
+      {
+        "title": "Safe conversion",
+        "problem": "Given: All cats are animals. Which single conclusion is certainly true?",
+        "steps": [
+          "The valid conversion is Some animals are cats.",
+          "All animals are cats would reverse the arrow wrongly.",
+          "Some cats are not animals contradicts the statement."
+        ],
+        "answer": "Some animals are cats."
+      }
+    ],
+    "rule": [
+      { "title": "All is a one-way arrow", "detail": "All A are B admits no arrow from B back to A except the weak Some B are A." },
+      { "title": "Some is two-way", "detail": "Some A are B equals Some B are A." },
+      { "title": "Chain through the middle", "detail": "Two All statements joined through a shared middle term give a direct All conclusion across the ends." },
+      { "title": "No invention", "detail": "A conclusion needs a full road of statements; missing roads make it a maybe, not a must." }
+    ],
+    "mistakes": [
+      { "mistake": "Converting All A are B into All B are A.", "fix": "Only the weak Some B are A conversion is valid." },
+      { "mistake": "Treating Some A are B as All A are B or as Some A are not B.", "fix": "Some leaves room for all; it never asserts part-outside." },
+      { "mistake": "Using a term that appears in no statement.", "fix": "Every word in a valid conclusion appears in the statements." }
+    ],
+    "memoryTip": "All arrows pump one way, Some streets both ways, and conclusions only travel existing roads.",
+    "practice": [
+      { "prompt": "All roses are flowers. All flowers fade. Does it follow that all roses fade?", "answer": "Yes, by chaining the two All statements through flowers." },
+      { "prompt": "No reptiles are birds. Is 'some reptiles are not birds' valid?", "answer": "Yes; a full exclusion implies the weak positive split in the negative direction." },
+      { "prompt": "All parrots are birds. Some birds fly. Can we conclude all parrots fly?", "answer": "No; the flying birds may not include any parrots." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "statement-and-conclusion",
+    "slug": "statement-and-conclusion-basic",
+    "title": "What must follow and what merely sounds likely",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Decide whether a suggested conclusion is logically forced by a statement or merely plausible.",
+    "explanation": "A conclusion is valid only when the statement's words force it; plausibility, humour or statistics from outside the statement cannot rescue it. Words like only, all, none and at least carry the logical load, so read them precisely. Advice, examples and opinions inside a statement are not facts themselves. If any reasonable situation satisfies the statement but breaks the conclusion, the conclusion is invalid.",
+    "analogy": "The statement is a contract; a conclusion is valid only inside the exact wording of the contract, never on what an honest person would probably assume.",
+    "workedExamples": [
+      {
+        "title": "A forced superlative",
+        "problem": "Statement: The city recorded its lowest temperature in ten years. Conclusion: The temperature in each of the previous nine years was higher. Valid or invalid?",
+        "steps": [
+          "Lowest in ten years means every other year in the window was warmer.",
+          "So the stated comparison forces each earlier year to be higher.",
+          "No outside facts are needed."
+        ],
+        "answer": "Valid."
+      },
+      {
+        "title": "A likely but unforced link",
+        "problem": "Statement: The government increased the tax on rice. Conclusion: Every household's rice bill will increase. Valid or invalid?",
+        "steps": [
+          "Tax increase does not force retail bill increase; subsidies, stock or diet changes may absorb it.",
+          "A single contrary scenario suffices to invalidate.",
+          "The conclusion needs weaker wording like may increase to be acceptable."
+        ],
+        "answer": "Invalid."
+      }
+    ],
+    "rule": [
+      { "title": "Forced, not likely", "detail": "Validity needs necessity; probable is a fail." },
+      { "title": "Weight-bearing words", "detail": "Only, all, none, at least and superlatives decide answers; read them slowly." },
+      { "title": "No outside stats", "detail": "General knowledge exceptions may not override the statement, but missing logical links invalidate it." },
+      { "title": "Contrary scenario test", "detail": "If one sensible scenario fits the statement yet breaks the conclusion, conclude invalid." }
+    ],
+    "mistakes": [
+      { "mistake": "Marking emotionally convincing lines as valid.", "fix": "Re-read for necessity, not persuasiveness." },
+      { "mistake": "Treating an example inside the statement as a universal rule.", "fix": "One case described in a statement does not cover all cases." },
+      { "mistake": "Skipping the wording of the conclusion itself.", "fix": "Conclusion wording may overstate the statement by one word; check each term." }
+    ],
+    "memoryTip": "Necessity over plausibility; superlatives and only-words are the hinges; one contrary scenario sinks a conclusion.",
+    "practice": [
+      { "prompt": "Statement: All employees must wear badges inside the plant. Conclusion: Badges are required somewhere in the plant. Valid?", "answer": "Yes; inside the plant is a location with a requirement." },
+      { "prompt": "Statement: Sales doubled this quarter. Conclusion: Sales last quarter were zero. Valid?", "answer": "No; doubling twice a positive number is possible, so zero is not forced." },
+      { "prompt": "Statement: The notice was read aloud for all to hear. Conclusion: Some people heard the notice. Valid?", "answer": "Yes; read aloud for all to hear forces an audience." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "analogy",
+    "slug": "analogy-basic",
+    "title": "Match the relationship, not the topic",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Identify the exact relationship in a word pair and select the option pair that mirrors it.",
+    "explanation": "An analogy a : b :: c : ? succeeds only when the relation between c and the answer mirrors the relation between a and b, not when the two pairs merely share a topic. First name the relationship in one short phrase such as young one of, worker to workplace, part to whole, opposite, or a number rule like square or cube. Then test each option against the same named rule. Number analogies encode arithmetic: 8 : 64 is a square, 5 : 125 a cube.",
+    "analogy": "Word analogies are dances: pick out the step (young-one, opposite, square) and find the pair performing the same step, however different the music.",
+    "workedExamples": [
+      {
+        "title": "Young one relation",
+        "problem": "Cat : Kitten :: Dog : ?  Options: hound, puppy, kennel, bark.",
+        "steps": [
+          "Relation: kitten is the young one of a cat.",
+          "Test: the young one of a dog is a puppy.",
+          "Hound is an adult type, kennel is a place, bark is a sound."
+        ],
+        "answer": "puppy."
+      },
+      {
+        "title": "Square-number relation",
+        "problem": "8 : 64 :: 12 : ?  Options: 96, 124, 144, 132.",
+        "steps": [
+          "Relation: 64 = 8 squared.",
+          "Apply: 12 squared = 144.",
+          "96 would be 12 x 8, breaking the relation."
+        ],
+        "answer": "144."
+      }
+    ],
+    "rule": [
+      { "title": "Name the relation", "detail": "State the exact link in one short phrase before checking options." },
+      { "title": "Same dance, new stage", "detail": "The answer pair need not share the topic of the question pair, only the relation." },
+      { "title": "Number rules", "detail": "Check square, cube, double, half and prime relations in number analogies." },
+      { "title": "Reverse trap", "detail": "An option that answers b : a rather than a : b is wrong." }
+    ],
+    "mistakes": [
+      { "mistake": "Matching the theme instead of the relation.", "fix": "Animal pairs fail when the relation is young-one; hound is an animal but not a kitten analogue." },
+      { "mistake": "Assuming arithmetic relations without testing.", "fix": "Try squares, cubes, multiples of a fixed factor and digit sums in order." },
+      { "mistake": "Missing direction of comparison.", "fix": "Worker : Tool is not Tool : Worker; preserve order." }
+    ],
+    "memoryTip": "Name the step, mirror the step; for numbers try square, cube, double, and digit tricks in that order.",
+    "practice": [
+      { "prompt": "Cricket : Bat :: Badminton : ?", "answer": "Racket; implement of the sport relation." },
+      { "prompt": "3 : 27 :: 5 : ?", "answer": "125; cube relation." },
+      { "prompt": "Ship : Harbour :: Train : ?", "answer": "Station; parking and boarding place of the vehicle." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "grammar-and-usage",
+    "slug": "grammar-and-usage-basic",
+    "title": "Subject-verb agreement",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Match verbs to singular and plural subjects, apply agreement with each, neither, either-or constructions and common collective nouns.",
+    "explanation": "A verb agrees with its subject in number: singular subjects take the base verb with -s in the present (he goes), and plural subjects take the bare form (they go). Indefinite pronouns each, everyone, either and neither are singular even when followed by plural nouns. With either...or or neither...nor, the verb agrees with the nearest subject, and words named as school subjects or games, like mathematics or news, are singular.",
+    "analogy": "Agreement is a handshake: the subject offers a hand of a certain size, and the verb must offer the matching hand, however crowded the sentence between them is.",
+    "workedExamples": [
+      {
+        "title": "Third person singular",
+        "problem": "Correct the verb: He go to school daily.",
+        "steps": [
+          "Subject is he, third person singular, present tense.",
+          "The present form adds -s or -es: goes.",
+          "Sentence becomes: He goes to school daily."
+        ],
+        "answer": "He goes to school daily."
+      },
+      {
+        "title": "Neither is singular",
+        "problem": "Choose the correct verb: Neither of the answers is / are correct.",
+        "steps": [
+          "Neither is grammatically singular.",
+          "The phrase of the answers does not change the subject's number.",
+          "Use is."
+        ],
+        "answer": "Neither of the answers is correct."
+      }
+    ],
+    "rule": [
+      { "title": "Singular s", "detail": "Present tense third-person singular adds -s: goes, plays, watches." },
+      { "title": "Indefinites are singular", "detail": "Each, every, everyone, anyone, either, neither take singular verbs." },
+      { "title": "Or-nor nearest", "detail": "With either...or and neither...nor the verb follows the nearer subject." },
+      { "title": "Looks plural, sounds singular", "detail": "Mathematics, physics, news, measles take singular verbs." }
+    ],
+    "mistakes": [
+      { "mistake": "Agreeing the verb with the nearest noun instead of the head subject.", "fix": "In 'The list of items is ready' the subject is list, not items." },
+      { "mistake": "Using a plural verb after each or neither.", "fix": "Each of the players is, not are." },
+      { "mistake": "Forgetting that a number of takes plural while the number of takes singular.", "fix": "A number of students are absent; the number of students is large." }
+    ],
+    "memoryTip": "Handshake with the head subject; each-every-one are singular; or-nor shake with the nearest; learnt subjects stay singular.",
+    "practice": [
+      { "prompt": "Correct: One of my friends play cricket.", "answer": "One of my friends plays cricket." },
+      { "prompt": "Correct: Mathematics are difficult.", "answer": "Mathematics is difficult." },
+      { "prompt": "Choose: Neither was / were present.", "answer": "Neither was present." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "vocabulary",
+    "slug": "vocabulary-basic",
+    "title": "Synonyms, antonyms and near-homophones",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Pick correct synonyms and antonyms for common exam words and choose between confusable word pairs.",
+    "explanation": "Vocabulary questions ask for the closest synonym, the direct antonym, or the correct word of an easily confused pair. Build answers from context and word parts: prefixes like un-, mis-, anti- flip or redirect meaning, and roots like bene- (good) or mal- (bad) signal sense. Some pairs differ by one syllable or one spelling only, such as principal (main or head person) and principle (a rule), or stationary (not moving) and stationery (paper goods).",
+    "analogy": "Words are keys cut with shared grooves: prefix and root mark the grooves, and the nearest key opens the same door as the asked word.",
+    "workedExamples": [
+      {
+        "title": "Synonym pick",
+        "problem": "Choose the synonym of abundant: scarce, plentiful, expensive, hidden.",
+        "steps": [
+          "Abundant means existing in large quantity.",
+          "Plentiful matches that meaning directly.",
+          "Scarce is the antonym; the others are unrelated."
+        ],
+        "answer": "plentiful."
+      },
+      {
+        "title": "Confusable pair",
+        "problem": "Choose the right word: The school ___ addressed the students. (principal / principle)",
+        "steps": [
+          "Principal is a noun for a head person or an adjective for main.",
+          "Principle is a rule or belief.",
+          "A person addresses students, so principal fits."
+        ],
+        "answer": "principal."
+      }
+    ],
+    "rule": [
+      { "title": "Prefix flips", "detail": "un-, in-, dis-, anti- often negate or oppose: visible to invisible, behave to misbehave." },
+      { "title": "Root sense", "detail": "bene- is good (benefit), mal- is bad (malfunction), chron- is time (chronological)." },
+      { "title": "Antonym check", "detail": "The antonym must be the same part of speech and the direct opposite, not merely different." },
+      { "title": "Near-homophones", "detail": "Confirm spelling pairs like stationary/stationery, principal/principle, lose/loose." }
+    ],
+    "mistakes": [
+      { "mistake": "Choosing a merely related word as a synonym.", "fix": "Scarce is about shortage, not abundance; check direction of meaning." },
+      { "mistake": "Picking an antonym of a different part of speech.", "fix": "The antonym of hurried as a verb form is not the same as the adjective slow; match the form." },
+      { "mistake": "Trusting a sound-alike spelling.", "fix": "Say both spellings aloud and attach the fixed contexts, e.g. stationery has an e for envelopes." }
+    ],
+    "memoryTip": "Prefix flips, roots hint, antonyms mirror form and direction, and confusable pairs live in fixed slot sentences.",
+    "practice": [
+      { "prompt": "Synonym of brisk: quick, weak, dry, old.", "answer": "quick." },
+      { "prompt": "Antonym of gracious: rude.", "answer": "rude." },
+      { "prompt": "Fill in: The van stood ___ at the junction. (stationary / stationery)", "answer": "stationary; it is not moving." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "calendars-and-clocks",
+    "slug": "calendars-and-clocks-basic",
+    "title": "Seven-day cycles and clock-face counting",
+    "level": "BASIC",
+    "order": 2,
+    "objective": "Work with seven-day weekday cycles, identify leap years and count angles swept by clock hands in simple cases.",
+    "explanation": "Weekdays repeat every 7 days, so any date-offset question reduces to the remainder of the number of days on division by 7. A common year has 365 = 52 x 7 + 1 days, contributing one odd day, and a leap year has 366, contributing two. A year is leap when it is divisible by 4, except century years, which must be divisible by 400. On a clock face the minute hand covers 360 degrees in 60 minutes and the hour hand covers 30 degrees per hour, so at h o'clock sharp the hands form |30h| degrees or its supplement to 360.",
+    "analogy": "Weekdays rotate like a Ferris wheel with exactly seven cabins: after any number of full revolutions only the remainder seat tells you where you stop.",
+    "workedExamples": [
+      {
+        "title": "Counting days forward",
+        "problem": "Today is Thursday. Which day falls 15 days later?",
+        "steps": [
+          "Compute 15 mod 7 = 1.",
+          "Move 1 weekday ahead of Thursday.",
+          "Thursday + 1 = Friday."
+        ],
+        "answer": "Friday."
+      },
+      {
+        "title": "Leap-year test",
+        "problem": "Which of 1900, 2000 and 2024 are leap years?",
+        "steps": [
+          "2024 is divisible by 4 and not a century year, so it is leap.",
+          "1900 is a century year not divisible by 400, so it is not leap.",
+          "2000 is a century year divisible by 400, so it is leap."
+        ],
+        "answer": "2000 and 2024 are leap years; 1900 is not."
+      }
+    ],
+    "rule": [
+      { "title": "Weekday modulo", "detail": "Weekday shift = number of days mod 7." },
+      { "title": "Odd days", "detail": "Common year: 1 odd day; leap year: 2 odd days." },
+      { "title": "Leap rule", "detail": "Leap = divisible by 4, but century years need divisibility by 400." },
+      { "title": "Clock basics", "detail": "Minute hand: 6 degrees per minute; hour hand: 30 degrees per hour; at h:00 the angle is 30h (or 360 - 30h)." }
+    ],
+    "mistakes": [
+      { "mistake": "Calling 1900 a leap year.", "fix": "Century years leap only when divisible by 400: 1600, 2000 leap; 1700, 1800, 1900 do not." },
+      { "mistake": "Adding 15 days and answering two weekdays ahead.", "fix": "15 mod 7 = 1, so only one weekday forward." },
+      { "mistake": "Confusing hour-hand speed as 6 degrees per minute.", "fix": "6 degrees per minute belongs to the minute hand; the hour hand moves half a degree per minute." }
+    ],
+    "memoryTip": "Mod 7 moves weekdays, +1 odd day per common year, +2 for leap, and century leaps need 400.",
+    "practice": [
+      { "prompt": "Today is Tuesday. Which day is it after 8 days?", "answer": "Wednesday. 8 mod 7 = 1." },
+      { "prompt": "Find the angle at 4:00 between the hands.", "answer": "120 degrees. 30 x 4 = 120." },
+      { "prompt": "How many complete rounds does the hour hand finish in one day?", "answer": "2 rounds." }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-08 level expansion; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]
