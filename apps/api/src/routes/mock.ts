@@ -1,6 +1,6 @@
 ﻿import { Router } from 'express';
 import { z } from 'zod';
-import { Difficulty, Prisma } from '@prisma/client';
+import { Difficulty, Prisma, Subject } from '@prisma/client';
 import { prisma } from '../prisma.js';
 import { asyncHandler, conflict, notFound, parseBody } from '../lib/errors.js';
 import { requireAuth } from '../middleware/auth.js';
@@ -141,6 +141,18 @@ mockRouter.get(
   }),
 );
 
+/** Canonical category names shown on the mock-test selection screen. The
+ *  filter granularity is the question's subject — the finest level actually
+ *  stored on every approved question record. */
+const SUBJECT_CATEGORY_LABEL: Record<Subject, string> = {
+  QUANTITATIVE: 'Quantitative Aptitude',
+  LOGICAL: 'Logical and Analytical Reasoning',
+  VERBAL: 'Verbal Ability and English',
+  DATA_INTERPRETATION: 'Data Interpretation and Data Sufficiency',
+  TECHNICAL: 'Computer Fundamentals and Programming Logic',
+};
+const ALL_SUBJECTS = Object.values(Subject) as Subject[];
+
 function isCompanyMock(slug: string): boolean {
   return slug.startsWith('company-mock-');
 }
@@ -168,16 +180,51 @@ mockRouter.get(
     } else {
       base.topic = { isPublished: true };
     }
-    const byDifficulty = await prisma.question.groupBy({
-      by: ['difficulty'],
+    // Optional aptitude-category filter: granularity is the question's
+    // stored subject, the finest level actually persisted on every record.
+    const requestedCategory = typeof req.query.category === 'string' ? req.query.category.toUpperCase() : '';
+    if (requestedCategory && !ALL_SUBJECTS.includes(requestedCategory as Subject)) {
+      throw notFound('That category is not available for this mock.');
+    }
+    const poolBase: Prisma.QuestionWhereInput = requestedCategory
+      ? {
+          ...base,
+          topic: {
+            ...((base.topic as Prisma.TopicWhereInput | undefined) ?? {}),
+            subject: requestedCategory as Subject,
+            isPublished: true,
+          },
+        }
+      : base;
+    // Question subject lives on the related topic, so count from the
+    // UNfiltered pool (the category list must stay switchable even while one
+    // category is selected) and derive the filtered difficulty counts here.
+    const poolRows = await prisma.question.findMany({
       where: base,
-      _count: { _all: true },
+      select: { difficulty: true, topic: { select: { subject: true } } },
     });
     const counts = { any: 0, easy: 0, medium: 0, hard: 0 } as Record<'any' | 'easy' | 'medium' | 'hard', number>;
-    for (const row of byDifficulty) {
-      counts[row.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard'] = row._count._all;
-      counts.any += row._count._all;
+    const subjectCounts = new Map<Subject, number>();
+    const subjectDifficultyCounts = new Map<Subject, Record<'any' | 'easy' | 'medium' | 'hard', number>>();
+    for (const row of poolRows) {
+      counts[row.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard'] += 1;
+      counts.any += 1;
+      subjectCounts.set(row.topic.subject, (subjectCounts.get(row.topic.subject) ?? 0) + 1);
+      const bucket = subjectDifficultyCounts.get(row.topic.subject) ?? { any: 0, easy: 0, medium: 0, hard: 0 };
+      bucket[row.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard'] += 1;
+      bucket.any += 1;
+      subjectDifficultyCounts.set(row.topic.subject, bucket);
     }
+    // Difficulty counts honour the selected category when one is active
+    const filteredCounts = requestedCategory
+      ? (subjectDifficultyCounts.get(requestedCategory as Subject) ?? counts)
+      : counts;
+    // categories: what this mock can actually draw from, never fabricated
+    const categories = ALL_SUBJECTS.filter((subject) => (subjectCounts.get(subject) ?? 0) > 0).map((subject) => ({
+      subject,
+      label: SUBJECT_CATEGORY_LABEL[subject],
+      count: subjectCounts.get(subject) ?? 0,
+    }));
     res.json({
       data: {
         slug: mock.slug,
@@ -186,7 +233,9 @@ mockRouter.get(
         logoUrl: isCompanyMock(mock.slug) ? `/company-logos/${mock.slug.slice('company-mock-'.length)}.png` : null,
         defaults: { durationMinutes: mock.durationMinutes, questionCount: parseSections(mock.sections).reduce((sum, s) => sum + s.count, 0) },
         marking: parseMarking(mock.marking),
-        pool: counts,
+        pool: filteredCounts,
+        anyPool: counts,
+        categories,
         ranges: { questionCount: [5, 60], durationMinutes: [5, 120] },
       },
     });
@@ -196,6 +245,7 @@ mockRouter.get(
 const mockStartConfigSchema = z
   .object({
     difficulty: z.nativeEnum(Difficulty).optional(),
+    category: z.nativeEnum(Subject).optional(),
     questionCount: z.coerce.number().int().min(5).max(60).optional(),
     durationMinutes: z.coerce.number().int().min(5).max(120).optional(),
   })
@@ -205,7 +255,7 @@ const mockStartConfigSchema = z
  *  options the learner chose on the mock-test configuration screen. */
 async function selectConfiguredQuestions(
   mock: { slug: string; title: string },
-  config: { difficulty?: Difficulty; questionCount?: number; durationMinutes?: number },
+  config: { difficulty?: Difficulty; category?: Subject; questionCount?: number; durationMinutes?: number },
 ): Promise<{ ids: string[]; sectionName: string }> {
   const base: Prisma.QuestionWhereInput = {
     reviewStatus: 'APPROVED',
@@ -221,6 +271,13 @@ async function selectConfiguredQuestions(
     base.topic = { isPublished: true };
   }
   if (config.difficulty) base.difficulty = config.difficulty;
+  if (config.category) {
+    base.topic = {
+      ...((base.topic as Prisma.TopicWhereInput | undefined) ?? {}),
+      subject: config.category,
+      isPublished: true,
+    };
+  }
 
   const available = await prisma.question.findMany({ where: base, select: { id: true } });
   const count = config.questionCount ?? 30;
@@ -244,8 +301,12 @@ mockRouter.post(
     const rawBody = (req.body ?? {}) as Record<string, unknown>;
     const config = Object.keys(rawBody).filter((key) => rawBody[key] !== undefined && rawBody[key] !== '').length > 0
       ? parseBody(mockStartConfigSchema, req)
-      : {} as { difficulty?: Difficulty; questionCount?: number; durationMinutes?: number };
-    const configured = config.difficulty !== undefined || config.questionCount !== undefined || config.durationMinutes !== undefined;
+      : {} as { difficulty?: Difficulty; category?: Subject; questionCount?: number; durationMinutes?: number };
+    const configured =
+      config.difficulty !== undefined ||
+      config.category !== undefined ||
+      config.questionCount !== undefined ||
+      config.durationMinutes !== undefined;
     const durationMinutes = configured && config.durationMinutes ? config.durationMinutes : mock.durationMinutes;
 
     const active = await prisma.mockTestAttempt.findFirst({

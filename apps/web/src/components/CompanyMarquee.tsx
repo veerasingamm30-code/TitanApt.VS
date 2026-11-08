@@ -16,6 +16,7 @@ export type PublicCompany = {
   logoUrl: string;
   logoStatus: string | null;
   sourceNote: string | null;
+  mockSlug: string | null;
 };
 
 type FailingLogos = Record<string, boolean>;
@@ -131,7 +132,10 @@ export function CompanyMarquee({ heading }: { heading?: string }) {
                               className="lq-logo"
                               src={company.logoUrl}
                               alt={isClone ? '' : `${company.name} logo`}
-                              loading="lazy"
+                              /* The whole strip animates horizontally, so lazy
+                                 loading never fires for offscreen cards and
+                                 they pop in blank mid-scroll. Load all 52
+                                 small logo PNGs eagerly instead. */
                               decoding="async"
                               onError={() => setFailed((current) => ({ ...current, [company.slug]: true }))}
                             />
@@ -231,13 +235,21 @@ export function CompanyMarquee({ heading }: { heading?: string }) {
                       <Globe size={14} /> Official website
                     </a>
                   )}
-                  <Link
-                    to="/login"
-                    state={{ from: `/app/mocks/company-mock-${panel.slug}` }}
-                    className="lq-panel-cta"
-                  >
-                    <Lock size={14} /> Sign in to start the {panel.name} mock test
-                  </Link>
+                  {/* only companies with a real published company mock advertise
+                      that exact destination; others get the honest generic CTA */}
+                  {panel.mockSlug ? (
+                    <Link
+                      to="/login"
+                      state={{ from: `/app/mocks/${panel.mockSlug}` }}
+                      className="lq-panel-cta"
+                    >
+                      <Lock size={14} /> Sign in to start the {panel.name} mock test
+                    </Link>
+                  ) : (
+                    <Link to="/login" className="lq-panel-cta">
+                      <Lock size={14} /> Sign in to practise and take mocks
+                    </Link>
+                  )}
                 </footer>
                 {panel.sourceNote && <small className="lq-panel-note">{panel.sourceNote}</small>}
               </aside>

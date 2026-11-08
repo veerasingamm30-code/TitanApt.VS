@@ -196,7 +196,7 @@ model Lesson {
   checkpoints LessonCheckpoint[]
   progress    UserProgress[]
 
-  @@unique([topicId, level])
+  @@index([topicId, order])
   @@index([status])
 }
 

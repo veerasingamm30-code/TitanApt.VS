@@ -57,3 +57,15 @@ No expected asset is missing.
 ## 5. Decision
 
 Work in place, minimal-scope: fix root causes (env bootstrap, learning path resolution, streak rule), add the missing UI (search, streak chart, orbit, mock config, theme toggle), reuse existing components (CompanyMark, useApi, ui primitives), add zero runtime dependencies.
+
+## 6. Post-upgrade completion addendum (2026-11-07)
+
+All items above were remediated in place; per-item root causes and verification live in
+[BUG_FIX_REPORT.md](BUG_FIX_REPORT.md) and [TEST_RESULTS.md](TEST_RESULTS.md).
+
+- §1 architecture unchanged; seed totals upgraded to **28 topics · 31 lessons · 26 companies · 1,675 approved + 25 pending questions · 27 mocks** (was 25 lessons).
+- §3 items 1–10: theme toggle, dashboard search, streak chart, 3D orbit, company mock logos, Crack Time Apply flow, Learning Hub volumes, avatar preview + cache-bust, mock config UI/UX, typography — all delivered and verified (HTTP probes + Playwright Cycles D–F).
+- §4 bugs 1–6: all FIXED (see BUG_FIX_REPORT.md #1–#7); search-tuple crash found during testing also FIXED (#8).
+- New scope in this cycle: Lesson schema multilesson constraint dropped (Boolean Algebra / Programming Logic lesson sets, 6 lessons authored, siblings nav); public companies endpoint + landing marquee; mock category feature (completed collaboratively while another editor was concurrently modifying the same files — corrupted draft repaired, `Question.subject` groupBy replaced with a valid pool query).
+- Honest count provenance: Top25 PDF yields 25 companies; DB's 26th is Zoho from the companies guide; none invented.
+- Data preservation: no resets; migrations via `npm run db:deploy` because `prisma migrate dev` hits checksum drift and demands a reset; all pre-existing users intact.

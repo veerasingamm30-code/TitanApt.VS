@@ -126,15 +126,21 @@ function standardFontPath(): string | undefined {
   }
 }
 
-async function pageText(document: PDFDocumentProxy, pageNumber: number): Promise<string> {
+async function pageText(document: PDFDocumentProxy, pageNumber: number, cache?: Map<number, string>): Promise<string> {
+  if (cache) {
+    const cached = cache.get(pageNumber);
+    if (cached !== undefined) return cached;
+  }
   const page = await document.getPage(pageNumber);
   const content = await page.getTextContent();
-  return content.items
+  const text = content.items
     .filter((item): item is typeof item & { str: string } => 'str' in item)
     .map((item) => item.str)
     .join(' ')
     .replace(/\s+/g, ' ')
     .trim();
+  if (cache) cache.set(pageNumber, text);
+  return text;
 }
 
 async function resolveOutlinePage(document: PDFDocumentProxy, destination: unknown): Promise<number | null> {
@@ -146,15 +152,32 @@ async function resolveOutlinePage(document: PDFDocumentProxy, destination: unkno
   return (await document.getPageIndex(reference as { num: number; gen: number })) + 1;
 }
 
-async function locateVolumeTwoPage(document: PDFDocumentProxy, title: string, fallbackPage: number | null): Promise<number | null> {
-  const normalizedTitle = normalizeText(title.replace(/^\d+(?:\.\d+)*\.\s*/, ''));
-  if (normalizedTitle.length >= 6) {
-    for (let pageNumber = 4; pageNumber <= document.numPages; pageNumber += 1) {
-      const text = normalizeText(await pageText(document, pageNumber));
-      if (text.includes(normalizedTitle)) return pageNumber;
+async function locateVolumeTwoPages(
+  document: PDFDocumentProxy,
+  sections: string[],
+  fallbackPages: Map<string, number>,
+  pageCache: Map<number, string>,
+): Promise<Map<string, number>> {
+  /** One sequential pass over the document instead of one scan per section:
+   *  the previous per-section scans re-extracted every page up to 37 times,
+   *  which made a cold volume-2 index take tens of seconds. */
+  const results = new Map<string, number>();
+  const targets = sections
+    .map((title) => ({ title, normalized: normalizeText(title.replace(/^\d+(?:\.\d+)*\.\s*/, '')) }))
+    .filter((target) => target.normalized.length >= 6);
+  const total = document.numPages;
+  for (let pageNumber = 4; pageNumber <= total && results.size < targets.length;pageNumber += 1) {
+    const text = normalizeText(await pageText(document, pageNumber, pageCache));
+    for (const target of targets) {
+      if (results.has(target.title)) continue;
+      if (text.indexOf(target.normalized) >= 0) results.set(target.title, pageNumber);
     }
   }
-  return fallbackPage && fallbackPage >= 4 && fallbackPage <= document.numPages ? fallbackPage : null;
+  for (const [title, fallbackPage] of fallbackPages) {
+    if (results.has(title)) continue;
+    if (fallbackPage !== null && fallbackPage >= 4 && fallbackPage <= total) results.set(title, fallbackPage);
+  }
+  return results;
 }
 
 function matchedTopic(title: string, topics: Array<{ slug: string; name: string }>): string | null {
@@ -204,6 +227,9 @@ async function buildVolumeIndex(volumeSlug: string): Promise<VolumeIndexEntry> {
     useWorkerFetch: false,
     standardFontDataUrl: standardFontPath(),
   }).promise;
+  // Per-build page text cache: excerpts and the volume-2 section scan share
+  // one extraction per page instead of re-reading the same page repeatedly.
+  const pageCache = new Map<number, string>();
 
   try {
     if (document.numPages !== volume.pageCount) {
@@ -214,9 +240,10 @@ async function buildVolumeIndex(volumeSlug: string): Promise<VolumeIndexEntry> {
     const outline = await document.getOutline();
     const chapters: Array<{ title: string; page: number }> = [];
     if (volume.slug === 'volume-2') {
+      const sectionPages = await locateVolumeTwoPages(document, volumeTwoSections, volumeTwoFallbackPages, pageCache);
       for (const entry of volumeTwoSections) {
-        const page = await locateVolumeTwoPage(document, entry, volumeTwoFallbackPages.get(entry) ?? null);
-        if (page) chapters.push({ title: entry, page });
+        const page = sectionPages.get(entry);
+        if (page !== undefined) chapters.push({ title: entry, page });
       }
       if (chapters.length < volumeTwoSections.length) {
         warnings.push(
@@ -243,7 +270,7 @@ async function buildVolumeIndex(volumeSlug: string): Promise<VolumeIndexEntry> {
     );
     const indexed: ChapterIndexEntry[] = [];
     for (const [index, chapter] of deduplicated.entries()) {
-      const text = await pageText(document, chapter.page);
+      const text = await pageText(document, chapter.page, pageCache);
       const titleIndex = text.toLowerCase().indexOf(chapter.title.replace(/^\d+(?:\.\d+)*[:.\s-]*/, '').toLowerCase());
       const excerptStart = titleIndex >= 0 ? titleIndex + chapter.title.length : 0;
       const excerpt = text.slice(excerptStart, excerptStart + 240).trim();
@@ -273,6 +300,22 @@ function getVolumeIndex(volumeSlug: string): Promise<VolumeIndexEntry> {
 
 export const learningRouter = Router();
 learningRouter.use(requireAuth);
+
+/** Warm the volume index in the background once the API is up, so the first
+ *  user never pays the cold PDF-indexing cost (~20s before warm-up + the
+ *  single-pass scan repair). Failure is logged, not fatal. */
+export function warmLearningVolumes(): void {
+  void (async () => {
+    for (const volume of LEARNING_VOLUMES) {
+      try {
+        await getVolumeIndex(volume.slug);
+        console.log(`[learning] warmed volume index: ${volume.slug}`);
+      } catch (err) {
+        console.error(`[learning] warm-up failed for ${volume.slug}:`, err instanceof Error ? err.message : err);
+      }
+    }
+  })();
+}
 
 learningRouter.get(
   '/volumes',

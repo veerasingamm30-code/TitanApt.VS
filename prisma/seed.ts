@@ -304,7 +304,7 @@ async function main() {
   const allQuestions = [...questions, ...top25Questions, ...companyMockQuestions];
 
   if (topics.length !== 28) throw new Error(`Expected 28 topics, found ${topics.length}.`);
-  if (lessons.length !== 25) throw new Error(`Expected 25 lessons, found ${lessons.length}.`);
+  if (lessons.length !== 31) throw new Error(`Expected 31 lessons, found ${lessons.length}.`);
   if (companies.length !== 26) throw new Error(`Expected 26 companies, found ${companies.length}.`);
   if (questions.length !== 200) throw new Error(`Expected 200 sample questions, found ${questions.length}.`);
   if (top25Questions.length !== 750) throw new Error(`Expected 750 Top25 questions, found ${top25Questions.length}.`);
@@ -465,9 +465,14 @@ async function main() {
   }
   console.log(`Questions: ${approved} approved, ${pending} pending.`);
 
+  // Checkpoint questions: slice the topic's approved pool in lesson order so
+  // multiple lessons of the same topic get distinct (non-overlapping)
+  // checkpoint windows where the pool is large enough.
+  const lessonCounterByTopic = new Map<string, number>();
   for (const lessonData of lessons) {
     const topic = topicBySlug.get(lessonData.topicSlug);
     if (!topic) throw new Error(`Unknown lesson topic: ${lessonData.topicSlug}`);
+    const poolDepth = 3;
     const lesson = await prisma.lesson.upsert({
       where: { slug: lessonData.slug },
       create: {
@@ -507,12 +512,26 @@ async function main() {
       },
     });
 
-    const checkpointQuestions = await prisma.question.findMany({
+    const lessonIndexInTopic = lessonCounterByTopic.get(lessonData.topicSlug) ?? 0;
+    lessonCounterByTopic.set(lessonData.topicSlug, lessonIndexInTopic + 1);
+
+    const baseCheckpoint = await prisma.question.findMany({
       where: { topicId: topic.id, reviewStatus: 'APPROVED', correctOptionId: { not: null } },
       orderBy: { sourceKey: 'asc' },
-      take: 3,
+      skip: lessonIndexInTopic * poolDepth,
+      take: poolDepth,
       select: { id: true },
     });
+    // fall back to the topic pool head when the offset window is too small
+    const checkpointQuestions =
+      baseCheckpoint.length >= 2
+        ? baseCheckpoint
+        : await prisma.question.findMany({
+            where: { topicId: topic.id, reviewStatus: 'APPROVED', correctOptionId: { not: null } },
+            orderBy: { sourceKey: 'asc' },
+            take: poolDepth,
+            select: { id: true },
+          });
     await prisma.lessonCheckpoint.deleteMany({ where: { lessonId: lesson.id } });
     if (checkpointQuestions.length < 2) {
       throw new Error(`Lesson ${lesson.slug} needs at least 2 approved checkpoint questions; found ${checkpointQuestions.length}.`);

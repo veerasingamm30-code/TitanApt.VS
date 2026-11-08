@@ -26,3 +26,19 @@ Status vocabulary: PASS / PARTIAL / FAIL / BLOCKED. Final status marks live in T
 - No new runtime dependencies (chart/orbit/search are hand-built SVG/CSS/React).
 - No fake data: streak counts come from real attempts; search indexes live DB rows; mock pools from approved questions.
 - Preserve existing features: page routes, seed behavior, admin workflow, Crack Time timer engine untouched except the custom-target commit path.
+
+## Completion status (2026-11-07)
+
+Items 1–12: all delivered — verification gates in [TEST_RESULTS.md](TEST_RESULTS.md),
+fix details in [BUG_FIX_REPORT.md](BUG_FIX_REPORT.md).
+
+Added workitems executed beyond the original list:
+
+| # | Item | Files | Gate | Result |
+|---|---|---|---|---|
+| A1 | Lesson schema multilesson enablement (drop `@@unique([topicId, level])` → `@@index([topicId, order])`, migrate via `db:deploy` — no reset) | `prisma/schema.prisma`, new migration, `prisma/seed.ts` | Seed succeeds; lessonCount=3 for new topics | PASS |
+| A2 | Author 3 Boolean Algebra + 3 Programming Logic lessons (WIN1252-safe encoding) | `prisma/data/lessons.json` | 31 lessons seeded; HTTP lesson detail per topic | PASS |
+| A3 | Lesson prev/next sibling navigation | `apps/api/src/routes/content.ts`, `apps/web/src/pages/LearnPages.tsx` | siblings in lesson payload; `.lesson-sibling-nav` rendered | PASS |
+| A4 | Public companies endpoint (pre-login, no user data) | `apps/api/src/routes/public.ts`, `app.ts` | 26 companies public; protected routes still 401 | PASS |
+| A5 | Landing right-to-left company marquee | `apps/web/src/components/CompanyMarquee.tsx`, `marquee.css` | seamless loop, pause, reduced-motion, signed-in-safe mock CTA | PASS |
+| A6 | Mock category row (server + client, completed after concurrent-editor draft repair; Question-subject grouping fixed to pool query) | `apps/api/src/routes/mock.ts`, `apps/web/src/pages/MockPages.tsx` | category probe 11/11; impossible config 409 | PASS |

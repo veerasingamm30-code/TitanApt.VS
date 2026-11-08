@@ -95,4 +95,52 @@ describe('API client', () => {
     expect(key).toMatch(/^practice-answer-[A-Za-z0-9_-]+$/);
     expect(key.length).toBeLessThanOrEqual(100);
   });
+
+  it('attaches a default timeout signal to requests', async () => {
+    document.cookie = 'ta_csrf=t; path=/';
+    vi.useFakeTimers();
+    let capturedSignal: AbortSignal | undefined;
+    vi.spyOn(globalThis, 'fetch').mockImplementation((_path, init) => {
+      capturedSignal = init?.signal;
+      return new Promise(() => {}); // never responds (simulated hang)
+    });
+
+    const pending = apiData('/api/hang').then(
+      (value) => ({ kind: 'resolved' as const, value }),
+      (err) => ({ kind: 'rejected' as const, error: err }),
+    );
+    await vi.advanceTimersByTimeAsync(45_000);
+    const settled = await pending;
+    expect(settled.kind).toBe('rejected');
+    if (settled.kind === 'rejected') {
+      const api = settled.error as ApiError;
+      expect(api).toBeInstanceOf(ApiError);
+      expect(api.status).toBe(0);
+      expect(api.code).toBe('TIMEOUT');
+    }
+    expect(capturedSignal?.aborted).toBe(true);
+    vi.useRealTimers();
+  });
+
+  it('composes the timeout with a caller-provided abort signal', async () => {
+    document.cookie = 'ta_csrf=t; path=/';
+    const caller = new AbortController();
+    let capturedSignal: AbortSignal | undefined;
+    vi.spyOn(globalThis, 'fetch').mockImplementation((_path, init) => {
+      capturedSignal = init?.signal;
+      return new Promise(() => {});
+    });
+
+    const pending = apiData('/api/hang', { signal: caller.signal }).then(
+      (value) => ({ kind: 'resolved' as const, value }),
+      (err) => ({ kind: 'rejected' as const, error: err }),
+    );
+    caller.abort();
+    const settled = await pending;
+    expect(settled.kind).toBe('rejected');
+    const api = (settled as { error?: unknown }).error as ApiError;
+    expect(api).toBeInstanceOf(ApiError);
+    expect(api.status).toBe(0);
+    expect(capturedSignal?.aborted).toBe(true);
+  });
 });

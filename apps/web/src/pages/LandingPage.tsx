@@ -37,7 +37,7 @@ const features = [
   {
     icon: Building2,
     title: 'Company intelligence, honestly sourced',
-    body: 'Explore 25 IT-company profiles. No invented logos, no fake company papers, and source notes on every profile.',
+    body: 'Explore 26 IT-company profiles with guide-supplied marks. No invented logos, no fake company papers, and source notes on every profile.',
   },
   {
     icon: BarChart3,
@@ -117,15 +117,15 @@ export function LandingPage() {
             </div>
             <div className="hero-proof">
               <div>
-                <strong>25</strong>
-                <span>core topics</span>
+                <strong>28</strong>
+                <span>focused topics</span>
               </div>
               <div>
-                <strong>175</strong>
+                <strong>1,675</strong>
                 <span>answer-verified questions</span>
               </div>
               <div>
-                <strong>25</strong>
+                <strong>26</strong>
                 <span>company profiles</span>
               </div>
             </div>
@@ -295,14 +295,14 @@ export function LandingPage() {
             <span className="eyebrow eyebrow-light">Content standards</span>
             <h2>No fake logos. No pretend company papers.</h2>
             <p>
-              The supplied company guide explicitly notes that official logos were not included. TitanApt uses
-              typographic initials instead. Company mocks are labelled as original practice material, and every
+              Company marks come from the supplied reference sheet and are labelled source-document identification
+              assets — not official brand artwork. Company mocks are labelled as original practice material, and every
               seeded question carries a source document, source key and review state.
             </p>
             <div className="integrity-points">
               <span><ShieldCheck size={17} /> Source-linked questions</span>
               <span><CheckCircle2 size={17} /> Pending items excluded from practice</span>
-              <span><Building2 size={17} /> Initials-only company marks</span>
+              <span><Building2 size={17} /> Guide-supplied company marks</span>
             </div>
           </div>
           <div className="integrity-card">

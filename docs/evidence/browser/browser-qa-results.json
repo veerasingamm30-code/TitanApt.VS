@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-11-07T15:18:18.245Z",
+  "base": "http://localhost:5173",
+  "email": "probe-ui-1794064656467@example.com",
+  "checks": [
+    {
+      "name": "landing: marquee has 52 logo cards (26 x doubled track)",
+      "pass": true,
+      "detail": "imgs=52"
+    },
+    {
+      "name": "landing: all marquee logos loaded at first pass",
+      "pass": false,
+      "detail": "unloaded=38"
+    },
+    {
+      "name": "landing: company card click opens info panel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "signup: form submits and reaches the app",
+      "pass": true,
+      "detail": "http://localhost:5173/app"
+    },
+    {
+      "name": "dashboard: streak chart renders on /app",
+      "pass": true,
+      "detail": "Skip to content | TitanApt | PLACEMENT STUDIO | WORKSPACE | Dashboard | Topic lessons | Learning Hub | Practice | Crack Time | Mock tests | "
+    },
+    {
+      "name": "dashboard: company orbit section renders on /app",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dashboard: search bar present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "search: grouped results appear for \"number\"",
+      "pass": true,
+      "detail": "options=8"
+    },
+    {
+      "name": "theme: toggle flips data-theme",
+      "pass": true,
+      "detail": "dark -> light"
+    },
+    {
+      "name": "practice: session starts",
+      "pass": true,
+      "detail": "http://localhost:5173/app/practice/cmw6js5fk0009cv84p29qzj12"
+    },
+    {
+      "name": "practice: answering shows server feedback panel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mock: detail page loads config UI",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "lessons: boolean-algebra lists lesson links",
+      "pass": true,
+      "detail": "links=3"
+    },
+    {
+      "name": "lesson: sibling nav present",
+      "pass": true,
+      "detail": "items=1"
+    },
+    {
+      "name": "lesson: sibling nav navigates",
+      "pass": true,
+      "detail": "http://localhost:5173/app/lessons/cmw63yhi0080rcv74t776gm1h -> http://localhost:5173/app/lessons/cmw644ysp080wcvdw28x7dklw"
+    },
+    {
+      "name": "learning: hub renders (volumes + progress)",
+      "pass": false,
+      "detail": "Skip to content | TitanApt | PLACEMENT STUDIO | WORKSPACE | Dashboard | Topic lessons | Learning Hub | Practice | Cr"
+    },
+    {
+      "name": "network: no endless refetch loop detected",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "nav: sidebar link \"Dashboard\"",
+      "pass": false,
+      "detail": "link not found"
+    },
+    {
+      "name": "nav: sidebar link \"Topic lessons\"",
+      "pass": false,
+      "detail": "link not found"
+    },
+    {
+      "name": "nav: sidebar link \"Learning Hub\"",
+      "pass": false,
+      "detail": "link not found"
+    },
+    {
+      "name": "nav: sidebar link \"Practice\"",
+      "pass": false,
+      "detail": "link not found"
+    },
+    {
+      "name": "nav: sidebar link \"Crack Time\"",
+      "pass": false,
+      "detail": "link not found"
+    },
+    {
+      "name": "nav: sidebar link \"Mock tests\"",
+      "pass": false,
+      "detail": "link not found"
+    },
+    {
+      "name": "responsive: no horizontal scroll at 390px",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "badRequests": [],
+  "events": [
+    "hub wait failure: TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.learn-overview') to be visible\u001b[22m\n"
+  ]
+}

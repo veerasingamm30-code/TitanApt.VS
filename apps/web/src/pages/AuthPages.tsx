@@ -25,11 +25,11 @@ function AuthLayout({ children, title, subtitle }: { children: ReactNode; title:
         </div>
         <div className="auth-aside-facts">
           <div>
-            <strong>25</strong>
-            <span>focused topic lessons</span>
+            <strong>31</strong>
+            <span>authored topic lessons</span>
           </div>
           <div>
-            <strong>175</strong>
+            <strong>1,675</strong>
             <span>answer-verified sample questions</span>
           </div>
           <div>

@@ -1,0 +1,335 @@
+/* ============================ PRE-LOGIN COMPANY LOGO MARQUEE ============================ */
+/* Premium dark futuristic band: continuous right-to-left logo marquee with
+   clickable company cards and a public information panel. */
+
+.lq-band {
+  --lq-navy: #070d1a;
+  --lq-navy-2: #0b1730;
+  --lq-line: rgba(126, 158, 255, 0.16);
+  --lq-cyan: #35c6f4;
+  --lq-orange: #ff8a3d;
+  --lq-violet: #8f7bff;
+  position: relative;
+  overflow: hidden;
+  margin: 40px 0 0;
+  padding: 74px 0 66px;
+  background:
+    radial-gradient(1200px 420px at 15% -10%, rgba(53, 198, 244, 0.13), transparent 60%),
+    radial-gradient(900px 380px at 85% 110%, rgba(143, 123, 255, 0.14), transparent 60%),
+    linear-gradient(180deg, var(--lq-navy) 0%, var(--lq-navy-2) 100%);
+  color: #e8effc;
+  color-scheme: dark;
+}
+
+.lq-atmosphere { position: absolute; inset: 0; pointer-events: none; }
+.lq-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(122, 160, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122, 160, 255, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 30%, transparent 78%);
+}
+.lq-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  animation: lq-drift 14s ease-in-out infinite alternate;
+}
+.lq-glow-a { top: -140px; left: 8%; width: 340px; height: 340px; background: rgba(53, 198, 244, 0.5); }
+.lq-glow-b { bottom: -160px; right: 10%; width: 380px; height: 380px; background: rgba(143, 123, 255, 0.45); animation-delay: -6s; }
+.lq-glow-c { top: 30%; right: 38%; width: 220px; height: 220px; background: rgba(255, 138, 61, 0.4); animation-delay: -10s; }
+@keyframes lq-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(40px, 22px, 0) scale(1.12); }
+}
+
+.lq-head {
+  position: relative;
+  width: min(1280px, calc(100% - 64px));
+  margin: 0 auto 30px;
+  text-align: center;
+}
+.lq-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 12px;
+  padding: 7px 14px;
+  border: 1px solid rgba(53, 198, 244, 0.35);
+  border-radius: 999px;
+  background: rgba(53, 198, 244, 0.09);
+  color: #9fdff5;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lq-head h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  color: #f4f7ff;
+}
+.lq-sub {
+  max-width: 660px;
+  margin: 12px auto 0;
+  color: rgba(214, 226, 248, 0.75);
+  font-size: 0.95rem;
+}
+
+.lq-status {
+  position: relative;
+  width: min(1280px, calc(100% - 64px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border: 1px solid var(--lq-line);
+  border-radius: var(--radius);
+  background: rgba(14, 25, 48, 0.75);
+}
+.lq-status p { margin: 0; color: rgba(214, 226, 248, 0.85); }
+.lq-status strong { color: #f4f7ff; }
+.lq-error svg { color: var(--lq-orange); flex: none; }
+.lq-loading { justify-content: center; color: rgba(214, 226, 248, 0.7); font-weight: 600; letter-spacing: 0.02em; }
+
+/* ---- the scrolling system ---- */
+.lq-marquee { position: relative; margin-top: 8px; }
+.lq-track-scroll {
+  position: relative;
+  overflow: hidden;
+  padding: 26px 0 30px;
+}
+.lq-track {
+  display: flex;
+  width: max-content;
+  animation-name: lq-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.lq-track-half {
+  display: flex;
+  align-items: stretch;
+  gap: 22px;
+  padding-right: 22px;
+}
+/* continuous right-to-left motion: two identical halves => -50% loops seamlessly */
+@keyframes lq-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.lq-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+.lq-edge-left { left: 0; background: linear-gradient(90deg, var(--lq-navy-2) 8%, transparent); }
+.lq-edge-right { right: 0; background: linear-gradient(-90deg, var(--lq-navy-2) 8%, transparent); }
+
+.lq-card { display: flex; }
+.lq-card-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 190px;
+  min-height: 168px;
+  padding: 20px 16px 16px;
+  border: 1px solid var(--lq-line);
+  border-radius: 20px;
+  background: linear-gradient(165deg, rgba(23, 36, 66, 0.92), rgba(10, 19, 38, 0.88));
+  box-shadow: 0 14px 34px rgba(3, 8, 18, 0.45), inset 0 1px 0 rgba(163, 190, 255, 0.08);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.lq-card-btn:hover,
+.lq-card-btn:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(53, 198, 244, 0.55);
+  box-shadow: 0 18px 44px rgba(3, 8, 18, 0.55), 0 0 34px rgba(53, 198, 244, 0.22), inset 0 1px 0 rgba(163, 190, 255, 0.12);
+  outline: none;
+}
+.lq-logo {
+  width: 120px;
+  height: 84px;
+  object-fit: contain;
+  display: block;
+  /* logo sheet marks are typically drawn dark on light and disappear on the
+     navy cards; normalize to a light mark with a soft glow */
+  filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(110, 160, 255, 0.35));
+  opacity: 0.92;
+}
+.lq-card-btn:hover .lq-logo,
+.lq-card-btn:focus-visible .lq-logo { opacity: 1; }
+.lq-logo-fallback {
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 84px;
+  border-radius: 12px;
+  color: #fff;
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.lq-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(226, 236, 255, 0.88);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* pause the whole belt while hovering or keyboard-focusing any card */
+.lq-marquee:hover .lq-track,
+.lq-track-scroll:focus-within .lq-track { animation-play-state: paused !important; }
+
+/* ---- public company information panel ---- */
+.lq-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(4, 8, 17, 0.72);
+  backdrop-filter: blur(6px);
+}
+.lq-panel {
+  width: min(520px, 100%);
+  max-height: min(86vh, 640px);
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid rgba(126, 158, 255, 0.28);
+  border-radius: 22px;
+  background: linear-gradient(170deg, #101d3a, #0a1327);
+  box-shadow: 0 40px 90px rgba(2, 6, 14, 0.6), 0 0 60px rgba(53, 198, 244, 0.12);
+  color: #e8effc;
+}
+.lq-panel-head { display: flex; align-items: center; gap: 14px; }
+.lq-panel-logo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 74px;
+  padding: 10px;
+  border: 1px solid var(--lq-line);
+  border-radius: 16px;
+  background: #0d1830;
+}
+.lq-panel-logo img { max-width: 100%; max-height: 100%; object-fit: contain; filter: brightness(0) invert(1); }
+.lq-panel-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 2px;
+  color: #9fdff5;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lq-panel-head h3 { margin: 0; font-family: var(--display); font-size: 1.45rem; line-height: 1.15; }
+.lq-panel-close {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+  background: rgba(18, 30, 56, 0.8);
+  color: #cdd9f2;
+  cursor: pointer;
+}
+.lq-panel-close:hover { border-color: rgba(255, 138, 61, 0.6); color: #fff; }
+.lq-panel-overview { margin: 16px 0 0; color: rgba(220, 231, 250, 0.85); font-size: 0.93rem; }
+.lq-panel-facts { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 16px 0 0; }
+.lq-panel-facts > div {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid var(--lq-line);
+  border-radius: 12px;
+  background: rgba(16, 27, 51, 0.7);
+}
+.lq-panel-facts dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  color: #9fdff5;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.lq-panel-facts dd { margin: 0; color: rgba(226, 236, 255, 0.92); font-size: 0.85rem; }
+.lq-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.lq-panel-web,
+.lq-panel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.lq-panel-web {
+  border: 1px solid var(--lq-line);
+  color: #cdd9f2;
+  background: rgba(18, 30, 56, 0.8);
+}
+.lq-panel-web:hover { border-color: rgba(53, 198, 244, 0.55); color: #fff; }
+.lq-panel-cta {
+  background: linear-gradient(120deg, var(--lq-orange), #ffb066);
+  color: #231204;
+  font-weight: 800;
+}
+.lq-panel-cta:hover { filter: brightness(1.06); }
+.lq-panel-note { display: block; margin-top: 14px; color: rgba(198, 212, 238, 0.55); font-size: 0.74rem; }
+
+@media (max-width: 720px) {
+  .lq-band { padding: 52px 0 46px; }
+  .lq-head { width: min(1280px, calc(100% - 40px)); }
+  .lq-card-btn { width: 158px; min-height: 150px; }
+  .lq-logo { width: 96px; height: 66px; }
+  .lq-panel { max-height: 92vh; border-radius: 18px; }
+  .lq-panel-facts > div { flex-direction: column; gap: 4px; }
+}
+
+/* marquee is a single, shared animation loop — freeze it entirely under
+   reduced motion and let the strip scroll manually instead */
+@media (prefers-reduced-motion: reduce) {
+  .lq-track { animation: none !important; }
+  .lq-glow { animation: none; }
+  .lq-card-btn { transition: none; }
+}

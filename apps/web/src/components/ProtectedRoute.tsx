@@ -1,10 +1,10 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import type { Role } from '@titanapt/shared';
 import { useAuth } from '../auth/AuthContext';
-import { Loader } from './ui';
+import { ErrorState, Loader } from './ui';
 
 export function ProtectedRoute({ roles }: { roles?: Role[] }) {
-  const { user, loading } = useAuth();
+  const { user, loading, bootstrapError, retryBootstrap } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -19,6 +19,17 @@ export function ProtectedRoute({ roles }: { roles?: Role[] }) {
         </div>
         <Loader label="Opening your workspace" />
       </div>
+    );
+  }
+
+  if (bootstrapError) {
+    // Transient failure (e.g. server restart): never loses the learner's place —
+    // offer a retry instead of kicking them to /login.
+    return (
+      <ErrorState
+        message={bootstrapError}
+        onRetry={retryBootstrap}
+      />
     );
   }
 

@@ -7,10 +7,10 @@ export class ApiError extends Error {
   details?: unknown;
 
   constructor(status: number, body: ApiErrorBody | null) {
-    super(body?.error.message ?? 'The request could not be completed.');
+    super(body?.error.message ?? (status === 0 ? 'The request timed out or the server is unreachable.' : 'The request could not be completed.'));
     this.name = 'ApiError';
     this.status = status;
-    this.code = body?.error.code ?? 'NETWORK_ERROR';
+    this.code = body?.error.code ?? (status === 0 ? 'TIMEOUT' : 'NETWORK_ERROR');
     this.requestId = body?.error.requestId;
     this.details = body?.error.details;
   }
@@ -49,6 +49,22 @@ type RequestOptions = Omit<RequestInit, 'body'> & {
   skipCsrf?: boolean;
 };
 
+/** Client request timeout: a hung request must surface as a catchable error
+ *  (retryable UI) instead of an eternal spinner. Callers that pass their own
+ *  signal keep full control; the timeout composes with it. */
+const DEFAULT_TIMEOUT_MS = 45_000;
+
+function withTimeout(signal?: AbortSignal | null): { signal: AbortSignal; cancel: () => void } {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
+  timer.unref?.();
+  if (signal) {
+    if (signal.aborted) controller.abort();
+    else signal.addEventListener('abort', () => controller.abort(), { once: true });
+  }
+  return { signal: controller.signal, cancel: () => clearTimeout(timer) };
+}
+
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const method = (options.method ?? 'GET').toUpperCase();
   const headers = new Headers(options.headers);
@@ -56,13 +72,25 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   if (!['GET', 'HEAD', 'OPTIONS'].includes(method) && !options.skipCsrf) {
     headers.set('x-csrf-token', await ensureCsrf());
   }
-  const response = await fetch(path, {
-    ...options,
-    method,
-    headers,
-    credentials: 'include',
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
-  });
+  const timeout = withTimeout(options.signal);
+  let response: Response;
+  try {
+    response = await fetch(path, {
+      ...options,
+      method,
+      headers,
+      credentials: 'include',
+      signal: timeout.signal,
+      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+    });
+  } catch (err) {
+    if (err instanceof ApiError) throw err;
+    const wrapped = new ApiError(0, null);
+    (wrapped as unknown as { cause?: unknown }).cause = err;
+    throw wrapped;
+  } finally {
+    timeout.cancel();
+  }
   if (response.status === 401) window.dispatchEvent(new Event('titanapt:unauthorized'));
   if (!response.ok) throw new ApiError(response.status, await safeJson(response));
   if (response.status === 204) return undefined as T;

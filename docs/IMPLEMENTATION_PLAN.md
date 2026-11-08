@@ -1,5 +1,8 @@
 # TitanApt Implementation Plan
 
+> **Note (2026-11-07):** up-to-date plan lives at the repository root —
+> [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md) with completion status.
+
 Status vocabulary: PASS, FAIL, PARTIAL, BLOCKED, NOT RUN.
 
 ## Milestone order

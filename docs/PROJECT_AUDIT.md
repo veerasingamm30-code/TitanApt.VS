@@ -1,5 +1,10 @@
 # TitanApt Project Audit
 
+> **Note (2026-11-07):** this is the earlier 2026-11-02 audit copy. The current
+> up-to-date versions live at the repository root — [PROJECT_AUDIT.md](../PROJECT_AUDIT.md),
+> [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md), [BUG_FIX_REPORT.md](../BUG_FIX_REPORT.md),
+> [TEST_RESULTS.md](../TEST_RESULTS.md) and [FINAL_DELIVERY_REPORT.md](../FINAL_DELIVERY_REPORT.md).
+
 Date: 2026-10-25
 Auditor: opencode (build session)
 Workspace: `E:\VEERASINGAM\TitanApt.VS`

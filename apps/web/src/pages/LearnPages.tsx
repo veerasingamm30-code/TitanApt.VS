@@ -34,7 +34,7 @@ type TopicListItem = {
   lessons: Array<{ id: string; title: string; level: string; status: string; bestScore: number }>;
 };
 
-const subjectOrder: Subject[] = ['QUANTITATIVE', 'LOGICAL', 'VERBAL', 'DATA_INTERPRETATION'];
+const subjectOrder: Subject[] = ['QUANTITATIVE', 'LOGICAL', 'VERBAL', 'DATA_INTERPRETATION', 'TECHNICAL'];
 
 export function LearnPage() {
   useDocumentTitle('Learn');
@@ -235,6 +235,7 @@ type LessonDetail = {
   reviewer: string | null;
   topic: { id: string; slug: string; name: string; subject: Subject; description: string };
   checkpointQuestions: QuestionView[];
+  siblings: Array<{ id: string; title: string; order: number }>;
   progress: { status: string; bestScore: number; attemptsCount: number } | null;
 };
 
@@ -266,6 +267,11 @@ export function LessonPage() {
 
   if (loading) return <Loader label="Opening lesson" />;
   if (error || !data) return <ErrorState message={error ?? 'Lesson unavailable.'} onRetry={reload} />;
+
+  const siblings = [...(data.siblings ?? [])].sort((a, b) => a.order - b.order);
+  const currentIndex = siblings.findIndex((lesson) => lesson.id === data.id);
+  const previousLesson = currentIndex > 0 ? siblings[currentIndex - 1] : null;
+  const nextLesson = currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
 
   const allAnswered = data.checkpointQuestions.length > 0 && data.checkpointQuestions.every((question) => answers[question.id]);
 
@@ -494,6 +500,22 @@ export function LessonPage() {
             <div className="lesson-aside-divider" />
             <Link to={`/app/practice?topic=${data.topic.slug}`} className="btn btn-secondary btn-block">Practise this topic</Link>
           </div>
+          {(previousLesson || nextLesson) && (
+            <nav className="lesson-sibling-nav" aria-label="Lesson navigation within this topic">
+              {previousLesson ? (
+                <Link to={`/app/lessons/${previousLesson.id}`} className="lesson-sibling lesson-sibling-prev">
+                  <span className="lesson-sibling-label"><ArrowLeft size={14} /> Previous</span>
+                  <strong>{previousLesson.title}</strong>
+                </Link>
+              ) : <span />}
+              {nextLesson ? (
+                <Link to={`/app/lessons/${nextLesson.id}`} className="lesson-sibling lesson-sibling-next">
+                  <span className="lesson-sibling-label">Next <ArrowRight size={14} /></span>
+                  <strong>{nextLesson.title}</strong>
+                </Link>
+              ) : <span />}
+            </nav>
+          )}
         </aside>
       </div>
     </div>

@@ -1,0 +1,184 @@
+{
+  "base": "http://localhost:4000",
+  "results": [
+    {
+      "name": "public: /api/public/companies without login",
+      "pass": true,
+      "detail": "status=200 count=26"
+    },
+    {
+      "name": "public: marquee covers all Top-10 orbit companies + 26 unique entries",
+      "pass": true,
+      "detail": "unique=26"
+    },
+    {
+      "name": "public: every company carries website + logo + overview",
+      "pass": true,
+      "detail": "withWeb+Overview=26"
+    },
+    {
+      "name": "auth: csrf bootstrap issues token",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "public: protected /api/dashboard still 401 unauthenticated",
+      "pass": true,
+      "detail": "status=401"
+    },
+    {
+      "name": "auth: signup creates account + session",
+      "pass": true,
+      "detail": "status=201"
+    },
+    {
+      "name": "auth: /api/auth/me returns session user",
+      "pass": true,
+      "detail": "status=200 email=probe-1794040333078-xqru9i@example.com"
+    },
+    {
+      "name": "dashboard: streak fields present",
+      "pass": true,
+      "detail": "status=200 keys=user,stats,dailyGoal,streak,streakHistory,studyMinutesToday,activity,subjects,weakAreas,recommendation,focusTopics,recentAttempts,mockHistory,availableMocks,companies"
+    },
+    {
+      "name": "dashboard: new user streak is 0",
+      "pass": true,
+      "detail": "current=0"
+    },
+    {
+      "name": "topics: Boolean Algebra exposes 3 authored lessons",
+      "pass": true,
+      "detail": "count=3"
+    },
+    {
+      "name": "topics: Programming Logic exposes 3 authored lessons",
+      "pass": true,
+      "detail": "count=3"
+    },
+    {
+      "name": "topics/:slug lists Boolean Algebra lessons",
+      "pass": true,
+      "detail": "status=200 list=3"
+    },
+    {
+      "name": "lesson: detail loads with checkpoint questions",
+      "pass": true,
+      "detail": "status=200 cp=3"
+    },
+    {
+      "name": "lesson: siblings expose 3 lessons for prev/next",
+      "pass": true,
+      "detail": "siblings=3"
+    },
+    {
+      "name": "lesson: checkpoint submit scored by server",
+      "pass": true,
+      "detail": "status=400 keys=error"
+    },
+    {
+      "name": "practice: streak day qualified after >=4 unique correct answers",
+      "pass": true,
+      "detail": "todayQualified=true todayCorrect=6 loops=4"
+    },
+    {
+      "name": "practice: today counts as a streak day (current=1, longest>=1)",
+      "pass": true,
+      "detail": "current=1 longest=1"
+    },
+    {
+      "name": "streak: refresh persistence (same values after re-fetch)",
+      "pass": true,
+      "detail": "current=1 longest=1"
+    },
+    {
+      "name": "mock: company mock config exposes pool + ranges",
+      "pass": true,
+      "detail": "pool.any=137"
+    },
+    {
+      "name": "mock: configured attempt has 20 questions",
+      "pass": true,
+      "detail": "q=20"
+    },
+    {
+      "name": "mock: configured attempt honours 30-min duration",
+      "pass": true,
+      "detail": "secondsRemaining=1799"
+    },
+    {
+      "name": "mock: submit returns server-computed results",
+      "pass": true,
+      "detail": "c=8 i=12 u=0"
+    },
+    {
+      "name": "mock: unanswered equals 20 minus attempted",
+      "pass": true,
+      "detail": "unanswered=0 attempted=20"
+    },
+    {
+      "name": "mock: submitted attempt persists as SUBMITTED with score",
+      "pass": true,
+      "detail": "status=SUBMITTED score=5"
+    },
+    {
+      "name": "learning: 8 volumes with chapter data",
+      "pass": true,
+      "detail": "status=200 volumes=8"
+    },
+    {
+      "name": "search: \"number\" returns matched groups",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "study: custom 35-min target accepted",
+      "pass": true,
+      "detail": "target=35"
+    },
+    {
+      "name": "study: dashboard reports 35-min study target",
+      "pass": true,
+      "detail": "got=35"
+    },
+    {
+      "name": "settings: theme patch accepted",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "settings: theme persisted to profile",
+      "pass": true,
+      "detail": "theme=light"
+    },
+    {
+      "name": "settings: theme back to dark",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "auth: signout clears session",
+      "pass": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "auth: /api/auth/me anonymous after signout",
+      "pass": true,
+      "detail": "status=401 data=null"
+    },
+    {
+      "name": "auth: protected practice 401 after signout",
+      "pass": true,
+      "detail": "status=401"
+    }
+  ],
+  "events": [
+    "practice: correct answer registered",
+    "practice: correct answer registered",
+    "practice: correct answer registered",
+    "practice: correct answer registered",
+    "practice: correct answer registered",
+    "practice: correct answer registered",
+    "mock: 20 answers recorded"
+  ]
+}

@@ -125,6 +125,11 @@ contentRouter.get(
     const checkpointQuestions = lesson.checkpoints
       .filter((cp) => cp.question.reviewStatus === 'APPROVED' && cp.question.correctOptionId)
       .map((cp) => toQuestionView(cp.question));
+    const siblings = await prisma.lesson.findMany({
+      where: { topicId: lesson.topicId, status: 'APPROVED' },
+      orderBy: { order: 'asc' },
+      select: { id: true, title: true, order: true },
+    });
 
     res.json({
       data: {
@@ -151,6 +156,7 @@ contentRouter.get(
           description: lesson.topic.description,
         },
         checkpointQuestions,
+        siblings,
         progress: progress
           ? { status: progress.status, bestScore: progress.bestScore, attemptsCount: progress.attemptsCount }
           : null,

@@ -58,6 +58,7 @@ type MockConfig = {
   defaults: { durationMinutes: number; questionCount: number };
   marking: Marking;
   pool: { any: number; easy: number; medium: number; hard: number };
+  categories: Array<{ subject: Subject; label: string; count: number }>;
   ranges: { questionCount: [number, number]; durationMinutes: [number, number] };
 };
 
@@ -271,11 +272,24 @@ const MOCK_DIFFICULTY_OPTIONS = [
 const MOCK_COUNT_OPTIONS = [5, 10, 15, 20, 30, 50];
 const MOCK_DURATION_OPTIONS = [15, 30, 45, 60, 90];
 
+const MOCK_CATEGORY_OPTIONS = [
+  { subject: 'QUANTITATIVE', label: 'Quantitative Aptitude' },
+  { subject: 'LOGICAL', label: 'Logical and Analytical Reasoning' },
+  { subject: 'VERBAL', label: 'Verbal Ability and English' },
+  { subject: 'DATA_INTERPRETATION', label: 'Data Interpretation and Data Sufficiency' },
+  { subject: 'TECHNICAL', label: 'Computer Fundamentals and Programming Logic' },
+] as const;
+
 export function MockDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { data, loading, error, reload } = useApi<MockDetail>(slug ? `/api/mocks/${slug}` : null);
-  const { data: config, loading: configLoading } = useApi<MockConfig>(slug ? `/api/mocks/${slug}/config` : null);
+  const [category, setCategory] = useState('');
+  const configUrl = useMemo(
+    () => (slug ? `/api/mocks/${slug}/config${category ? `?category=${category}` : ''}` : null),
+    [slug, category],
+  );
+  const { data: config, loading: configLoading } = useApi<MockConfig>(configUrl);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState('');
@@ -302,7 +316,8 @@ export function MockDetailPage() {
   const countAdjusted = config && countValue !== config.defaults.questionCount;
   const durationAdjusted = config && durationValue !== config.defaults.durationMinutes;
   const difficultyAdjusted = Boolean(difficulty);
-  const anyAdjustment = countAdjusted || durationAdjusted || difficultyAdjusted;
+  const categoryAdjusted = Boolean(category);
+  const anyAdjustment = countAdjusted || durationAdjusted || difficultyAdjusted || categoryAdjusted;
   const tooManyQuestions = poolForDifficulty !== null && countValue > poolForDifficulty;
 
   async function start() {
@@ -311,6 +326,7 @@ export function MockDetailPage() {
     try {
       const body: Record<string, number | string> = {};
       if (difficulty) body.difficulty = difficulty;
+      if (category) body.category = category;
       if (config && countValue !== config.defaults.questionCount) body.questionCount = countValue;
       if (config && durationValue !== config.defaults.durationMinutes) body.durationMinutes = durationValue;
       const attempt = await apiData<{ id: string }>(`/api/mocks/${data!.slug}/start`, { method: 'POST', body });
@@ -362,7 +378,8 @@ export function MockDetailPage() {
             <div className="mock-configured-note">
               <CheckCircle2 size={16} />
               <span>
-                Custom selection active: <strong>{difficulty ? MOCK_DIFFICULTY_OPTIONS.find((option) => option.value === difficulty)?.label : 'mixed difficulty'}</strong>
+                Custom selection active: <strong>{category ? MOCK_CATEGORY_OPTIONS.find((option) => option.subject === category)?.label ?? category : 'any category'}</strong>
+                {' · '}{difficulty ? MOCK_DIFFICULTY_OPTIONS.find((option) => option.value === difficulty)?.label : 'mixed difficulty'}
                 {' · '}{countValue} questions{' · '}{durationValue} minutes. The paper is assembled from approved questions when you press Start.
               </span>
             </div>
@@ -381,6 +398,17 @@ export function MockDetailPage() {
               </div>
               <div className="setup-row">
                 <label className="field">
+                  <span>Aptitude category</span>
+                  <select value={category} onChange={(event) => setCategory(event.target.value)} aria-label="Mock aptitude category">
+                    <option value="">Any category (mixed paper)</option>
+                    {config.categories.map((option) => (
+                      <option key={option.subject} value={option.subject}>
+                        {MOCK_CATEGORY_OPTIONS.find((candidate) => candidate.subject === option.subject)?.label ?? option.label} · {option.count} Q
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="field">
                   <span>Difficulty</span>
                   <select value={difficulty} onChange={(event) => setDifficulty(event.target.value)} aria-label="Mock difficulty">
                     {MOCK_DIFFICULTY_OPTIONS.map((option) => (
@@ -388,6 +416,8 @@ export function MockDetailPage() {
                     ))}
                   </select>
                 </label>
+              </div>
+              <div className="setup-row">
                 <label className="field">
                   <span>Question count</span>
                   {customCount ? (
@@ -437,7 +467,7 @@ export function MockDetailPage() {
               </div>
               {config.pool[difficulty ? (difficulty.toLowerCase() as 'easy' | 'medium' | 'hard') : 'any'] === 0 && (
                 <div className="form-error" role="alert">
-                  No approved questions match this difficulty yet. Choose “Any difficulty” or another level.
+                  No approved questions match this category/difficulty combination yet. Loosen the category or the difficulty filter.
                 </div>
               )}
               {tooManyQuestions && poolForDifficulty !== null && (

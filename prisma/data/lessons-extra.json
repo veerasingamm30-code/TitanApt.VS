@@ -1,0 +1,552 @@
+[
+  {
+    "topicSlug": "boolean-algebra",
+    "slug": "boolean-algebra-foundations",
+    "title": "Boolean values, constants and the three operators",
+    "level": "BEGINNER",
+    "order": 1,
+    "objective": "Model on/off logic with Boolean variables and constants, and evaluate AND, OR and NOT without second-guessing.",
+    "explanation": "Boolean algebra is the algebra of two values. A Boolean variable can only be 0 or 1 (equivalently False or True), and a Boolean constant is one of those two values written directly in an expression. Three operators form the entire algebra: AND outputs 1 only when every input is 1; OR outputs 1 when at least one input is 1; NOT flips its single input from 0 to 1 or from 1 to 0. Every other idea in this topic — truth tables, identities, De Morgan's laws, simplification and logic gates — is built by combining these three operators, so being fast and certain with them is the foundation the rest of the chapter stands on.",
+    "analogy": "Think of a light controlled by switches in series or parallel. Series switches (AND) need every switch on for the lamp to glow. Parallel switches (OR) light the lamp if any one path is closed. The NOT operator is simply swapping on for off on the same switch.",
+    "workedExamples": [
+      {
+        "title": "Reading an AND chain",
+        "problem": "Evaluate A AND B AND C when A = 1, B = 0 and C = 1.",
+        "steps": [
+          "AND requires every operand to be 1 for a result of 1.",
+          "B = 0 already fails that condition.",
+          "The value of A and C cannot rescue the chain."
+        ],
+        "answer": "0, because a single 0 in an AND chain forces the whole chain to 0."
+      },
+      {
+        "title": "Reading an OR chain",
+        "problem": "Evaluate A OR B OR C when A = 0, B = 1 and C = 0.",
+        "steps": [
+          "OR requires at least one operand to be 1.",
+          "B = 1 satisfies that condition immediately.",
+          "No need to check further operands."
+        ],
+        "answer": "1, because a single 1 in an OR chain forces the whole chain to 1."
+      },
+      {
+        "title": "Double negation",
+        "problem": "Evaluate NOT (NOT A) when A = 0.",
+        "steps": [
+          "Inner NOT: NOT 0 = 1.",
+          "Outer NOT: NOT 1 = 0.",
+          "The two flips cancel out."
+        ],
+        "answer": "0 — NOT twice returns the original value (double negation law)."
+      }
+    ],
+    "rule": [
+      {
+        "title": "AND is strict",
+        "detail": "A AND B = 1 only when A = 1 and B = 1; any 0 input makes the result 0. Identity: A AND 1 = A; A AND 0 = 0."
+      },
+      {
+        "title": "OR is lenient",
+        "detail": "A OR B = 1 whenever at least one operand is 1. Identity: A OR 1 = 1; A OR 0 = A."
+      },
+      {
+        "title": "NOT is a switch",
+        "detail": "NOT 0 = 1 and NOT 1 = 0. Applied twice it cancels: NOT (NOT A) = A."
+      },
+      {
+        "title": "Constants beat variables",
+        "detail": "When a subexpression collapses to 0 or 1, substitute it immediately and simplify the rest of the expression first."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Treating AND like OR or the reverse.",
+        "fix": "Remember the strictness order: AND needs all inputs = 1, OR needs any input = 1."
+      },
+      {
+        "mistake": "Forgetting that NOT applies to the whole expression after it, not just the next symbol.",
+        "fix": "Use parentheses explicitly: NOT (A OR B) is very different from (NOT A) OR B."
+      },
+      {
+        "mistake": "Confusing Boolean 1/0 with numeric arithmetic.",
+        "fix": "There is no carry or borrowing: 1 + 1 OR-style means 1 OR 1 = 1, not decimal 2."
+      }
+    ],
+    "memoryTip": "AND is the pessimist (all or nothing), OR is the optimist (any will do), NOT is the contrarian (always the opposite).",
+    "practice": [
+      {
+        "prompt": "Evaluate NOT 1.",
+        "answer": "0."
+      },
+      {
+        "prompt": "If A = 1 and B = 0, what is A AND B?",
+        "answer": "0 — AND is strict; one 0 input is enough."
+      },
+      {
+        "prompt": "If A = 0 and B = 0, what is A OR B?",
+        "answer": "0 — OR gave 1 the previous way only when some input was 1; here neither is."
+      }
+    ],
+    "sourceRef": "Boolean Algebra topic recorded in Top25 company-style source material; lesson authored for this build and examples independently checked.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "boolean-algebra",
+    "slug": "boolean-algebra-truth-tables",
+    "title": "Truth tables and evaluating Boolean expressions",
+    "level": "BEGINNER",
+    "order": 2,
+    "objective": "Build complete truth tables for any Boolean expression and evaluate expressions with mixed AND, OR, NOT and XOR inputs.",
+    "explanation": "A truth table is the complete catalogue of an expression: one row for every possible assignment of inputs, listing the output under that assignment. An expression with n variables has 2 to the power n rows, so three variables need eight rows. The reliable method is to evaluate the expression row by row: first replace the variables with the row's inputs, then apply NOT, then AND, then OR (with parentheses overriding that order). Placement tests frequently mix in XOR — the 'differences detector' that outputs 1 when its inputs disagree — so treat XOR as a fourth operator you can also expand: A XOR B equals (A AND NOT B) OR (NOT A AND B).",
+    "analogy": "A truth table is like testing every possible key combination on a two-switch combination lock and recording whether the lock opens. You try each combination exactly once, and the table proves you covered them all.",
+    "workedExamples": [
+      {
+        "title": "Truth table for A OR (NOT A)",
+        "problem": "Complete the truth table for the expression A OR (NOT A).",
+        "steps": [
+          "Row A = 0: NOT A = 1, so 0 OR 1 = 1.",
+          "Row A = 1: NOT A = 0, so 1 OR 0 = 1.",
+          "Both rows output 1."
+        ],
+        "answer": "The output is 1 in every row — the expression is a tautology (the identity A OR (NOT A) = 1)."
+      },
+      {
+        "title": "Three-variable evaluation",
+        "problem": "Evaluate (A AND B) OR (NOT C) when A = 0, B = 1 and C = 0.",
+        "steps": [
+          "Substitute: (0 AND 1) OR (NOT 0).",
+          "Inner: 0 AND 1 = 0; NOT 0 = 1.",
+          "Combine: 0 OR 1 = 1."
+        ],
+        "answer": "1."
+      },
+      {
+        "title": "XOR of equals",
+        "problem": "Evaluate A XOR B when A = 1 and B = 1, then when A = 1 and B = 0.",
+        "steps": [
+          "XOR outputs 1 when the inputs differ.",
+          "1 and 1 do not differ, so the first result is 0.",
+          "1 and 0 differ, so the second result is 1."
+        ],
+        "answer": "0 for equal inputs, 1 for different inputs."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Row count",
+        "detail": "An expression over n variables needs exactly 2^n rows — 2 for one variable, 4 for two, 8 for three."
+      },
+      {
+        "title": "Evaluation order",
+        "detail": "Parentheses first, then NOT, then AND, then OR. When in doubt, add parentheses instead of trusting convention."
+      },
+      {
+        "title": "XOR identity",
+        "detail": "A XOR B = (A AND NOT B) OR (NOT A AND B); alternatively A XOR B = 1 exactly when A and B differ."
+      },
+      {
+        "title": "Tautology check",
+        "detail": "If every row of the truth table is 1 the two sides are logically equivalent — this is how laws such as De Morgan's are verified."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Producing too few rows (for example 4 rows for three variables).",
+        "fix": "Count 2^n first and number the rows in binary order so no combination is missed."
+      },
+      {
+        "mistake": "Evaluating NOT after AND/OR.",
+        "fix": "NOT always binds first (inside parentheses or over its own operand)."
+      },
+      {
+        "mistake": "Treating XOR as the same as OR.",
+        "fix": "XOR is 0 when both inputs are 1; plain OR would be 1 there."
+      }
+    ],
+    "memoryTip": "Rows = 2^n. Evaluate like arithmetic: bracket, NOT, AND, OR. XOR just answers 'do these differ?'.",
+    "practice": [
+      {
+        "prompt": "How many rows does a truth table over A, B and C need?",
+        "answer": "8, because 2^3 = 8."
+      },
+      {
+        "prompt": "What is NOT (A OR B) when A = 0 and B = 0?",
+        "answer": "1, because A OR B = 0 and NOT 0 = 1."
+      },
+      {
+        "prompt": "What does A XOR A always evaluate to?",
+        "answer": "0 — identical inputs never differ."
+      }
+    ],
+    "sourceRef": "Boolean Algebra topic recorded in Top25 company-style source material; lesson authored for this build and examples independently checked.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "boolean-algebra",
+    "slug": "boolean-algebra-laws-simplification-gates",
+    "title": "Laws, De Morgan and logic-gate simplification",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Use the Boolean laws and De Morgan's laws to simplify expressions, and map every simplified form onto its logic gates.",
+    "explanation": "Boolean expressions simplify using a small lawbook. Absorption: A OR (A AND B) = A and A AND (A OR B) = A. Complement: A AND (NOT A) = 0 and A OR (NOT A) = 1. Distribution works like arithmetic: A AND (B OR C) = (A AND B) OR (A AND C), and also A OR (B AND C) = (A OR B) AND (A OR C). De Morgan's laws convert between AND and OR under negation: NOT (A AND B) = (NOT A) OR (NOT B), and NOT (A OR B) = (NOT A) AND (NOT B). Simplification matters because each operator in an expression corresponds to a gate in hardware — NOT maps to an inverter, AND/OR to their named gates, NAND/NOR to inverted outputs, XOR to a difference detector — and fewer operators mean fewer gates, less delay and lower cost. The standard exam technique is: expand with De Morgan, apply identities, then re-check with a truth table.",
+    "analogy": "Simplifying a Boolean expression is like tidying a messy set of travel routes: De Morgan lets you re-route a forbiddance into permissions, absorption removes the detour that was already covered by a shorter road, and the truth table toll-checks that every destination is still reachable exactly as before.",
+    "workedExamples": [
+      {
+        "title": "De Morgan in action",
+        "problem": "Simplify NOT (A AND NOT B).",
+        "steps": [
+          "Apply De Morgan: NOT (A AND NOT B) = (NOT A) OR NOT (NOT B).",
+          "Cancel the double negation: NOT (NOT B) = B.",
+          "Result: (NOT A) OR B."
+        ],
+        "answer": "(NOT A) OR B."
+      },
+      {
+        "title": "Absorption",
+        "problem": "Simplify A OR (A AND B).",
+        "steps": [
+          "If A = 1, the expression is 1 OR (1 AND B) = 1.",
+          "If A = 0, the expression is 0 OR (0 AND B) = 0.",
+          "The output always equals A."
+        ],
+        "answer": "A (absorption law)."
+      },
+      {
+        "title": "Simplify then verify",
+        "problem": "Simplify (A AND B) OR (NOT A AND B).",
+        "steps": [
+          "Factor B: B AND (A OR NOT A).",
+          "Complement law: A OR NOT A = 1.",
+          "Result: B AND 1 = B."
+        ],
+        "answer": "B — a three-gate circuit collapses to a single wire."
+      }
+    ],
+    "rule": [
+      {
+        "title": "De Morgan's laws",
+        "detail": "NOT (A AND B) = (NOT A) OR (NOT B) — the AND becomes OR. NOT (A OR B) = (NOT A) AND (NOT B) — the OR becomes AND."
+      },
+      {
+        "title": "Absorption laws",
+        "detail": "A OR (A AND B) = A; A AND (A OR B) = A."
+      },
+      {
+        "title": "Complement laws",
+        "detail": "A AND (NOT A) = 0; A OR (NOT A) = 1; NOT (NOT A) = A."
+      },
+      {
+        "title": "Gate mapping",
+        "detail": "NOT -> inverter; AND/OR -> their gates; NAND/NOR -> the universal gates that alone can build any circuit; XOR -> 1 when inputs differ."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Applying De Morgan without flipping the operator.",
+        "fix": "The negation must move through the bracket AND change AND into OR (or OR into AND)."
+      },
+      {
+        "mistake": "Simplifying without re-checking equivalence.",
+        "fix": "Produce the truth table of the original and the simplified expression; they must match on every row."
+      },
+      {
+        "mistake": "Distributing AND and OR as if only AND distributes.",
+        "fix": "In Boolean algebra both distribute: A OR (B AND C) = (A OR B) AND (A OR C), unlike ordinary arithmetic."
+      }
+    ],
+    "memoryTip": "De Morgan: 'break the line, change the sign' — negate each variable, and AND swaps with OR. Then remember absorption kills redundant parentheses.",
+    "practice": [
+      {
+        "prompt": "Simplify NOT (NOT A AND NOT B).",
+        "answer": "By De Morgan: NOT (NOT A AND NOT B) = NOT (NOT A) OR NOT (NOT B) = A OR B."
+      },
+      {
+        "prompt": "What is A AND (NOT A)?",
+        "answer": "0 — the complement law."
+      },
+      {
+        "prompt": "Which single gate's output is NOT (A AND B)?",
+        "answer": "The NAND gate."
+      }
+    ],
+    "sourceRef": "Boolean Algebra topic recorded in Top25 company-style source material; lesson authored for this build and examples independently checked.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "programming-logic",
+    "slug": "programming-logic-foundations",
+    "title": "From problem to plan: algorithms, flowcharts and pseudocode",
+    "level": "BEGINNER",
+    "order": 1,
+    "objective": "Describe the solution to a problem as an ordered algorithm, sketch it as a flowchart and write it precisely in pseudocode.",
+    "explanation": "Programming logic is the discipline of turning a problem statement into a precise, ordered set of steps — an algorithm — that a computer could execute without asking questions. An algorithm must be finite (it cannot run forever unless that is intended), definite (each step is unambiguous) and produce output. Three interchangeable notations describe one: a flowchart is the visual form, using ovals for start/stop, parallelograms for input/output, rectangles for processing and diamonds for decisions with a branching yes/no path; pseudocode is the text form, written in structured plain English like 'READ number; IF number > 0 THEN PRINT positive ELSE PRINT negative'. Building the habit of writing the plan before the program is what separates reliable coders from trial-and-error typists.",
+    "analogy": "An algorithm is a recipe: ingredients first (input), exact steps second, and a finished dish third (output). A flowchart is the same recipe photographed as a poster; pseudocode is the same recipe written in clear shorthand. Change the language, never the logic.",
+    "workedExamples": [
+      {
+        "title": "Algorithm for the larger of two numbers",
+        "problem": "Write an algorithm that reads two numbers and prints the larger one.",
+        "steps": [
+          "Step 1: Read number X.",
+          "Step 2: Read number Y.",
+          "Step 3: IF X > Y THEN PRINT X ELSE PRINT Y.",
+          "Step 4: Stop."
+        ],
+        "answer": "The plan is finite, ordered and handles both outcomes — a valid algorithm."
+      },
+      {
+        "title": "Flowchart symbols",
+        "problem": "Which flowchart symbol suits each task: start, read a value, is N > 10?, print total?",
+        "steps": [
+          "Start/Stop -> oval (terminal).",
+          "Read/Print -> parallelogram (input/output).",
+          "A yes/no question -> diamond (decision), with two outgoing arrows labelled Yes and No.",
+          "Compute total -> rectangle (process)."
+        ],
+        "answer": "Oval, parallelogram, diamond, rectangle."
+      },
+      {
+        "title": "Average of three marks",
+        "problem": "Write pseudocode to read three marks and print their average.",
+        "steps": [
+          "READ M1, M2, M3",
+          "SUM <- M1 + M2 + M3",
+          "AVG <- SUM / 3",
+          "PRINT AVG"
+        ],
+        "answer": "Four pseudocode lines, each one unambiguous action."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Algorithm tests",
+        "detail": "Every algorithm must be finite, definite (no ambiguous steps) and clearly mapped from input to output."
+      },
+      {
+        "title": "Flowchart symbols",
+        "detail": "Oval = start/stop; parallelogram = input/output; rectangle = process; diamond = decision."
+      },
+      {
+        "title": "Pseudocode keywords",
+        "detail": "READ/INPUT, PRINT/DISPLAY, SET/<- assignment, IF-THEN-ELSE, WHILE and FOR carry the same meaning in every syllabus."
+      },
+      {
+        "title": "Trace before you trust",
+        "detail": "Hand-trace your algorithm with a sample input (a dry run) before considering it correct."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Writing steps in an impossible order, such as printing a value before reading it.",
+        "fix": "Follow the data: input -> process -> output."
+      },
+      {
+        "mistake": "Mixing pseudocode with real syntax (semicolons, braces, variable declarations).",
+        "fix": "Pseudocode is language-free; keep it in plain structured English."
+      },
+      {
+        "mistake": "Leaving a decision branch without an action.",
+        "fix": "Every diamond in a flowchart needs both arrows labelled; every IF needs a defined else behaviour (even if that is 'do nothing', write it)."
+      }
+    ],
+    "memoryTip": "IPO — Input, Process, Output — is the spine of every algorithm; ovals start, parallelograms read, rectangles compute, diamonds decide.",
+    "practice": [
+      {
+        "prompt": "Write pseudocode to read a number and print its square.",
+        "answer": "READ N; SQUARE <- N * N; PRINT SQUARE."
+      },
+      {
+        "prompt": "Which flowchart shape is used for a decision in a flowchart?",
+        "answer": "A diamond with Yes/No labelled branches."
+      },
+      {
+        "prompt": "What three properties must every algorithm satisfy?",
+        "answer": "Finiteness, definiteness and clearly defined input/output."
+      }
+    ],
+    "sourceRef": "Programming Logic topic recorded in Top25 company-style source material; lesson authored for this build and examples independently checked.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "programming-logic",
+    "slug": "programming-logic-variables-operators-conditions",
+    "title": "Variables, operators and conditional statements",
+    "level": "BEGINNER",
+    "order": 2,
+    "objective": "Store values correctly, predict every operator's result (including integer division and precedence) and steer execution with IF/ELSE conditions.",
+    "explanation": "A variable is a labelled box in memory with three facts: a name, a current value and a data type — integer (whole numbers), float (real numbers), character (single letter enclosed in single quotes), string (text in double quotes) or Boolean (true/false). Operators act on those values: arithmetic operators (+, -, *, /, %) compute; relational operators (<, <=, >, >=, ==, !=) compare and produce a Boolean; logical operators (AND, OR, NOT) combine Booleans. Two results catch most exam questions: integer division throws away the remainder (7 / 2 = 3) while the modulus operator keeps only the remainder (7 % 2 = 1); and precedence means NOT beats AND beats OR, with parentheses overriding everything. Conditional statements (IF, IF-ELSE, ELSE-IF ladders and CASE) choose which block runs based on a Boolean test, so a program can react differently to different inputs rather than always executing the same straight line.",
+    "analogy": "Variables are labelled boxes on a shelf: the label never changes but the contents can be swapped. Operators are the tools that act on the contents, and an IF-ELSE is a railway junction — the condition is the signal that sends execution down one track or the other.",
+    "workedExamples": [
+      {
+        "title": "Integer division and modulus",
+        "problem": "Evaluate 17 / 5 and 17 % 5 under integer arithmetic.",
+        "steps": [
+          "17 = 5 × 3 with 2 left over.",
+          "Integer division keeps only the whole quotient: 17 / 5 = 3.",
+          "Modulus keeps only the leftover: 17 % 5 = 2."
+        ],
+        "answer": "3 and 2."
+      },
+      {
+        "title": "Combining conditions",
+        "problem": "Evaluate (N > 10) AND (N % 2 == 0) when N = 14, then when N = 9.",
+        "steps": [
+          "N = 14: 14 > 10 is true; 14 % 2 == 0 is true; true AND true = true.",
+          "N = 9: 9 > 10 is false; 9 % 2 == 0 is false; false AND false = false.",
+          "The AND demands both halves to be true."
+        ],
+        "answer": "true for 14, false for 9."
+      },
+      {
+        "title": "IF-ELSE ladder for grades",
+        "problem": "Classify a mark M: 80+ = A, 60–79 = B, 40–59 = C, else D.",
+        "steps": [
+          "IF M >= 80 THEN grade = 'A'.",
+          "ELSE IF M >= 60 THEN grade = 'B'.",
+          "ELSE IF M >= 40 THEN grade = 'C'.",
+          "ELSE grade = 'D'."
+        ],
+        "answer": "The ladder checks from the top down, so the first matching branch wins — order matters."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Data types",
+        "detail": "int holds whole numbers, float holds decimals, char holds one character, string holds text, Boolean holds true/false."
+      },
+      {
+        "title": "Division pair",
+        "detail": "Integer division = quotient only (7/2 -> 3); modulus = remainder only (7%2 -> 1). Even numbers satisfy N % 2 == 0."
+      },
+      {
+        "title": "Precedence",
+        "detail": "Arithmetic first, then relational, then NOT, then AND, then OR — parentheses override everything."
+      },
+      {
+        "title": "Condition order",
+        "detail": "In an IF-ELSE ladder arrange tests from most specific to least; equal tests are the classic source of wrong-output bugs."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Using = (assignment) where == (comparison) is meant.",
+        "fix": "= stores a value into a variable; == asks whether two values are equal."
+      },
+      {
+        "mistake": "Expecting 7 / 2 to equal 3.5 in integer arithmetic.",
+        "fix": "Integer division discards the fraction; convert to float first if a decimal is needed."
+      },
+      {
+        "mistake": "Writing IF M >= 80 ... ELSE IF M > 60 for grades, which hides marks of exactly 60.",
+        "fix": "Use >= with a strict descending ladder so boundary cases such as exactly 60 take the right branch."
+      }
+    ],
+    "memoryTip": "'%' remembers what '/' forgets: quotient versus remainder. NOT > AND > OR decides logic precedence.",
+    "practice": [
+      {
+        "prompt": "What is 123 % 10?",
+        "answer": "3 — the last digit, since keep only the remainder of 123 / 10."
+      },
+      {
+        "prompt": "Evaluate NOT (true AND false).",
+        "answer": "Inside the brackets: true AND false = false; NOT false = true."
+      },
+      {
+        "prompt": "Write the condition for a number N to be a two-digit number.",
+        "answer": "N >= 10 AND N <= 99."
+      }
+    ],
+    "sourceRef": "Programming Logic topic recorded in Top25 company-style source material; lesson authored for this build and examples independently checked.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "programming-logic",
+    "slug": "programming-logic-loops-problem-solving",
+    "title": "Loops, tracing and systematic problem solving",
+    "level": "INTERMEDIATE",
+    "order": 3,
+    "objective": "Choose and trace the right loop for a task, avoid the classic loop bugs, and apply a repeatable method to unseen output-prediction questions.",
+    "explanation": "Loops repeat a block of steps. A counted loop (FOR i FROM 1 TO n) is the right form whenever the number of repetitions is known in advance; a WHILE loop runs as long as a condition stays true and suits situations where the count is discovered at run time; a DO-WHILE loop checks the condition after the first pass and therefore always runs at least once. Every loop needs three working parts: an initialisation that starts the control variable, a condition that terminates it, and a body that moves the variable toward termination. With structure in place, problem solving becomes method: restate the problem, fix the input/output contract, outline IPO steps, build a trace table recording every variable on every iteration, then generalize. Output-prediction questions are trace tables in disguise — those who tabulate state never lose track of a value.",
+    "analogy": "A loop is a washing-machine cycle: set the dial (initialisation), the machine keeps tumbling while the timer is not zero (condition), and each pass uses a little more progress (body); DO-WHILE is the rinse that always runs once even if the timer says stop.",
+    "workedExamples": [
+      {
+        "title": "Sum with a FOR loop",
+        "problem": "What does this pseudocode print? S <- 0; FOR i FROM 1 TO 5: S <- S + i; PRINT S.",
+        "steps": [
+          "Trace: i = 1 -> S = 1; i = 2 -> S = 3; i = 3 -> S = 6; i = 4 -> S = 10; i = 5 -> S = 15.",
+          "The loop adds every integer from 1 to 5.",
+          "PRINT runs after the loop ends."
+        ],
+        "answer": "15."
+      },
+      {
+        "title": "WHILE with a doubling condition",
+        "problem": "What does this print? P <- 1; WHILE P <= 10: P <- P * 2. PRINT P.",
+        "steps": [
+          "Trace: P = 1, 2, 4, 8, 16.",
+          "When P = 16 the condition P <= 10 fails.",
+          "The loop exits with P already doubled."
+        ],
+        "answer": "16."
+      },
+      {
+        "title": "Spotting the infinite loop",
+        "problem": "Why is this wrong? I <- 1; WHILE I != 5: PRINT I; I <- I + 2.",
+        "steps": [
+          "I runs 1, 3, then I = 5: 5 != 5 fails — exit.",
+          "Try again with I + 2 from 2: 2, 4, 6, 8 — never equals 5.",
+          "The I != 5 condition skips over its own target."
+        ],
+        "answer": "I odd and step 2 always lands on odd numbers; even starts never satisfy I = 5. Use I <= 5 (or I < 6) so the condition can definitely fail."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Loop chooser",
+        "detail": "Known count -> FOR; condition discovered while running -> WHILE; must run at least once -> DO-WHILE."
+      },
+      {
+        "title": "Loop anatomy",
+        "detail": "Initialise the control variable, test the termination condition, and progress the variable inside the body (i <- i + 1)."
+      },
+      {
+        "title": "Trace table",
+        "detail": "Record every variable's value in every iteration; the last row answers most output-prediction questions."
+      },
+      {
+        "title": "Termination proof",
+        "detail": "Prefer I <= limit over I != limit so the condition is guaranteed to fail for every possible step size."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Updating the control variable outside the loop body.",
+        "fix": "The increment must execute inside the loop, or the condition never changes and the loop runs forever."
+      },
+      {
+        "mistake": "Off-by-one errors such as FOR i FROM 1 TO 10 adding only nine terms or eleven of them.",
+        "fix": "Decide whether the limit is inclusive and trace the final iteration explicitly."
+      },
+      {
+        "mistake": "Guessing at compound output instead of tracing.",
+        "fix": "Build the trace table for at least the first three iterations; the pattern then shows itself."
+      }
+    ],
+    "memoryTip": "Initialise, test, progress — every loop needs all three. And when in doubt, tabulate: a trace table turns a mystery output into an arithmetic line.",
+    "practice": [
+      {
+        "prompt": "What does this print? T <- 0; FOR i FROM 1 TO 4: T <- T + i * 2. PRINT T.",
+        "answer": "2 + 4 + 6 + 8 = 20."
+      },
+      {
+        "prompt": "Which loop runs its body at least once regardless of the condition?",
+        "answer": "DO-WHILE, because its condition is checked after the first pass."
+      },
+      {
+        "prompt": "A counter starts at 3 and every pass adds 2; is WHILE C != 8 safe?",
+        "answer": "No. C runs 3, 5, 7, 9, ... and can never equal 8, so the condition never fails. Use WHILE C <= 8, which stops correctly after C = 9."
+      }
+    ],
+    "sourceRef": "Programming Logic topic recorded in Top25 company-style source material; lesson authored for this build and examples independently checked.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

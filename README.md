@@ -8,7 +8,7 @@ The application is built around a provenance-first rule: questions and companies
 
 - Account signup, signin, logout, sessions, CSRF protection, and role-based access.
 - Responsive learner workspace with dashboard, streaks, activity, weak areas, and next-lesson recommendation.
-- 28 seeded topics (25 with authored lessons), checkpoints, and saved progress.
+- 28 seeded topics — 27 with authored lessons (31 lessons total, including Boolean Algebra and Programming Logic lesson sets), checkpoints, and saved progress.
 - Learning Hub for 8 supplied study volumes, with per-chapter progress tracking.
 - Practice engine with topic, subject, difficulty, and company focus, plus recent-question avoidance and pool-size disclosure.
 - Timed mock tests with server-authoritative scoring and result review.
@@ -135,26 +135,28 @@ See [docs/SECURITY.md](docs/SECURITY.md) for details and known gaps.
 
 ## Content coverage
 
-- 28 topics across quantitative aptitude, logical reasoning, verbal ability, data interpretation, and technical subjects. Three newer topics (calendars and clocks, Boolean algebra, and programming logic) do not have authored lessons yet.
-- 25 lessons with checkpoints and Learning Hub source references.
-- 200 sample questions (175 approved) plus 750 approved Top25 company-style questions, for 925 approved and 25 pending total.
-- 26 canonical companies from `IT_Companies_Guide_with_Zoho.pdf`.
-- 2 published mock tests with positive/negative marking.
+- 28 topics across quantitative aptitude, logical reasoning, verbal ability, data interpretation, and technical subjects, with checkpoints and Learning Hub source references.
+- 31 lessons (including 3 Boolean Algebra and 3 Programming Logic lessons) with checkpoints and Learning Hub source references.
+- 1,675 approved questions (including 750 Top25 company-style questions) and 25 pending review, for a 1,700-question bank.
+- 26 canonical companies from `IT_Companies_Guide_with_Zoho.pdf`; the Top25 PDF accounts for 25 of them, Zoho is the 26th. No company is invented.
+- 27 published mock tests with positive/negative marking.
 - Company marks use guide-supplied images when available and initials otherwise; no imitation or official partnership claim is made.
 
 See [docs/CONTENT_PROVENANCE.md](docs/CONTENT_PROVENANCE.md).
 
 ## Verified quality gates
 
-On 2026-11-02:
+On 2026-11-07 (post-upgrade verification):
 
-- `npm run typecheck` passed.
-- `npm test` passed 33 tests: 23 API tests and 10 web tests.
-- `npm run build` passed.
-- A production runtime smoke test passed for SPA fallback, auth/CSRF, learner APIs, Learning Hub volume chapter indices, practice, company practice, mocks, readiness, and admin authorization.
-- Bounded import was exercised against the test database, including idempotent re-runs and admin authorization.
+- `npm run typecheck` — PASS (shared / api / web).
+- `npm test` — PASS 33/33 (23 API + 10 web) against the isolated test database.
+- `npm run build` — PASS (web dist ≈ 544 KB JS / 131 KB CSS).
+- `npm run db:seed` — PASS: 28 topics, 31 lessons, 26 companies, 1,675 approved + 25 pending questions, 27 mocks; all existing users preserved.
+- HTTP integration probe — PASS 34/34 (`docs/evidence/titanapt-integration.{mjs,json}`): public company marquee API (26 companies), auth + CSRF, streak rule (4 unique correct answers/day), multilesson detail + prev/next siblings, mock config + attempt + server scoring, learning volumes, search, custom Crack Time target, theme persistence, logout protection.
+- Mock category probe — PASS 11/11 (`docs/evidence/titanapt-cat-probe.{mjs,json}`): per-category pools (QUANTITATIVE/LOGICAL/VERBAL/DATA_INTERPRETATION/TECHNICAL), category attempt assembly, scoring, and honest 409 rejection of impossible configurations.
+- Production runtime smoke test — PASS (SPA fallback, signup, learner APIs, practice, mocks, admin authorization).
 
-Manual browser visual QA and cross-browser checks are not claimed as complete. See [docs/TEST_REPORT.md](docs/TEST_REPORT.md).
+Browser screenshot automation for the newest flows (pre-login marquee, lesson sibling nav, mock category row) was run via HTTP-level probes only in the final cycle; earlier Playwright-driven UI cycles (A–F) remain documented in [docs/TEST_REPORT.md](docs/TEST_REPORT.md). Manual cross-browser visual QA is not claimed as complete.
 
 ## Documentation
 
@@ -167,6 +169,10 @@ Manual browser visual QA and cross-browser checks are not claimed as complete. S
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
 - [Project audit](docs/PROJECT_AUDIT.md)
 - [Implementation plan](docs/IMPLEMENTATION_PLAN.md)
+- [Test results (2026-11-07)](TEST_RESULTS.md)
+- [Bug fix report (2026-11-07)](BUG_FIX_REPORT.md)
+- [Final delivery report (2026-11-07)](FINAL_DELIVERY_REPORT.md)
+- Probe evidence scripts and JSON results: [docs/evidence](docs/evidence)
 
 ## License and source material
 

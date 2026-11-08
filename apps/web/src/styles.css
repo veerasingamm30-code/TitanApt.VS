@@ -3562,6 +3562,48 @@ summary::-webkit-details-marker {
   margin-top: 15px;
 }
 
+/* previous/next lesson navigation inside the topic */
+.lesson-sibling-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+.lesson-sibling {
+  display: grid;
+  gap: 3px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.lesson-sibling:hover,
+.lesson-sibling:focus-visible {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+}
+.lesson-sibling-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.lesson-sibling strong { color: var(--ink); font-size: 0.86rem; line-height: 1.35; }
+.lesson-sibling-next { text-align: right; }
+.lesson-sibling-next .lesson-sibling-label { justify-content: flex-end; }
+
+@media (max-width: 560px) {
+  .lesson-sibling-nav { grid-template-columns: 1fr; }
+  .lesson-sibling-next { text-align: left; }
+  .lesson-sibling-next .lesson-sibling-label { justify-content: flex-start; }
+}
+
 .practice-setup-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.45fr) minmax(270px, 0.55fr);
@@ -8539,6 +8581,7 @@ h1, h2 {
   container-type: inline-size;
   perspective: 1200px;
   perspective-origin: 50% 42%;
+  overflow: hidden;
 }
 .orbit-ring {
   position: absolute;
@@ -8826,7 +8869,7 @@ h1, h2 {
 }
 @media (max-width: 560px) {
   .orbit-stage { width: min(100%, 340px); }
-  .orbit-spin { --orbit-logo-size: 40px; --orbit-radius: 38cqi; --orbit-tilt: 50deg; }
+  .orbit-spin { --orbit-logo-size: 40px; --orbit-radius: 35cqi; --orbit-tilt: 50deg; }
   .orbit-core { width: 34%; }
   .orbit-core img { width: 50%; }
   .orbit-core-copy strong { font-size: 0.66rem; }
