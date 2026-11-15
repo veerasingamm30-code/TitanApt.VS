@@ -122,7 +122,7 @@ authRouter.post(
     if (previous && fs.existsSync(previous)) fs.rmSync(previous, { force: true });
     const updated = await prisma.userProfile.update({
       where: { userId: req.user!.id },
-      data: { avatarPath: relativePath },
+      data: { avatarPath: relativePath, avatarData: new Uint8Array(bytes), avatarMime: mime },
     });
     const fresh = await prisma.user.findUniqueOrThrow({
       where: { id: req.user!.id },
@@ -138,6 +138,15 @@ authRouter.get(
   requireAuth,
   asyncHandler(async (req, res) => {
     const profile = await prisma.userProfile.findUnique({ where: { userId: req.user!.id } });
+    // Bytes stored in the database survive ephemeral local disks (deploys,
+    // restarts); the avatarPath file remains as a legacy fallback.
+    if (profile?.avatarData && profile.avatarData.byteLength > 0) {
+      res.setHeader('Content-Type', profile.avatarMime ?? 'image/png');
+      res.setHeader('Cache-Control', 'private, must-revalidate');
+      res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+      res.send(Buffer.from(profile.avatarData));
+      return;
+    }
     if (!profile?.avatarPath) throw unauthorized('No profile picture uploaded yet.');
     const root = uploadsRoot();
     const filePath = path.join(root, profile.avatarPath);
@@ -158,10 +167,15 @@ authRouter.delete(
   requireAuth,
   asyncHandler(async (req, res) => {
     const profile = await prisma.userProfile.findUnique({ where: { userId: req.user!.id } });
-    if (profile?.avatarPath) {
-      const filePath = path.join(uploadsRoot(), profile.avatarPath);
-      if (fs.existsSync(filePath)) fs.rmSync(filePath, { force: true });
-      await prisma.userProfile.update({ where: { userId: req.user!.id }, data: { avatarPath: null } });
+    if (profile?.avatarPath || (profile?.avatarData && profile.avatarData.byteLength > 0)) {
+      if (profile?.avatarPath) {
+        const filePath = path.join(uploadsRoot(), profile.avatarPath);
+        if (fs.existsSync(filePath)) fs.rmSync(filePath, { force: true });
+      }
+      await prisma.userProfile.update({
+        where: { userId: req.user!.id },
+        data: { avatarPath: null, avatarData: null, avatarMime: null },
+      });
     }
     res.json({ data: { ok: true } });
   }),

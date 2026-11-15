@@ -1735,6 +1735,10 @@ summary::-webkit-details-marker {
   color: #fff;
 }
 
+.integrity-copy {
+  min-width: 0;
+}
+
 .integrity-copy h2 {
   max-width: 640px;
   margin-top: 12px;
@@ -1769,6 +1773,7 @@ summary::-webkit-details-marker {
 }
 
 .integrity-card {
+  min-width: 0;
   align-self: center;
   padding: 26px;
   border: 1px solid rgba(255, 255, 255, 0.17);
@@ -1796,9 +1801,11 @@ summary::-webkit-details-marker {
 }
 
 .provenance-row strong {
+  min-width: 0;
   color: #fff;
   font-weight: 600;
   text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .integrity-card > p {

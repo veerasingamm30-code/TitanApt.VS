@@ -38,6 +38,9 @@ export function SettingsPage() {
   const [saved, setSaved] = useState(false);
   const [avatarBusy, setAvatarBusy] = useState(false);
   const [avatarStamp, setAvatarStamp] = useState(() => Date.now());
+  // If the stored avatar image fails to load, show the initials chip instead
+  // of the browser's broken-image icon.
+  const [avatarBroken, setAvatarBroken] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -48,6 +51,10 @@ export function SettingsPage() {
     setTheme(user.theme);
     setAccent(user.accent);
   }, [user]);
+
+  useEffect(() => {
+    setAvatarBroken(false);
+  }, [user?.avatarUrl, avatarStamp]);
 
   useEffect(() => {
     apiData<{ dailyGoal: { goal: number }; user: { studyTargetMinutes: number } }>('/api/dashboard')
@@ -242,8 +249,12 @@ export function SettingsPage() {
             <span className="avatar avatar-large avatar-photo">
               {previewUrl ? (
                 <img src={previewUrl} alt="New avatar preview" />
-              ) : currentAvatar ? (
-                <img src={`${currentAvatar}?v=${avatarStamp}`} alt={`${user.displayName} avatar`} />
+              ) : currentAvatar && !avatarBroken ? (
+                <img
+                  src={`${currentAvatar}?v=${avatarStamp}`}
+                  alt={`${user.displayName} avatar`}
+                  onError={() => setAvatarBroken(true)}
+                />
               ) : (
                 user.displayName.slice(0, 1).toUpperCase()
               )}

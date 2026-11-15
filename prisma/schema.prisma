@@ -133,6 +133,8 @@ model UserProfile {
   theme       String   @default("dark")
   accent      String   @default("orange")
   avatarPath  String?
+  avatarData  Bytes?
+  avatarMime  String?
   studyTargetMinutes Int @default(25)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

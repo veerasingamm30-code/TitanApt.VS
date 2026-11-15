@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
@@ -42,6 +42,10 @@ export function AppShell() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>(() => user?.theme ?? getStoredTheme());
+  // If the avatar image fails to load (e.g. a stale upload), fall back to the
+  // initials chip instead of showing the browser's broken-image icon.
+  const [avatarBroken, setAvatarBroken] = useState(false);
+  useEffect(() => setAvatarBroken(false), [user?.avatarUrl]);
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'REVIEWER';
 
   async function toggleTheme() {
@@ -139,8 +143,8 @@ export function AppShell() {
               {new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date())}
             </span>
             <Link to="/app/settings" className="user-chip" aria-label="Open settings">
-              {user?.avatarUrl ? (
-                <span className="avatar avatar-image"><img src={user.avatarUrl} alt="" /></span>
+              {user?.avatarUrl && !avatarBroken ? (
+                <span className="avatar avatar-image"><img src={user.avatarUrl} alt="" onError={() => setAvatarBroken(true)} /></span>
               ) : (
                 <span className="avatar">{user?.displayName?.slice(0, 1).toUpperCase() ?? 'T'}</span>
               )}
