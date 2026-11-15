@@ -10,7 +10,7 @@ services:
     plan: free
     region: oregon
     branch: main
-    buildCommand: npm ci && npx prisma generate && npm run build
+    buildCommand: npm ci --include=dev && npx prisma generate && npm run build
     # prisma migrate deploy only applies committed, non-destructive migrations.
     # prisma/seed.ts is idempotent and preserves existing users and data.
     startCommand: npx prisma migrate deploy && npx tsx prisma/seed.ts && node apps/api/dist/index.js
