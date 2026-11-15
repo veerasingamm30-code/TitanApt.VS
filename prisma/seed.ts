@@ -177,23 +177,30 @@ async function seedImportSources() {
     });
   }
   // "MOCK TEST.pdf" (Top 25 Indian IT Companies company-style mocks)
+  // The reference PDF is optional in deployed checkouts; register the import
+  // source only when the file is actually present.
   {
     const pdfPath = new URL('../Img-pdf/MOCK TEST.pdf.pdf', import.meta.url);
-    const bytes = await readFile(pdfPath);
-    const checksum = createHash('sha256').update(bytes).digest('hex').toUpperCase();
-    await prisma.importSource.upsert({
-      where: { checksum },
-      create: {
-        filename: 'MOCK TEST.pdf.pdf',
-        relativePath: 'Img-pdf/MOCK TEST.pdf.pdf',
-        checksum,
-        pageCount: 428,
-        extractionStatus: 'TEXT_LAYER',
-        licensingNote: 'TitanApt-original company-style mock test set (Top 25 Indian IT Companies), 25 tables x 30 questions with keys and ELI10 explanations. Supplied by the project owner; original practice content, not company-affiliated.',
-        importStatus: 'fully_imported_company_mocks',
-      },
-      update: { filename: 'MOCK TEST.pdf.pdf', relativePath: 'Img-pdf/MOCK TEST.pdf.pdf', pageCount: 428 },
-    });
+    try {
+      const bytes = await readFile(pdfPath);
+      const checksum = createHash('sha256').update(bytes).digest('hex').toUpperCase();
+      await prisma.importSource.upsert({
+        where: { checksum },
+        create: {
+          filename: 'MOCK TEST.pdf.pdf',
+          relativePath: 'Img-pdf/MOCK TEST.pdf.pdf',
+          checksum,
+          pageCount: 428,
+          extractionStatus: 'TEXT_LAYER',
+          licensingNote: 'TitanApt-original company-style mock test set (Top 25 Indian IT Companies), 25 tables x 30 questions with keys and ELI10 explanations. Supplied by the project owner; original practice content, not company-affiliated.',
+          importStatus: 'fully_imported_company_mocks',
+        },
+        update: { filename: 'MOCK TEST.pdf.pdf', relativePath: 'Img-pdf/MOCK TEST.pdf.pdf', pageCount: 428 },
+      });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+      console.warn('Img-pdf/MOCK TEST.pdf.pdf not present; skipping its import-source registration.');
+    }
   }
   const source = await prisma.importSource.findUnique({ where: { checksum: importSources[0][2] } });
   if (!source) return;
