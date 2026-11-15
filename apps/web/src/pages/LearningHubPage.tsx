@@ -14,6 +14,7 @@ import {
 import { apiData, messageFromError } from '../lib/api';
 import { useApi, useDocumentTitle } from '../lib/useApi';
 import { ErrorState, Loader, PageHeader, ProgressBar } from '../components/ui';
+import { PdfViewer } from '../components/PdfViewer';
 
 type Chapter = {
   key: string;
@@ -193,12 +194,12 @@ export function LearningHubPage() {
               Mapped lesson: <Link to={`/app/learn/${viewerChapter.topicSlug}`} className="text-link">open the topic lesson <ArrowRight size={13} /></Link>
             </p>
           )}
-          <iframe
+          <PdfViewer
             key={`${viewerVolume.slug}-${viewerChapter.key}`}
-            src={`${viewerVolume.resourceUrl}#page=${viewerChapter.page}`}
+            src={viewerVolume.resourceUrl}
             title={`${viewerVolume.title} — ${viewerChapter.title}`}
-            loading="lazy"
-            className="learning-pdf-frame"
+            initialPage={viewerChapter.page}
+            downloadName={viewerVolume.filename}
           />
           <a href={`${viewerVolume.resourceUrl}#page=${viewerChapter.page}`} target="_blank" rel="noreferrer noopener" className="text-link">
             Open the source PDF in a new tab <ExternalLink size={14} />

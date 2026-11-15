@@ -2195,6 +2195,17 @@ summary::-webkit-details-marker {
   white-space: nowrap;
 }
 
+/* The topbar keeps its light chrome in the dark theme unless restyled here;
+   without this the light-gray text sat on the cream bar and was unreadable. */
+:root[data-theme="dark"] .app-topbar {
+  background: rgba(10, 10, 12, 0.88);
+  border-bottom-color: var(--line);
+}
+
+:root[data-theme="dark"] .user-chip:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .topbar-date {
   color: var(--muted);
   font-size: 0.7rem;
@@ -8816,13 +8827,94 @@ h1, h2 {
 }
 .learning-viewer-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .learning-topic-link { margin: 8px 0 0; font-size: 0.86rem; }
-.learning-pdf-frame {
-  width: 100%;
-  height: min(68vh, 640px);
+/* PDF.js canvas viewer (replaces the native iframe that browsers block). */
+.pdf-viewer {
+  position: relative;
+  margin: 12px 0 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--paper-deep);
-  margin: 12px 0 10px;
+  overflow: hidden;
+}
+.pdf-viewer:fullscreen { border-radius: 0; }
+.pdf-viewer-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.pdf-viewer-nav,
+.pdf-viewer-zoom,
+.pdf-viewer-tools { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+.pdf-btn:hover:not(:disabled) { border-color: var(--line-strong); background: var(--accent-soft); color: var(--accent); }
+.pdf-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.pdf-page-indicator {
+  min-width: 88px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.pdf-viewer-body {
+  position: relative;
+  min-height: 320px;
+  max-height: 68vh;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+.pdf-viewer:fullscreen .pdf-viewer-body { max-height: none; flex: 1; }
+.pdf-viewer-canvas {
+  display: block;
+  height: auto;
+  box-shadow: var(--shadow-sm);
+  background: #fff;
+}
+.pdf-viewer-canvas.is-hidden { display: none; }
+.pdf-viewer-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.pdf-viewer-busy {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.72rem;
 }
 .chapter-open {
   background: none;
@@ -8853,8 +8945,15 @@ h1, h2 {
 }
 @media (max-width: 560px) {
   .search-bar { margin-bottom: 20px; }
-  .learning-viewer-actions { width: 100%; }
-  .learning-pdf-frame { height: 62vh; }
+  .learning-viewer-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+  .learning-viewer-actions .btn-sm { min-height: 44px; justify-content: center; }
+  /* Mark complete is the primary action: full-width, last row, always reachable. */
+  .learning-viewer-actions .btn-accent { order: 3; grid-column: 1 / -1; }
+  .learning-viewer-head { flex-direction: column; align-items: stretch; }
+  .pdf-viewer-body { max-height: 62vh; }
+  .pdf-viewer-toolbar { padding: 6px; gap: 6px 10px; }
+  .pdf-page-indicator { min-width: 64px; font-size: 0.72rem; }
+  .pdf-btn { min-width: 40px; min-height: 40px; padding: 0 8px; }
 }
 
 /* ---- authenticated dashboard company showcase ---- */
