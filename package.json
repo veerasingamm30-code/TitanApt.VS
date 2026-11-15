@@ -29,10 +29,12 @@
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
-  "devDependencies": {
+  "optionalDependencies": {
     "@embedded-postgres/windows-x64": "17.9.0-beta.17",
+    "embedded-postgres": "17.9.0-beta.17"
+  },
+  "devDependencies": {
     "concurrently": "^9.1.2",
-    "embedded-postgres": "17.9.0-beta.17",
     "pg": "^8.13.1",
     "prisma": "6.19.3",
     "tsx": "^4.19.3",
