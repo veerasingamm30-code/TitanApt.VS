@@ -6,12 +6,13 @@ import {
   BookOpenCheck,
   CalendarDays,
   CheckCircle2,
-  Flame,
   Target,
   TrendingUp,
 } from 'lucide-react';
 import type { Subject } from '@titanapt/shared';
 import { useApi, useDocumentTitle } from '../lib/useApi';
+import { DailyStreakCard } from '../components/DailyStreakCard';
+import type { StreakSummary } from '../components/DailyStreakCard';
 import { ErrorState, Loader, PageHeader, ProgressBar, SectionHead, StatCard } from '../components/ui';
 import { formatDateTime, formatPercent, subjectLabel } from '../lib/format';
 
@@ -28,7 +29,8 @@ type Dashboard = {
     bookmarks: number;
     weeklySolved: number;
   };
-  streak: { current: number; longest: number; rule: string };
+  streak: StreakSummary;
+  streakHistory: Array<{ date: string; activityCount: number; qualified: boolean; active: boolean; minutes: number }>;
   activity: Array<{ date: string; count: number }>;
   subjects: Array<{ subject: Subject; topics: number; lessons: number; completedTopics: number; attempts: number; accuracy: number | null }>;
   weakAreas: Array<{ slug: string; name: string; subject: Subject; attempts: number; accuracy: number | null }>;
@@ -47,7 +49,7 @@ type LessonProgress = {
 
 export function ProgressPage() {
   useDocumentTitle('Progress');
-  const dashboard = useApi<Dashboard>('/api/dashboard');
+  const dashboard = useApi<Dashboard>('/api/dashboard?streakDays=30');
   const lessons = useApi<LessonProgress[]>('/api/progress');
 
   if (dashboard.loading || lessons.loading) return <Loader label="Building your progress report" />;
@@ -99,13 +101,7 @@ export function ProgressPage() {
               </div>
             ))}
           </div>
-          <div className="streak-strip">
-            <Flame size={20} />
-            <div>
-              <strong>{data.streak.current}-day current streak · {data.streak.longest}-day best</strong>
-              <small>{data.streak.rule}</small>
-            </div>
-          </div>
+          <DailyStreakCard streak={data.streak} history={data.streakHistory} />
         </section>
 
         <aside className="progress-highlights">

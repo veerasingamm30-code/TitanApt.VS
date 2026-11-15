@@ -36,15 +36,56 @@ function uploadsRoot(): string {
 }
 
 function detectImageMime(bytes: Uint8Array): string | null {
-  if (bytes.length < 12) return null;
+  if (bytes.length < 14 || bytes.length > AVATAR_MAX_BYTES) return null;
+  const text = (start: number, length: number) => String.fromCharCode(...bytes.subarray(start, start + length));
+  const u16le = (offset: number) => bytes[offset] | (bytes[offset + 1] << 8);
+  const u32le = (offset: number) => (bytes[offset] | (bytes[offset + 1] << 8) | (bytes[offset + 2] << 16) | (bytes[offset + 3] << 24)) >>> 0;
+  const u32be = (offset: number) => ((bytes[offset] << 24) | (bytes[offset + 1] << 16) | (bytes[offset + 2] << 8) | bytes[offset + 3]) >>> 0;
+  const validDimensions = (width: number, height: number) => width > 0 && height > 0 && width <= 8192 && height <= 8192;
+
   const png = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
-  if (png.every((b, i) => bytes[i] === b)) return 'image/png';
-  if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return 'image/jpeg';
-  const riff = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]);
-  const webp = String.fromCharCode(bytes[8], bytes[9], bytes[10], bytes[11]);
-  if (riff === 'RIFF' && webp === 'WEBP') return 'image/webp';
-  const head = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5]);
-  if (head === 'GIF87a' || head === 'GIF89a') return 'image/gif';
+  if (png.every((value, index) => bytes[index] === value)) {
+    let offset = 8;
+    let sawHeader = false;
+    while (offset + 12 <= bytes.length) {
+      const length = u32be(offset);
+      const kind = text(offset + 4, 4);
+      if (length > bytes.length - offset - 12) return null;
+      if (!sawHeader) {
+        if (kind !== 'IHDR' || length !== 13) return null;
+        if (!validDimensions(u32be(offset + 8), u32be(offset + 12))) return null;
+        sawHeader = true;
+      }
+      offset += length + 12;
+      if (kind === 'IEND') return sawHeader && length === 0 && offset === bytes.length ? 'image/png' : null;
+    }
+    return null;
+  }
+
+  if ((text(0, 6) === 'GIF87a' || text(0, 6) === 'GIF89a') && bytes[bytes.length - 1] === 0x3b) {
+    return validDimensions(u16le(6), u16le(8)) ? 'image/gif' : null;
+  }
+
+  if (text(0, 4) === 'RIFF' && text(8, 4) === 'WEBP') {
+    if (u32le(4) !== bytes.length - 8) return null;
+    const kind = text(12, 4);
+    const chunkLength = u32le(16);
+    return ['VP8 ', 'VP8L', 'VP8X'].includes(kind) && chunkLength > 0 && chunkLength <= bytes.length - 20
+      ? 'image/webp'
+      : null;
+  }
+
+  if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[bytes.length - 2] === 0xff && bytes[bytes.length - 1] === 0xd9) {
+    for (let offset = 2; offset + 8 < bytes.length; offset += 1) {
+      if (bytes[offset] !== 0xff) continue;
+      const marker = bytes[offset + 1];
+      const isFrame = [0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf].includes(marker);
+      if (!isFrame) continue;
+      const height = (bytes[offset + 5] << 8) | bytes[offset + 6];
+      const width = (bytes[offset + 7] << 8) | bytes[offset + 8];
+      return validDimensions(width, height) ? 'image/jpeg' : null;
+    }
+  }
   return null;
 }
 

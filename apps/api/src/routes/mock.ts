@@ -1,6 +1,7 @@
 ﻿import { Router } from 'express';
 import { z } from 'zod';
 import { Difficulty, Prisma, Subject } from '@prisma/client';
+import { companySlugForMockSlug } from '@titanapt/shared';
 import { prisma } from '../prisma.js';
 import { asyncHandler, conflict, notFound, parseBody } from '../lib/errors.js';
 import { requireAuth } from '../middleware/auth.js';
@@ -88,22 +89,35 @@ mockRouter.get(
         },
       },
     });
+    // Company identity is resolved once here, from the canonical company
+    // records behind each company mock — never derived from the mock slug on
+    // the client, which broke symbol-logo filenames for two pdf-slug mocks.
+    const companies = await prisma.company.findMany();
+    const companyBySlug = new Map(companies.map((company) => [company.slug, company]));
     res.json({
-      data: mocks.map((mock) => ({
-        id: mock.id,
-        slug: mock.slug,
-        title: mock.title,
-        description: mock.description,
-        durationMinutes: mock.durationMinutes,
-        sections: parseSections(mock.sections),
-        marking: parseMarking(mock.marking),
-        sourceNote: mock.sourceNote,
-        attempts: mock.attempts.map((attempt) => ({
-          ...attempt,
-          startedAt: attempt.startedAt.toISOString(),
-          submittedAt: attempt.submittedAt?.toISOString() ?? null,
-        })),
-      })),
+      data: mocks.map((mock) => {
+        const company = isCompanyMock(mock.slug)
+          ? companyBySlug.get(companySlugForMockSlug(mock.slug)) ?? null
+          : null;
+        return {
+          id: mock.id,
+          slug: mock.slug,
+          title: mock.title,
+          description: mock.description,
+          durationMinutes: mock.durationMinutes,
+          sections: parseSections(mock.sections),
+          marking: parseMarking(mock.marking),
+          sourceNote: mock.sourceNote,
+          company: company
+            ? { slug: company.slug, name: company.name, logoUrl: `/company-logos/${company.slug}.png`, initials: company.initials }
+            : null,
+          attempts: mock.attempts.map((attempt) => ({
+            ...attempt,
+            startedAt: attempt.startedAt.toISOString(),
+            submittedAt: attempt.submittedAt?.toISOString() ?? null,
+          })),
+        };
+      }),
     });
   }),
 );
@@ -158,7 +172,9 @@ function isCompanyMock(slug: string): boolean {
 }
 
 async function companyForMock(slug: string) {
-  const companySlug = slug.slice('company-mock-'.length);
+  // Company slugs resolve through the stable alias map (shared package) so a
+  // published mock slug always reaches its canonical company record.
+  const companySlug = companySlugForMockSlug(slug);
   return prisma.company.findUnique({ where: { slug: companySlug } });
 }
 
@@ -225,12 +241,13 @@ mockRouter.get(
       label: SUBJECT_CATEGORY_LABEL[subject],
       count: subjectCounts.get(subject) ?? 0,
     }));
+    const configCompany = isCompanyMock(mock.slug) ? await companyForMock(mock.slug) : null;
     res.json({
       data: {
         slug: mock.slug,
         title: mock.title,
-        company: isCompanyMock(mock.slug) ? (mock.title.split(' — Company Mock')[0] ?? null) : null,
-        logoUrl: isCompanyMock(mock.slug) ? `/company-logos/${mock.slug.slice('company-mock-'.length)}.png` : null,
+        company: configCompany?.name ?? null,
+        logoUrl: configCompany ? `/company-logos/${configCompany.slug}.png` : null,
         defaults: { durationMinutes: mock.durationMinutes, questionCount: parseSections(mock.sections).reduce((sum, s) => sum + s.count, 0) },
         marking: parseMarking(mock.marking),
         pool: filteredCounts,

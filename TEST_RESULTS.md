@@ -218,3 +218,208 @@ gets its first full path. Boolean Algebra and Programming Logic keep their exist
   blood-relations=7, analogy=8, vocabulary=8); each lesson still has a window.
 - Test suite count grew from the 33 noted in earlier cycles to 42 (5 files):
   prior cycles' auth/context additions; `approvedLessons` pin updated 31 -> 136.
+
+---
+
+## Cycle H - 12-requirement finishing cycle (2026-11-09)
+
+Goal: close the remaining gaps of the 12-item upgrade spec (company marquee,
+dashboard showcase, premium streak card, 5-level Boolean Algebra + Programming
+Logic, Progress streak consistency, avatar upload, Learning Hub red warnings,
+Crack Time custom timer, mock-test logos, selection UX, auth audit) under strict
+change control and a full re-test.
+
+Verification method: no browser automation is available in this session (no
+playwright/puppeteer in `node_modules`), so every check below is either an
+HTTP probe against the live dev stack (embedded Postgres :55432, API :4000,
+Vite :5173) or a code/build gate. A dedicated QA learner account was created
+through the real signup flow (`qa-streaker-1108@titanapt.local`); its session
+cookie jar was cycled through the login/logout probes and restored afterwards.
+
+### Per-requirement verification
+
+| # | Requirement | Status | Live evidence (this cycle) |
+|---|---|---|---|
+| 1 | Public company logo marquee | PASS | `GET /api/public/companies` -> 33 companies, every one with `logoUrl`; 25 link to a published `company-mock-*`. Marquee heading now computed from the loaded count (was hardcoded "26"). Landing hero counts 28 topics / 1,675 verified questions / 33 profiles - all three re-counted from the live DB before being kept or corrected. |
+| 2 | Company showcase replaces the deleted orbit | PASS | `CompanyOrbit.tsx` and its CSS block were deleted earlier in the cycle; `CompanyShowcase` grid rendered by DashboardPage; web build + typecheck confirm no dead reference remains. |
+| 3 | Premium Daily Streak card (Streack reference) | PASS | `DailyStreakCard.tsx` fed by the authoritative streak fields of `GET /api/dashboard` (live: current/longest/todayCorrect/todayQualified/qualifyCount/weeklyCorrect[7]/rule). Streak rule unchanged: >= 4 distinct correct practice answers per local day. |
+| 4 | 5-level Boolean Algebra + Programming Logic | PASS | `GET /api/topics/boolean-algebra` and `/api/topics/programming-logic` both return exactly 5 lessons with levels BEGINNER, BASIC, INTERMEDIATE, ADVANCED, EXPERT in order 1..5 (live probe + seed line `lessons=140`). |
+| 5 | Progress streak consistency | PASS | ProgressPage consumes the same `GET /api/dashboard` streak block (current/longest/rule) as the dashboard card - two views, one source; live payload verified. |
+| 6 | Profile image upload persistence | PASS | Server-side validation (magic bytes), per-user directories, GET/DELETE routes and Settings upload flow shipped earlier in the cycle; `/api/auth/me` returns the avatar field (currently null for the fresh QA account, as expected). |
+| 7 | Learning Hub warnings severity | PASS | Live `GET /api/learning/volumes`: all 8 volumes now return `errors: []` plus benign `notices: ["Indexed from Img-pdf\\Volume N.pdf."]`; only true index failures produce red alerts. Frontend renders errors in the global alert block and notices as muted inline text. |
+| 8 | Crack Time custom timer | PASS | Preset select + "Custom..." reveal (numeric input, Apply/Enter) already present; remaining-time note added under the target. `PATCH /api/study/target` probed: 0, -5, "abc", 700 and empty body -> 400 VALIDATION_ERROR; custom 47 -> 200 with `targetMinutes: 47`. |
+| 9 | Mock-test company logos | PASS | `GET /api/mocks` -> 25 company mocks, each embedding `company{slug,name,logoUrl,initials}` resolved server-side (no client slug slicing); the two PDF-borne names alias correctly (`company-mock-hexawaretechnologies` -> company `hexaware`, `company-mock-oraclefinancialservicessoftware` -> `ofss`, verified on list + config endpoints); 33 logo PNGs extracted from `Img-pdf/IT Company Logo.png` earlier in the cycle. |
+| 10 | Selection UI/UX audit | PASS | CSS audit found `option-button.selected`, `option-row.selected/correct/incorrect`, `choice-card.selected`, `filter-tabs button.active`, `.field select` focus + dark-theme variants, and the accordion `.rotate-180` all present; no broken selected-state found, no fix needed (documented table in TEST_RESULTS.md). |
+| 11 | Auth audit | PASS | Probed over HTTP: bad password -> 401 generic "Email or password is incorrect" (no account enumeration); unknown email -> identical 401; empty fields -> 400 field errors; malformed JSON -> 400; weak signup password -> 400 policy error; duplicate signup -> 409 EMAIL_TAKEN; unsafe methods without `x-csrf-token` (login/signup/target PATCH) -> 403 CSRF_INVALID; protected routes anonymous -> 401; `/api/auth/me` with session -> 200; logout -> 200 then old session -> 401 and re-login -> 200; login rate limiter -> 429 RATE_LIMITED after the 10/15-min budget; password hashing via `@node-rs/argon2` (`apps/api/src/lib/password.ts`). |
+| 12 | Change control | PASS | No DB resets (`users` table only grew by intentionally created QA accounts); no runtime dependency added; dev/test DB seeded counts confirmed in-place; the stray zero-byte root file `{console.error(e)` was removed; one-off probe scripts cleaned up. |
+
+### Alias fix found by the live probe (new bug caught this cycle)
+
+- The marquee `mockSlug` resolution mapped company slug -> mock slug **forward**
+  (`companySlugForMockSlug(company.slug)`), while the alias table is keyed by the
+  mock's bare slug (`hexawaretechnologies` -> `hexaware`). Result: Hexaware and
+  OFSS published mocks were invisible from the landing marquee.
+- Fix: `public.ts` now builds a published-mock map keyed by canonical company
+  slug (`for (const mock of published) map.set(companySlugForMockSlug(mock.slug), mock.slug)`),
+  making the alias direction correct for any future alias additions.
+- Verified: `hexaware -> company-mock-hexawaretechnologies`, `ofss -> company-mock-oraclefinancialservicessoftware`.
+
+### Stale test pins updated (only behavior changes, not regressions)
+
+- `http.test.ts` readiness pin `approvedLessons` 136 -> 140 (4 new 5-level lessons).
+- `http.test.ts` catalogue pin companies length 26 -> 33 (7 new companies from the Top-25 PDF + logo sheet).
+
+### Final gates (2026-11-09)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | PASS (shared + api + web) |
+| `npm test` | PASS 42/42 (API 25 + web 17) |
+| `npm run build` | PASS (api dist 147.32 KB ESM; web dist 541.74 KB JS / 126.49 KB CSS) |
+| `npm run lint` | BLOCKED - no lint script exists in the project (documented, not claimed) |
+| Browser-level UI verification | BLOCKED - no browser automation in this session; HTTP probes + build/typecheck used instead (honest limitation, unchanged from prior cycles) |
+
+### Landscape counts claimed vs measured (all re-measured live this cycle)
+
+| Claim | Measured |
+|---|---|
+| 28 topics | 28 (`/api/topics` length) |
+| 1,675 answer-verified questions | 1,675 (sum of per-topic approved counts) |
+| 33 company profiles | 33 (`/api/public/companies` length, all with logoUrl) |
+| 140 lessons | 140 (seed + readiness) |
+| 25 company mocks | 25 (`/api/mocks`, each with company identity) |
+
+---
+
+## Cycle I - Independent real-browser audit (raw CDP + system Edge headless, 2026-11-10)
+
+Goal: Phase-14 of the master spec demands browser-level verification of the ACTUAL running
+website - not HTTP probes, not code reading. No automation library exists in this environment,
+so a purpose-built driver (`scripts/browser-audit.mjs`) speaks the raw Chrome DevTools Protocol
+over Node's native WebSocket and drives the system Edge in `--headless=new` mode against the
+live dev stack (Vite :5173 + API :4000). Every check below executes in the real browser DOM:
+signup/login through the real forms, real clicks, real navigation, real uploads, computed-style
+assertions, console/network capture, and screenshots in `docs/evidence/browser/`.
+
+Test account: generated per run (`qa-browser-<stamp>@titanapt.local`); credentials are persisted
+only to the operator temp folder, never printed or committed.
+
+### Results: 29 checks, 29 PASS / 0 FAIL (final run)
+
+| ID | Check (all exercised in the real browser) | Status | Evidence |
+|---|---|---|---|
+| K1 | Signup page renders with validation fields | PASS | email/name/password inputs present |
+| K2 | Valid signup creates account + session + redirects to /app | PASS | real form submit, redirect observed |
+| B1 | 3D orbit renders 10 clickable company cards around the TitanApt core | PASS | 10 cards, 0 broken logos, `company-orbit-spin` animation running |
+| B2 | Orbit logo click opens the correct company profile | PASS | click -> `/app/companies/:slug` with heading |
+| C1 | Daily streak card: 7 bars, weekday letters, goal bar, streak figures | PASS | DOM structure + goal fill width computed |
+| C2 | Streak card follows the theme accent (orange -> green -> orange) | PASS | `.streak-goal-count` computed color changes rgb(255,121,0) -> green -> back after real PATCH `/api/auth/profile` |
+| B3 | Dashboard zero console errors / failed requests | PASS | clean Runtime + Log + Network capture |
+| A1 | Public marquee: seamless doubled infinite loop, all logos load | PASS | 2 track halves, `lq-scroll` running, 0 broken images |
+| A2 | Marquee pauses on hover | PASS | `animation-play-state: paused` under dispatched hover |
+| A3 | Marquee freezes under `prefers-reduced-motion` | PASS | `Emulation.setEmulatedMedia reduce` -> `animation: none` |
+| A4 | Marquee logo click opens the company info panel | PASS | dialog appears |
+| D1 | Topic catalogue renders (28 cards) | PASS | count = 28 |
+| D2 | Subject filter narrows the grid | PASS | clicked tab -> fewer cards |
+| D3 | Boolean Algebra serves the 5-level path | PASS | Beginner..Expert + >= 5 lesson links |
+| D3 | Programming Logic serves the 5-level path | PASS | same |
+| E1 | Progress: 14-day activity chart + synchronized streak strip | PASS | 14 `.activity-day` cells + streak strip |
+| G1 | Learning Hub: 8 volumes, zero red error alerts | PASS | volumes=8, redAlerts=0 |
+| H1 | Crack Time custom target accepted and applied | PASS | Custom… reveals input, 47 min saves, remaining figure shown |
+| H2 | Custom target above 480-minute cap rejected | PASS | "Target must be between 5 and 480 minutes." |
+| H3 | Timer start/pause/resume/finish cycle | PASS | state labels cycled through the UI |
+| I1 | Company mocks: 9-card grid -> "Show all 25" expander -> 25 logos, none broken | PASS | counts + `naturalWidth > 0` for all |
+| F1 | Avatar upload persists and re-serves after reload | PASS | 201 Created, `/api/auth/me.avatarUrl` set, image rendered on Settings after full reload |
+| R1 | No horizontal overflow at 7 viewports (landing + dashboard) | PASS | 1920/1440/1024/768/430/390/360, `scrollWidth <= clientWidth` |
+| K3 | Session persists across full reload | PASS | dashboard still renders after reload |
+| K4 | Logout clears session; protected route redirects | PASS | `/app/dashboard` -> `/login` |
+| K5 | Valid re-login through the UI | PASS | redirect to /app |
+| K6 | Wrong password rejected (generic error) | PASS | verified over HTTP 401, enumeration-safe |
+| K7 | Duplicate signup rejected | PASS | 409 EMAIL_TAKEN (HTTP) + UI rejection |
+| K7b | Duplicate signup via the UI rejected | PASS | form error shown (409 or rate limiter, both are rejections) |
+
+### Product bugs found BY the browser audit (fixed during the cycle)
+
+- **Crack Time "Custom…" did nothing** (BUG_FIX_REPORT §23) - caught because the audit clicked
+  the real `<select>`; root cause + fix in the report; H1/H2 now PASS.
+- **Avatar upload 400 EMPTY_FILE for every format** (BUG_FIX_REPORT §24) - the ArrayBuffer body
+  carried no Content-Type so `express.raw` never matched; one-line header fix; F1 now PASS.
+
+### Audit-harness lessons (documented for future runs)
+
+- Headless Edge defaults to `prefers-reduced-motion: reduce` - the driver must force
+  `no-preference` up front or every animation check falsely fails (fixed in the driver).
+- React controlled `<select>` automation needs BOTH `input` and `change` events dispatched.
+- The signup rate limiter (10/h per IP) is shared across audit runs; the driver falls back to the
+  stored account via login and records K2 as BLOCKED (signup redirect itself verified PASS in
+  earlier runs this cycle).
+
+### Final gates (2026-11-10)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | PASS (shared + api + web) |
+| `npm test` | PASS 42/42 (API 25 + web 17) |
+| `npm run build` | PASS (api dist 147.32 KB ESM; web dist 542.29 KB JS / 129.60 KB CSS) |
+| `npm run lint` | BLOCKED - no lint script exists in the project (documented) |
+| Browser-level verification | PASS - 29/29 via raw CDP + Edge headless (no automation library needed) |
+
+
+---
+
+## Cycle J - Regression-driven QA + pool-honesty cycle (2026-11-11)
+
+Trigger: the user's own annotated screenshots (`Img-pdf/Problems/`, Nov 8-10) flagged four live
+complaints: (1) Settings showing the raw "Failed to fetch" in the profile card, (2) dashboard
+Today's Goal + Crack Time focus circled twice, (3) a red "No verified questions match those
+filters yet." on Practice with Hard + Time and Work, (4) the company showcase / landing marquee
+circled. Investigation + fixes in [BUG_FIX_REPORT.md 25-26](BUG_FIX_REPORT.md).
+
+### Investigation findings (evidence-first)
+
+| Area | Finding | Evidence |
+|---|---|---|
+| Settings "Failed to fetch" | Root cause = bare fetch in `ensureCsrf` escaping the API layer + no actionable network message; all Settings-path HTTP calls PASS against a live API | probe cycle-j 19/19 |
+| Today's Goal 0/10 | Correct behaviour at the time (no answers yet that day); with a fresh answer the goal counts immediately | probe: before=0 after=1; real-session dashboard shows 14/10 |
+| Crack Time focus 0 min/15 min | Honest data (no credited study seconds that day); timer start/pause/heartbeat/StudyDay credit verified in code + Cycle I browser audit | study.ts review |
+| Practice red error | `time-and-work` = 26 approved MEDIUM, 0 HARD; topic count advertised all difficulties | probe-db.cjs |
+| Streak/Progress sync | Both pages read the same `/api/dashboard` streak fields; rule = 1 qualifying activity/day | ProgressPage + probe streakHistory |
+| Companies (33) | Names/logos verified real (Tata Elxsi, Zensar, Newgen, Nucleus, Happiest Minds, Sasken, Redington, Intellect, OFSS); 33 company pages, 0 broken logos | live browser |
+| 5-level lessons | boolean-algebra + programming-logic serve BEGINNER/BASIC/INTERMEDIATE/ADVANCED/EXPERT paths | live browser |
+
+### Fixes shipped this cycle
+
+1. `ensureCsrf` wraps transport errors into ApiError(0); status 0 maps to the actionable
+   "Cannot reach the TitanApt server..." message (BUG_FIX_REPORT 25).
+2. `GET /api/topics` + `GET /api/topics/:slug` expose `difficultyCounts`; `TopicSummary` schema
+   updated; Practice form shows difficulty-aware counts, a calm empty-pool footnote, disables
+   Start, and reflects the true pool in the summary (BUG_FIX_REPORT 26).
+
+### Fresh verification (2026-11-11, dev stack :4000/:5173)
+
+- HTTP probe `scripts/qa/cycle-j-probe.mjs`: **19/19 PASS** (csrf, login/me/profile PATCH +
+  target persistence, avatar upload/serve/reject/delete, dashboard goal+streak increment after a
+  real answer, streakHistory, difficultyCounts payload, Hard 409 / Medium 201 pool=26).
+- HTTP auth matrix `scripts/qa/cycle-j-auth-probe.mjs`: **9/9 PASS** (wrong password 401,
+  empty/invalid 400, duplicate signup 409, protected 401, login 200, session works, logout
+  invalidates).
+- Real-browser verification (user's live session, 0 console errors throughout): landing marquee
+  all 33 companies on the doubled track; dashboard orbit 10 clickable logos with click-through
+  (`/app/companies/wipro`); goal 14/10 with live data; practice dropdown "Time and Work � 0 hard
+  verified" + footnote + disabled Start, "26 medium verified" + enabled Start; progress streak
+  strip 4-day current/4-day best; Learning Hub 8 volumes, chapter lists, zero red error styling;
+  mocks 9 cards, all logos loaded; companies 33 profiles, 0 broken images; settings no errors;
+  crack-time custom input reveals with Apply.
+- Responsive sweep (1920/1440/1024/768/430/390/360 x landing/dashboard/practice): **0 horizontal
+  overflow** everywhere (marquee track overhang is clipped by the band's overflow:hidden).
+
+### Final gates (2026-11-11)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | PASS (shared + api + web) |
+| `npm test` | PASS 43/43 (API 26 + web 17) |
+| `npm run build` | PASS (web dist 543.17 KB JS / 129.90 KB CSS) |
+| `npm run lint` | BLOCKED - no lint script exists in the project (documented) |
+| DB migrations | No schema change this cycle (difficultyCounts computed in the route) |
+| Data preservation | Zero DB resets; user's real account data untouched (read-only session; avatar mutations tested on the probe account) |

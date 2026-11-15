@@ -32,7 +32,7 @@ describe('TitanApt HTTP integration', () => {
     expect(response.body.data.content).toMatchObject({
       topics: 28,
       approvedQuestions: 1675,
-      approvedLessons: 136,
+      approvedLessons: 140,
       publishedMocks: 27,
     });
   });
@@ -61,7 +61,7 @@ describe('TitanApt HTTP integration', () => {
     expect(topics.body.data).toHaveLength(28);
 
     const companies = await learner.get('/api/companies').expect(200);
-    expect(companies.body.data).toHaveLength(26);
+    expect(companies.body.data).toHaveLength(33);
     const company = companies.body.data.find(
       (item: { topicSlugs: string[] }) => item.topicSlugs.length > 0,
     );

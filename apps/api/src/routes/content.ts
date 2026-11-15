@@ -21,7 +21,7 @@ contentRouter.get(
       include: {
         questions: {
           where: { reviewStatus: 'APPROVED', correctOptionId: { not: null } },
-          select: { id: true },
+          select: { id: true, difficulty: true },
         },
         lessons: {
           where: { status: 'APPROVED' },
@@ -43,6 +43,11 @@ contentRouter.get(
         description: topic.description,
         order: topic.order,
         questionCount: topic.questions.length,
+        difficultyCounts: {
+          EASY: topic.questions.filter((q) => q.difficulty === 'EASY').length,
+          MEDIUM: topic.questions.filter((q) => q.difficulty === 'MEDIUM').length,
+          HARD: topic.questions.filter((q) => q.difficulty === 'HARD').length,
+        },
         lessonCount: topic.lessons.length,
         lessons: topic.lessons.map((lesson) => ({
           id: lesson.id,
@@ -64,7 +69,7 @@ contentRouter.get(
       include: {
         questions: {
           where: { reviewStatus: 'APPROVED', correctOptionId: { not: null } },
-          select: { id: true },
+          select: { id: true, difficulty: true },
         },
         lessons: {
           where: { status: 'APPROVED' },
@@ -88,6 +93,11 @@ contentRouter.get(
         description: topic.description,
         sourceNote: topic.sourceNote,
         questionCount: topic.questions.length,
+        difficultyCounts: {
+          EASY: topic.questions.filter((q) => q.difficulty === 'EASY').length,
+          MEDIUM: topic.questions.filter((q) => q.difficulty === 'MEDIUM').length,
+          HARD: topic.questions.filter((q) => q.difficulty === 'HARD').length,
+        },
         lessons: topic.lessons.map((lesson) => ({
           ...lesson,
           progress: map.get(lesson.id)

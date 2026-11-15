@@ -29,6 +29,23 @@ export type Difficulty = (typeof DIFFICULTIES)[number];
 export const LESSON_LEVELS = ['BEGINNER', 'BASIC', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'] as const;
 export type LessonLevel = (typeof LESSON_LEVELS)[number];
 
+/**
+ * Stable mapping from published company-mock slugs to the canonical Company
+ * slug used for the company record and logo asset. Two mock slugs came from
+ * the reference PDF without their short canonical names; they are aliased by
+ * explicit identifier rather than by array position or string guessing.
+ */
+export const COMPANY_MOCK_ALIASES: Record<string, string> = {
+  'hexawaretechnologies': 'hexaware',
+  'oraclefinancialservicessoftware': 'ofss',
+};
+
+/** The company slug behind a `company-mock-<x>` slug (identity by default). */
+export function companySlugForMockSlug(mockSlug: string): string {
+  const bare = mockSlug.startsWith('company-mock-') ? mockSlug.slice('company-mock-'.length) : mockSlug;
+  return COMPANY_MOCK_ALIASES[bare] ?? bare;
+}
+
 export const REVIEW_STATUSES = [
   'PENDING',
   'NEEDS_FIX',
@@ -280,6 +297,8 @@ export type TopicSummary = {
   description: string;
   order: number;
   questionCount: number;
+  /** Approved-question availability per difficulty; drives honest pool hints. */
+  difficultyCounts: { EASY: number; MEDIUM: number; HARD: number };
   lessonCount: number;
 };
 

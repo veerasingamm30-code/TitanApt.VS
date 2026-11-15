@@ -22,8 +22,22 @@ type ChapterIndexEntry = {
 
 type VolumeIndexEntry = LearningVolumeDefinition & {
   chapters: ChapterIndexEntry[];
+  /** Legacy flat list kept for backwards compatibility; equals errors + notices. */
   warnings: string[];
+  /** Blocking problems: the volume is unusable and must render as a red alert. */
+  errors: string[];
+  /** Benign context notes (alternate source path, page-count drift...) that
+   *  must never be presented as failures — they render as muted notices. */
+  notices: string[];
 };
+
+function classifyWarnings(notices: string[], errors: string[] = []): {
+  warnings: string[];
+  errors: string[];
+  notices: string[];
+} {
+  return { warnings: [...errors, ...notices], errors, notices };
+}
 
 const volumeIndex = new Map<string, Promise<VolumeIndexEntry>>();
 
@@ -295,7 +309,7 @@ async function buildVolumeIndex(volumeSlug: string): Promise<VolumeIndexEntry> {
         topicSlug: matchedTopic(chapter.title, topics),
       });
     }
-    return { ...volume, pageCount: document.numPages, warnings, chapters: indexed };
+    return { ...volume, pageCount: document.numPages, ...classifyWarnings(warnings), chapters: indexed };
   } finally {
     await document.destroy();
   }
@@ -347,7 +361,10 @@ learningRouter.get(
       console.error(`[learning] volume index failed for ${volume.slug}:`, result.reason instanceof Error ? result.reason.message : result.reason);
       return {
         ...volume,
-        warnings: [`This volume could not be indexed: ${result.reason instanceof Error ? result.reason.message : 'unknown error'}`],
+        ...classifyWarnings(
+          [],
+          [`This volume could not be indexed: ${result.reason instanceof Error ? result.reason.message : 'unknown error'}`],
+        ),
         chapters: [] as ChapterIndexEntry[],
       };
     });
@@ -411,3 +428,4 @@ learningRouter.patch(
     res.json({ data: { volumeSlug: input.volumeSlug, chapterKey: input.chapterKey, completed: input.completed } });
   }),
 );
+

@@ -31,6 +31,7 @@ type TopicOption = {
   name: string;
   subject: Subject;
   questionCount: number;
+  difficultyCounts?: { EASY: number; MEDIUM: number; HARD: number };
 };
 
 const subjectMap: Record<string, Subject> = {
@@ -105,6 +106,27 @@ export function PracticePage() {
     ? topics?.find((topic) => topic.slug === topicSlug)?.questionCount ?? 0
     : topics?.reduce((sum, topic) => sum + topic.questionCount, 0) ?? 0;
 
+  // Honest pool accounting: the topic counts above cover every difficulty, so a
+  // Hard + Time-and-Work request can still have zero real candidates. When the
+  // server reports per-difficulty counts, reflect the actual pool for the
+  // current selection before the learner hits Start (the server 409 stays as
+  // the last line of defence).
+  const scopedPool = useMemo(() => {
+    // Company-focused sets are filtered server-side by company topic mapping;
+    // the client-side topic list cannot predict that pool, so stay silent.
+    if (!topics || companySlug) return null;
+    const scope = topicSlug
+      ? topics.filter((topic) => topic.slug === topicSlug)
+      : filteredTopics;
+    if (!difficulty) {
+      return scope.reduce((sum, topic) => sum + topic.questionCount, 0);
+    }
+    const key = difficulty as 'EASY' | 'MEDIUM' | 'HARD';
+    if (!scope.every((topic) => topic.difficultyCounts)) return null;
+    return scope.reduce((sum, topic) => sum + (topic.difficultyCounts?.[key] ?? 0), 0);
+  }, [topics, filteredTopics, topicSlug, difficulty, companySlug]);
+  const emptyPool = scopedPool !== null && scopedPool === 0;
+
   async function startSession() {
     setStartError(null);
     setStarting(true);
@@ -178,9 +200,11 @@ export function PracticePage() {
               <span>Topic <small>(optional)</small></span>
               <select value={topicSlug} onChange={(event) => setTopicSlug(event.target.value)}>
                 <option value="">All {subject ? subjectLabel[subject].toLowerCase() : ''} topics</option>
-                {filteredTopics.map((topic) => (
-                  <option key={topic.id} value={topic.slug}>{topic.name} · {topic.questionCount} verified</option>
-                ))}
+                {filteredTopics.map((topic) => {
+                  const scoped = difficulty ? topic.difficultyCounts?.[difficulty as 'EASY' | 'MEDIUM' | 'HARD'] : undefined;
+                  const label = difficulty && scoped !== undefined ? `${topic.name} · ${scoped} ${difficulty.toLowerCase()} verified` : `${topic.name} · ${topic.questionCount} verified`;
+                  return <option key={topic.id} value={topic.slug}>{label}</option>;
+                })}
               </select>
             </label>
 
@@ -255,13 +279,19 @@ export function PracticePage() {
               <small className="field-help">When a limit is set, the countdown starts with the set and expires server-side.</small>
             </div>
 
-            {!startError && availableCount < count && (
+            {!startError && emptyPool && (
+              <p className="form-footnote" role="status">
+                No verified {difficulty.toLowerCase()} questions in this selection yet
+                {availableCount > 0 ? ` — ${availableCount} verified at other difficulties.` : '.'} Try "Any difficulty" or another topic.
+              </p>
+            )}
+            {!startError && !emptyPool && availableCount < count && (
               <p className="form-footnote" role="status">
                 Only up to {availableCount} verified questions are visible for this view; the set may be shorter instead of padded.
               </p>
             )}
             {startError && <div className="form-error" role="alert">{startError}</div>}
-            <button type="button" className="btn btn-primary btn-block" onClick={() => void startSession()} disabled={starting || count < 1 || (timeLimitMinutes !== null && timeLimitMinutes < 1)}>
+            <button type="button" className="btn btn-primary btn-block" onClick={() => void startSession()} disabled={starting || count < 1 || emptyPool || (timeLimitMinutes !== null && timeLimitMinutes < 1)}>
               {starting ? 'Building your set…' : `Start ${count}-question practice${timeLimitMinutes ? ' (timed)' : ''}`} <Play size={16} />
             </button>
             <p className="form-footnote">Only approved questions with a verified correct option can enter a set.</p>
@@ -272,7 +302,7 @@ export function PracticePage() {
             <h3>{topicSlug ? topics?.find((topic) => topic.slug === topicSlug)?.name : companySlug ? `${companyName || 'Company'} focus` : subject ? subjectLabel[subject] : 'Mixed practice'}</h3>
             <dl className="fact-list">
               <div><dt>Questions requested</dt><dd>{count}</dd></div>
-              <div><dt>Verified pool</dt><dd>{availableCount}</dd></div>
+              <div><dt>Verified pool</dt><dd>{scopedPool ?? availableCount}</dd></div>
               <div><dt>Difficulty</dt><dd>{difficulty ? difficulty.charAt(0) + difficulty.slice(1).toLowerCase() : 'Any'}</dd></div>
               <div><dt>Time limit</dt><dd>{timeLimitMinutes ? `${timeLimitMinutes} min` : 'None'}</dd></div>
               <div><dt>Feedback</dt><dd>Immediate</dd></div>

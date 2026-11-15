@@ -37,7 +37,7 @@ const features = [
   {
     icon: Building2,
     title: 'Company intelligence, honestly sourced',
-    body: 'Explore 26 IT-company profiles with guide-supplied marks. No invented logos, no fake company papers, and source notes on every profile.',
+    body: 'Explore 33 IT-company profiles with guide-supplied marks. No invented logos, no fake company papers, and source notes on every profile.',
   },
   {
     icon: BarChart3,
@@ -125,7 +125,7 @@ export function LandingPage() {
                 <span>answer-verified questions</span>
               </div>
               <div>
-                <strong>26</strong>
+                <strong>33</strong>
                 <span>company profiles</span>
               </div>
             </div>

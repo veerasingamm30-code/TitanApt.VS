@@ -149,3 +149,142 @@ Conventions used throughout: statuses are honest; "FIXED" means a repeatable che
 - A follow-on test pin: `http.test.ts` readiness assertion updated approvedLessons 31 -> 136.
 - Residual honesty note: checkpoint windows repeat (head fallback) for the 5 topics whose question pool
   is smaller than 5 items; every lesson still gets a checkpoint.
+
+## 18. 2026-11-09: Hexaware/OFSS mocks invisible on the landing marquee (alias direction bug)
+
+- **Section:** public companies API (`GET /api/public/companies`).
+- **Repro:** live probe showed `mockSlug: null` for Hexaware and Oracle Financial Services Software
+  (OFSS) even though both have published company mocks.
+- **Root cause:** `public.ts` resolved company -> mock **forward** with
+  `companySlugForMockSlug(company.slug)`, but `COMPANY_MOCK_ALIASES` is keyed by the mock's bare
+  slug (`hexawaretechnologies -> hexaware`, `oraclefinancialservicessoftware -> ofss`); the forward
+  lookup therefore missed the aliases.
+- **Files:** `apps/api/src/routes/public.ts`.
+- **Fix:** the endpoint now builds a published-mock map keyed by canonical company slug
+  (`mockByCompanySlug.set(companySlugForMockSlug(mock.slug), mock.slug)`), which is correct for any
+  future alias additions too.
+- **Verification:** FIXED - live probe reports `hexaware -> company-mock-hexawaretechnologies` and
+  `ofss -> company-mock-oraclefinancialservicessoftware`; `@titanapt/shared` rebuilt so the runtime
+  alias table is current in all consumers.
+
+## 19. 2026-11-09: Learning Hub presented benign indexing notes as red errors
+
+- **Section:** Learning Hub warnings.
+- **Repro:** opening the Hub showed red `form-error` style alerts for perfectly healthy volumes,
+  e.g. "Indexed from Img-pdf\\Volume 4.pdf." (a benign alternate-source note).
+- **Root cause:** `buildVolumeIndex` returned a flat `warnings: string[]` and the frontend joined
+  every entry into a global red alert block; no severity concept existed.
+- **Files:** `apps/api/src/routes/learning.ts` (errors/notices classification, flat list kept for
+  compatibility), `apps/web/src/pages/LearningHubPage.tsx`, `apps/web/src/styles.css`.
+- **Fix:** server classifies outcomes - `errors` (red alert, currently only "This volume could not
+  be indexed: ...") vs `notices` (muted inline text: alternate source path, page-count drift,
+  incomplete volume-2 outline); the global alert block now renders only `errors` and each volume
+  card renders its notices as muted `<small>` text.
+- **Verification:** FIXED - all 8 volumes return `errors: []` with notices populated (live HTTP);
+  the unindexable-volume placeholder path fills `errors` in the same classification shape.
+
+## 20. 2026-11-09: Landing copy and marquee heading carried stale hardcoded company counts
+
+- **Issue:** marquee fallback heading said "Explore 26 verified IT companies"; hero-proof and
+  features copy said "26" while the seeded database holds 33 verified companies (also caught: the
+  Readiness/test pins still expected 26 companies / 136 lessons).
+- **Fix:** marquee heading is now computed from the loaded company count (`Explore ${companies.length}
+  verified IT companies`); landing hero/features updated to the measured 33; test pins updated with a
+  comment-free re-measure (140 lessons, 33 companies). Hero numbers for topics (28) and questions
+  (1,675) were re-measured against the live API and kept - they were already correct.
+- **Verification:** FIXED - all five advertised counts re-measured from live endpoints (28/1,675/33/140/25).
+
+## 21. 2026-11-09: Crack Time target showed no remaining time
+
+- **Issue:** the redesigned target card showed "spent of X min goal" with no remaining figure, so the
+  learner could not see how much was left toward the day's goal without mental arithmetic.
+- **Fix:** remaining-time note added under the progress figures (`X min left to goal`, or
+  "Goal reached for today"), using the same server-authoritative seconds; flex row wraps on
+  narrow screens.
+- **Verification:** FIXED - build + typecheck PASS; custom target validation probes: 0, -5, "abc",
+  700, empty -> 400; 47 -> 200 `targetMinutes: 47`.
+
+## 22. 2026-11-09: Dashboard orbit removal - replacement guard
+
+- **Context (not a regression):** the 3D company orbit component and its CSS block were deleted
+  and replaced by the `CompanyShowcase` grid per the revised spec. `npm run build` + typecheck
+  confirm no dangling import or CSS reference remains; the dashboard page renders the showcase
+  section (`company-showcase-section`, `showcase-subtitle`) plus the new `DailyStreakCard`.
+- **Superseded 2026-11-10:** the final master spec (Phase 3 + Phase 14-B) re-mandated the 3D orbit
+  on the authenticated dashboard. `CompanyOrbit.tsx` was restored (simplified CSS-3D variant with
+  ring paths, responsive + reduced-motion support) and re-wired into `DashboardPage.tsx`;
+  the now-orphaned `CompanyShowcase.tsx` (no importer, no CSS) was deleted. Verified live:
+  10 clickable cards orbit the TitanApt core, logo click navigates to `/app/companies/:slug`
+  (browser audit checks B1/B2 PASS).
+
+## 23. 2026-11-10: Crack Time "Custom…" option did nothing (the Phase-9 spec bug)
+
+- **Section:** `apps/web/src/pages/CrackTimePage.tsx` (daily target selector).
+- **Repro (real browser):** choosing "Custom…" in the Daily target `<select>` revealed no custom
+  input; the option silently did nothing. This is exactly the defect the master spec describes.
+- **Root cause:** the `<select>` bound `value` to `''` for the Custom option (an empty string that
+  React cannot distinguish from "nothing selected") and the custom input only rendered when the
+  *saved* target was already non-preset — so selecting Custom while on a preset toggled nothing.
+- **Fix:** explicit `value="custom"` option + `targetPicked` state; the input renders when
+  `targetPicked || !TARGET_PRESETS.includes(today.targetMinutes)`; `setTargetPicked(false)` resets
+  in `saveTarget` success and `loadToday`.
+- **Verification:** FIXED - real-browser audit H1/H2 PASS: Custom reveals the input, 47 min saves,
+  700 min is rejected with "Target must be between 5 and 480 minutes."
+
+## 24. 2026-11-10: Avatar upload always failed server-side (EMPTY_FILE) for every format
+
+- **Section:** `apps/web/src/lib/api.ts` (`uploadAvatar`) + `apps/api/src/routes/auth.ts` (POST `/api/auth/avatar`).
+- **Repro (real browser):** upload POST returned 400 `EMPTY_FILE` even for a valid PNG.
+- **Root cause:** the frontend sent a bare `ArrayBuffer` body. `fetch` sets **no** `Content-Type`
+  header for ArrayBuffer bodies, and `express.raw({ type: '*/*' })` only matches requests that
+  carry a Content-Type at all — so the raw parser never ran and the server saw an empty body.
+- **Fix:** `uploadAvatar` now sets `content-type: application/octet-stream` alongside
+  `x-avatar-type`; server contract unchanged (magic-byte sniff still authoritative).
+- **Verification:** FIXED - real-browser audit F1 PASS: 201 Created, `/api/auth/me` returns
+  `avatarUrl`, the image re-serves from storage and renders on Settings after a full reload.
+
+## 25. 2026-11-11: Settings showed the raw browser error "Failed to fetch" when the dev API was restarting
+
+- **Section:** `apps/web/src/lib/api.ts` (`ensureCsrf`, `messageFromError`).
+- **Context:** the user's annotated screenshots (Nov 8 + Nov 10) show the Settings page fully
+  rendered with a red "Failed to fetch" banner inside the "Profile and study plan" card. The page
+  renders entirely from the cached session user, and its only load-time API call
+  (`/api/dashboard` in `SettingsPage`) already swallows errors - so a mid-session API restart or
+  dev-stack boot gap leaves the page looking healthy while every action fails.
+- **Root cause 1:** `ensureCsrf()` performed a bare `fetch('/api/auth/csrf')`. When the API was
+  unreachable, the raw `TypeError: Failed to fetch` escaped the API layer and
+  `messageFromError` surfaced the browser's own text to the learner. Every other transport
+  failure in `apiRequest` is wrapped into `ApiError(0)`; the CSRF bootstrap was the one gap.
+- **Root cause 2:** `messageFromError` passed `ApiError(0)`'s generic "The request timed out or
+  the server is unreachable." through without telling the learner what to do.
+- **Fix:** `ensureCsrf` now wraps its fetch errors exactly like `apiRequest` (ApiError(0),
+  original error preserved as `cause`), and `messageFromError` maps status 0 to an actionable
+  message: "Cannot reach the TitanApt server. The API may be starting up or restarting - wait a
+  moment and try again."
+- **Verification:** FIXED - HTTP probes confirm every Settings-path call (me/profile PATCH/avatar
+  upload/serve/delete) succeeds against a live API (probe 19/19 PASS), and a network failure now
+  surfaces as the actionable ApiError message instead of "Failed to fetch".
+
+## 26. 2026-11-11: Practice falsely advertised a pool, then failed with a red error (Hard + Time and Work)
+
+- **Section:** `apps/api/src/routes/content.ts` (`GET /api/topics`, `GET /api/topics/:slug`),
+  `packages/shared/src/index.ts` (`TopicSummary`), `apps/web/src/pages/PracticePages.tsx`.
+- **Repro (real browser + DB probe):** the user selected Mixed + "Time and Work · 36 verified" +
+  Hard and hit Start; the server honestly answered 409 "No verified questions match those
+  filters yet." DB truth: `time-and-work` has 26 approved, correct-option-bearing questions -
+  **all MEDIUM, zero HARD** (probe `scripts/qa/probe-db.cjs`). The topic count in the dropdown
+  covered all difficulties, so the learner was set up to fail.
+- **Root cause:** the topics payload carried only `questionCount` (every difficulty), and the
+  practice form only discovered the empty pool after the server rejected the request, showing
+  an alarm-red error for what is simply an empty selection.
+- **Fix:** the topics endpoints now include `difficultyCounts: { EASY, MEDIUM, HARD }` (schema
+  `TopicSummary` updated); the practice form computes the pool for the exact current selection
+  (topic or subject scope), shows "N hard verified" in the topic dropdown when a difficulty is
+  chosen, renders a calm footnote ("No verified hard questions in this selection yet - 26
+  verified at other difficulties. Try "Any difficulty" or another topic."), disables Start, and
+  shows the true pool in the "Current selection" summary. No question data was invented or
+  re-classified; the server 409 remains the last line of defence.
+- **Verification:** FIXED - live browser: dropdown reads "Time and Work · 0 hard verified", the
+  footnote replaces the red error, Start is disabled; "26 medium verified" enables Start and
+  builds a set (probe: Medium+time-and-work 201 pool=26, Hard 409, difficultyCounts
+  {"EASY":0,"MEDIUM":26,"HARD":0}).

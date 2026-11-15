@@ -54,22 +54,26 @@ export function shiftDayKey(key: string, deltaDays: number): string {
   return date.toISOString().slice(0, 10);
 }
 
-/** A practice-streak day is a local calendar day with at least this many
- *  distinct questions answered correctly in PRACTICE mode. Mock answers,
- *  lesson checkpoints and incorrect answers never count. */
-export const PRACTICE_QUALIFY_COUNT = 4;
+/** A local calendar day qualifies after one completed, verified learning or practice activity. */
+export const ACTIVITY_QUALIFY_COUNT = 1;
 
 /**
- * Practice streaks are derived from a per-day map of distinct correct practice
- * question counts. Today counts as soon as it qualifies; if today does not
- * qualify yet, a qualified yesterday can still extend the current streak.
+ * Visual flame-activation threshold for the dashboard Daily Streak card only.
+ * The flame lights up after this many VERIFIED correct answers today in the
+ * Practice section. This deliberately does NOT change the streak-day rule
+ * (ACTIVITY_QUALIFY_COUNT) or any historical streak record: streak days keep
+ * qualifying after a single verified activity, the flame is a brighter
+ * "today's practice is warmed up" signal on top of that.
  */
-export function practiceStreakFromDays(
+export const FLAME_ACTIVATION_CORRECT_COUNT = 4;
+
+/** Streaks derive from the per-day count of unique verified activities. */
+export function activityStreakFromDays(
   days: Map<string, number>,
   today: string | null,
 ): { current: number; longest: number } {
-  const qualified = (key: string) => (days.get(key) ?? 0) >= PRACTICE_QUALIFY_COUNT;
-  const sorted = [...days.entries()].filter(([key, count]) => count >= PRACTICE_QUALIFY_COUNT).map(([key]) => key).sort();
+  const qualified = (key: string) => (days.get(key) ?? 0) >= ACTIVITY_QUALIFY_COUNT;
+  const sorted = [...days.entries()].filter(([, count]) => count >= ACTIVITY_QUALIFY_COUNT).map(([key]) => key).sort();
 
   let longest = 0;
   let running = 0;

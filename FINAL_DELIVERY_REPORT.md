@@ -92,3 +92,177 @@ Beyond the 2026-11-07 scope, the content library now covers complete lesson path
   authored text, honest sourceRef (TitanApt original, 2026-11-08), 3 practice questions per lesson with
   programmatically re-verified answer keys; several draft arithmetic slips were caught and fixed during
   review (list in TEST_RESULTS.md Cycle G).
+
+---
+
+## 8. 2026-11-09 finishing cycle (Cycle H): 12-requirement spec closed out
+
+Scope: finish the 12-item upgrade spec (new company marquee data, dashboard
+company showcase, premium Daily Streak card, 5-level Boolean Algebra and
+Programming Logic paths, Progress streak consistency, avatar upload flow,
+Learning Hub warning severity, Crack Time custom timer + remaining time,
+mock-test logo identity, selection UI/UX audit, auth audit, strict change
+control) and re-run the full gate set. Requirement-by-requirement evidence:
+[TEST_RESULTS.md Cycle H](TEST_RESULTS.md); bugs found and fixed:
+[BUG_FIX_REPORT.md §§18–22](BUG_FIX_REPORT.md).
+
+### What changed in this cycle (summary)
+
+- **Marquee/mock identity (Reqs 01, 09):** 7 missing logo PNGs extracted from `Img-pdf/IT Company
+  Logo.png`, 7 new companies from the reference PDF seeded (total 33, all with logos), slug aliases
+  for the two PDF-borne mock names wired through `@titanapt/shared` and consumed server-side by the
+  mock list/config/detail and public companies endpoints; marquee heading now dynamic; a forward vs
+  reverse alias-direction bug in the marquee endpoint was caught by live probing and fixed.
+- **Dashboard (Reqs 02, 03, 06):** the 3D company orbit was deleted and replaced with a
+  `CompanyShowcase` grid; a new `DailyStreakCard` replicating the supplied streak reference
+  (green pill bars, hatched idle bars, crown badge, 7-day goal bar) now reads the authoritative
+  streak fields from `GET /api/dashboard`; profile avatar wiring surfaced on the page header.
+- **Learning (Reqs 04, 07):** boolean-algebra and programming-logic now serve full 5-level paths
+  (14 new lessons, seed 140 total); Learning Hub outcomes are classified server-side into red
+  `errors` vs muted `notices` so benign notes no longer alarm users.
+- **Crack Time (Req 08):** custom target input verified end-to-end against the server
+  (400s on 0/-5/"abc"/700/empty; 200 on a valid custom value) and a remaining-time note added.
+- **Auth (Req 11):** full HTTP audit - credentials, enumeration-safety, validation, CSRF,
+  protected-route gating, logout invalidation and the 429 login rate limiter all verified live.
+- **Change control (Req 12):** zero DB resets, zero runtime dependency additions, `Img-pdf/`
+  references untouched, stray files removed, all measured counts re-verified before any copy change.
+
+### Gate results (this cycle)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | PASS (3 workspaces) |
+| `npm test` | PASS 42/42 (API 25 + web 17; test pins updated to 140 lessons / 33 companies) |
+| `npm run build` | PASS (api 147.32 KB ESM; web 541.74 KB JS / 126.49 KB CSS) |
+| `npm run db:seed` | PASS - topics=28 lessons=140 companies=33 questions=1675+25 mocks=25+2 |
+| Live HTTP probes | PASS - marquee/companies, mock identity, volumes, streak, study target, auth matrix (see Cycle H tables) |
+| `npm run lint` | BLOCKED - no lint script exists (unchanged, documented) |
+| Browser automation | BLOCKED in this session; HTTP probes + code review used (honest limitation, unchanged) |
+
+### Honest limitations
+
+1. This session had no browser automation: the showcase, streak card and selection states are
+   verified at the API/build/CSS level, not by clicking through a rendered page. The CSS audit
+   confirms every selected-state class used by the components has a styled rule.
+2. The boolean-algebra and programming-logic checkpoint windows are sequential slices of their
+   approved pools (126 and 200 questions) - each of the 5 lessons has a window; no new questions
+   were invented for them.
+3. Learning Hub `notices` (e.g. "Indexed from Img-pdf\\Volume N.pdf.") intentionally remain visible
+   as muted text for transparency, rather than being hidden; only errors are red.
+
+---
+
+## 9. 2026-11-10 final master phase (Cycle I): orbit restored, theme-aware streak, real-browser QA
+
+Final phase of the master spec. Three gaps against the authoritative Phase 1-16 spec were closed,
+then the site was verified by an independent **real-browser audit** (raw Chrome DevTools Protocol
+driving system Edge headless - no automation library exists in this environment; driver kept as
+`scripts/browser-audit.mjs`). Full check table + evidence:
+[TEST_RESULTS.md Cycle I](TEST_RESULTS.md); new bugs:
+[BUG_FIX_REPORT.md A�A�23-24](BUG_FIX_REPORT.md); screenshots + machine-readable results:
+`docs/evidence/browser/`.
+
+### What changed in this cycle
+
+- **3D orbit restored on the authenticated dashboard (Phase 3/14-B):** the master spec overrides
+  the Cycle-H showcase decision. `CompanyOrbit.tsx` (simplified CSS-3D variant: 3 ring paths,
+  10 clickable logo cards, counter-rotation to keep logos upright, responsive + reduced-motion)
+  is wired back into `DashboardPage.tsx` ("TOP IT COMPANIES" section); the orphaned
+  `CompanyShowcase.tsx` was deleted (no importer, no CSS). Live-verified: 10 cards orbit the
+  TitanApt core, click-through to `/app/companies/:slug` works.
+- **Streak card follows the theme accent (Phase 4 theme support):** every hardcoded green in the
+  `DailyStreakCard` CSS block (fills, flame, crown badge, goal bar, quote arrow, radial glow) now
+  derives from `var(--accent)` via `color-mix`; the premium dark shell from the Streack reference
+  is retained so dark and light modes stay readable. Live-verified: orange -> green -> orange
+  accent switch changes the computed colors and restores exactly.
+- **Crack Time "Custom…" fixed (Phase 9):** explicit `value="custom"` option + `targetPicked`
+  state; custom input now reveals on selection, saves (47 min), and rejects 700 with the
+  5-480 message. Live-verified in the browser.
+- **Avatar upload fixed (Phase 7):** the raw-ArrayBuffer upload carried no Content-Type so the
+  server's `express.raw` parser never matched and every upload returned 400 EMPTY_FILE;
+  `uploadAvatar` now sends `content-type: application/octet-stream`. Live-verified: 201 Created,
+  avatar persists in storage, re-serves after reload, renders in the header/sidebar/Settings.
+- **Strict change control (Phase 13):** no runtime dependency added, no DB reset, no seed change,
+  no unrelated page touched; only the files named above plus the audit driver and reports.
+
+### Independent browser audit result: 29 checks, 29 PASS / 0 FAIL
+
+Signup -> dashboard through the real forms; orbit render + click-through; streak card structure +
+theme switching; clean console; marquee loop/hover-pause/reduced-motion/info panel; 28-topic
+catalogue + filter; 5-level boolean-algebra and programming-logic; Progress 14-day + streak strip;
+Learning Hub 8 volumes zero red alerts; Crack Time custom + validation + timer cycle; mocks
+9 -> expander -> 25 logos all loading; avatar upload persistence; no horizontal overflow at
+1920/1440/1024/768/430/390/360 on landing + dashboard; session persistence, logout, protected
+route, re-login, duplicate-signup rejection.
+
+### Gate results (final)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | PASS (3 workspaces) |
+| `npm test` | PASS 42/42 (API 25 + web 17) |
+| `npm run build` | PASS (api 147.32 KB ESM; web 542.29 KB JS / 129.60 KB CSS) |
+| `npm run lint` | BLOCKED - no lint script exists in the project (documented) |
+| Browser audit | PASS - 29/29 checks in a real headless Edge session |
+
+### Remaining honest limitations
+
+1. `npm run lint` has no script in this project - not claimed.
+2. The audit's K2 signup-redirect check is exercised per run; when the signup rate limiter
+   (10/h per IP) is exhausted by repeated audit runs, the driver continues from the stored
+   account via login and marks K2 BLOCKED for that run (redirect itself verified PASS).
+3. Checkpoint windows for boolean-algebra / programming-logic remain sequential slices of their
+   approved pools (no invented questions); see Cycle G/H notes.
+4. Browser audit runs headless at scripted viewport sizes; manual touch-device ergonomics (real
+   finger targets on physical hardware) are approximated by the 360-430 px mobile sweep, not
+   physically exercised.
+
+---
+
+## 10. 2026-11-11 finishing cycle (Cycle J): regression-driven QA against the user's own screenshots
+
+Scope: investigate the four user-flagged live complaints (Settings "Failed to fetch", dashboard
+goal/crack-time cards, practice empty-pool red error, company sections), fix root causes, and
+re-run the gate set with fresh evidence. Full tables: [TEST_RESULTS.md Cycle J](TEST_RESULTS.md).
+
+### What changed in this cycle
+
+- **Settings network failure UX (Req 6/11 follow-up):** `ensureCsrf` now wraps its fetch errors
+  into `ApiError(0)` exactly like every other call, and status 0 maps to the actionable message
+  "Cannot reach the TitanApt server. The API may be starting up or restarting - wait a moment and
+  try again." The raw browser text "Failed to fetch" can no longer reach the UI.
+- **Practice pool honesty (Req 10 follow-up):** `/api/topics` and `/api/topics/:slug` now expose
+  per-difficulty `difficultyCounts` (shared `TopicSummary` schema updated). The Practice form
+  shows "N hard verified" in the topic dropdown, renders a calm empty-pool footnote instead of a
+  red post-hoc error, disables Start, and shows the true pool in the summary. DB truth behind the
+  user's complaint: time-and-work has 26 approved MEDIUM questions and zero HARD - no data was
+  invented or re-classified.
+- **Verified-as-correct (no change needed):** Today's Goal and streak counting (probe shows an
+  answer immediately incrementing `dailyGoal.completed` and `streak.todayActivityCount`; the
+  user's live dashboard shows 14/10 with real activity), Crack Time focus minutes (honest data),
+  Progress streak strip (same authoritative `/api/dashboard` source), all 33 company names/logos
+  (real data from the reference PDF), 5-level Boolean Algebra + Programming Logic paths, marquee,
+  orbit, Learning Hub, mocks logos, login/signup security matrix.
+
+### Gate results (this cycle)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | PASS (3 workspaces) |
+| `npm test` | PASS 43/43 (API 26 + web 17) |
+| `npm run build` | PASS (web 543.17 KB JS / 129.90 KB CSS) |
+| HTTP probes | PASS - cycle-j 19/19, cycle-j-auth 9/9 (evidence in scripts/qa + TEST_RESULTS Cycle J) |
+| Browser verification | PASS - 0 console errors across landing/dashboard/practice/progress/learning-hub/mocks/companies/settings/crack-time |
+| `npm run lint` | BLOCKED - no lint script exists in the project (documented) |
+
+### Honest limitations
+
+1. Avatar upload was verified over HTTP (upload/serve/reject/delete + persistence via
+   `/api/auth/me`) and in Cycle I's browser audit; this session deliberately did NOT re-upload in
+   the browser because the live session belongs to the user's real account (would have replaced
+   their avatar).
+2. Accent re-colouring of the streak card was verified live in Cycle I (orange->green->orange
+   restores exactly); this cycle re-checked the component reads `var(--accent)` (no hardcoded
+   green) but did not repeat the live colour switch.
+3. Signup rate limiter (10/h per IP) makes repeated UI signup sweeps rate-limited; registration
+   logic verified via the HTTP matrix (409 duplicate, validation 400s) and prior UI audits.

@@ -3,10 +3,11 @@ import { prisma } from '../prisma.js';
 import { asyncHandler } from '../lib/errors.js';
 import { requireAuth } from '../middleware/auth.js';
 import {
-  PRACTICE_QUALIFY_COUNT,
+  ACTIVITY_QUALIFY_COUNT,
+  FLAME_ACTIVATION_CORRECT_COUNT,
   accuracy,
   dayKey,
-  practiceStreakFromDays,
+  activityStreakFromDays,
   shiftDayKey,
 } from '../lib/metrics.js';
 import { env } from '../env.js';
@@ -23,7 +24,7 @@ dashboardRouter.get(
     const timezone = req.user!.profile?.timezone ?? 'Asia/Kolkata';
     const now = new Date();
 
-    const [attempts, progress, mockAttempts, mocks, topics, recent, bookmarks] = await Promise.all([
+    const [attempts, progress, mockAttempts, mockActivity, mocks, topics, recent, bookmarks] = await Promise.all([
       prisma.questionAttempt.findMany({
         where: { userId },
         select: {
@@ -43,6 +44,10 @@ dashboardRouter.get(
         select: { id: true, submittedAt: true, percentage: true, score: true, maxScore: true, mockTest: { select: { title: true, slug: true } } },
         orderBy: { submittedAt: 'desc' },
         take: 5,
+      }),
+      prisma.mockTestAttempt.findMany({
+        where: { userId, status: 'SUBMITTED', submittedAt: { not: null } },
+        select: { id: true, submittedAt: true },
       }),
       prisma.mockTest.findMany({
         where: { status: 'PUBLISHED' },
@@ -77,32 +82,27 @@ dashboardRouter.get(
     const dailyCompleted = attempts.filter((a) => dayKey(a.answeredAt, timezone) === today).length;
     const dailyGoal = req.user!.profile?.dailyGoal ?? 10;
 
-    // Practice streak foundation: distinct questions answered CORRECTLY in
-    // PRACTICE mode, bucketed into the learner's local calendar days.
-    // Mock-test attempts are stored separately and lesson checkpoints use
-    // CHECKPOINT mode, so neither can pollute this map.
-    const practiceCorrectByDay = new Map<string, Set<string>>();
-    for (const attempt of attempts) {
-      if (!attempt.isCorrect || attempt.mode !== 'PRACTICE') continue;
-      const day = dayKey(attempt.answeredAt, timezone);
-      let set = practiceCorrectByDay.get(day);
-      if (!set) {
-        set = new Set();
-        practiceCorrectByDay.set(day, set);
+    // Every stored QuestionAttempt is a completed answer to an approved,
+    // verified question. Count a question once per local day, regardless of
+    // correctness or whether it came from practice or a completed checkpoint.
+    // Submitted mocks count once; running timers and incomplete attempts do not.
+    const qualifyingByDay = new Map<string, Set<string>>();
+    const addQualifyingActivity = (date: Date, identity: string) => {
+      const key = dayKey(date, timezone);
+      let identities = qualifyingByDay.get(key);
+      if (!identities) {
+        identities = new Set<string>();
+        qualifyingByDay.set(key, identities);
       }
-      set.add(attempt.questionId);
+      identities.add(identity);
+    };
+    for (const attempt of attempts) addQualifyingActivity(attempt.answeredAt, 'question:' + attempt.questionId);
+    for (const mock of mockActivity) {
+      if (mock.submittedAt) addQualifyingActivity(mock.submittedAt, 'mock:' + mock.id);
     }
-    const correctCountByDay = new Map<string, number>();
-    for (const [day, set] of practiceCorrectByDay.entries()) correctCountByDay.set(day, set.size);
-    const { current: currentStreak, longest: longestStreak } = practiceStreakFromDays(correctCountByDay, today);
-
-    // general activity still includes checkpoints and submitted mocks (for the
-    // little "activity" strip only — never for the practice streak itself)
-    const activityDates = [
-      ...attempts.map((a) => a.answeredAt),
-      ...progress.map((p) => p.updatedAt),
-      ...mockAttempts.flatMap((m) => (m.submittedAt ? [m.submittedAt] : [])),
-    ];
+    const activityCountByDay = new Map<string, number>();
+    for (const [day, identities] of qualifyingByDay) activityCountByDay.set(day, identities.size);
+    const { current: currentStreak, longest: longestStreak } = activityStreakFromDays(activityCountByDay, today);
 
     const topicStats = new Map<string, { attempts: number; correct: number }>();
     for (const attempt of attempts) {
@@ -170,6 +170,7 @@ dashboardRouter.get(
       orderBy: { order: 'asc' },
     });
 
+    const activityDates = attempts.map((attempt) => attempt.answeredAt);
     const activity = Array.from({ length: 14 }, (_, index) => {
       const day = shiftDayKey(today, index - 13);
       const count = activityDates.filter((date) => dayKey(date, timezone) === day).length;
@@ -190,17 +191,35 @@ dashboardRouter.get(
     const studyByDay = new Map(studyDays.map((row) => [row.dayKey, row.secondsTotal]));
     const streakHistory = Array.from({ length: streakHistoryWindow }, (_, index) => {
       const date = shiftDayKey(today, index - (streakHistoryWindow - 1));
-      const correctCount = Math.max(0, correctCountByDay.get(date) ?? 0);
+      const activityCount = Math.max(0, activityCountByDay.get(date) ?? 0);
       return {
         date,
-        correctCount,
-        qualified: correctCount >= PRACTICE_QUALIFY_COUNT,
-        active: correctCount >= PRACTICE_QUALIFY_COUNT,
+        activityCount,
+        qualified: activityCount >= ACTIVITY_QUALIFY_COUNT,
+        active: activityCount >= ACTIVITY_QUALIFY_COUNT,
         minutes: Math.round((studyByDay.get(date) ?? 0) / 60),
       };
     });
     const studyMinutesToday = Math.round((studyByDay.get(today) ?? 0) / 60);
-    const correctToday = correctCountByDay.get(today) ?? 0;
+    const activitiesToday = activityCountByDay.get(today) ?? 0;
+
+    // Verified correct Practice answers today, counted once per question.
+    // Every row here is a persisted QuestionAttempt created by the practice
+    // answer route after real answer validation (correct option comparison),
+    // and that route already rejects duplicate submissions via the
+    // per-user idempotency key plus the per-session answeredAt guard.
+    // Incorrect answers never match isCorrect, and a question answered twice
+    // across sessions on the same day still counts once (unique questionId).
+    const todayCorrectPractice = new Set(
+      attempts
+        .filter(
+          (attempt) =>
+            attempt.isCorrect &&
+            attempt.mode === 'PRACTICE' &&
+            dayKey(attempt.answeredAt, timezone) === today,
+        )
+        .map((attempt) => attempt.questionId),
+    ).size;
 
     res.json({
       data: {
@@ -229,14 +248,19 @@ dashboardRouter.get(
           current: currentStreak,
           longest: longestStreak,
           today,
-          todayCorrect: correctToday,
-          todayQualified: correctToday >= PRACTICE_QUALIFY_COUNT,
-          qualifyCount: PRACTICE_QUALIFY_COUNT,
-          weeklyCorrect: Array.from({ length: 7 }, (_, index) => {
+          todayActivityCount: activitiesToday,
+          todayQualified: activitiesToday >= ACTIVITY_QUALIFY_COUNT,
+          qualifyCount: ACTIVITY_QUALIFY_COUNT,
+          // Flame activation is a dashboard visual only (see metrics.ts):
+          // the flame lights after this many verified correct practice
+          // answers today; the streak-day rule above is unchanged.
+          todayCorrectCount: todayCorrectPractice,
+          flameActivationCount: FLAME_ACTIVATION_CORRECT_COUNT,
+          weeklyActivity: Array.from({ length: 7 }, (_, index) => {
             const date = shiftDayKey(today, index - 6);
-            return { date, correctCount: correctCountByDay.get(date) ?? 0 };
+            return { date, activityCount: activityCountByDay.get(date) ?? 0 };
           }),
-          rule: `A local calendar day joins the practice streak once you answer at least ${PRACTICE_QUALIFY_COUNT} Practice questions correctly (each distinct question counts once). Incorrect answers, repeated attempts at the same question, lesson checkpoints and mock-test answers do not qualify. Today counts as soon as it meets the rule; until then a qualified yesterday keeps the streak alive.`,
+          rule: "A local calendar day qualifies when you complete at least one verified learning or practice activity: an answered approved question or a submitted mock. Each question and mock counts once per day; incomplete timers and unsubmitted work do not count. Today can qualify immediately, while an active yesterday keeps the streak alive until today ends.",
         },
         streakHistory,
         studyMinutesToday,

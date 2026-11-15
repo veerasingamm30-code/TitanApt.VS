@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   accuracy,
   calculateLongestStreak,
+  activityStreakFromDays,
   calculateStreak,
   dayKey,
   isWeakArea,
@@ -72,6 +73,16 @@ describe('metrics', () => {
     expect(calculateStreak(dates.slice(0, 2), 'UTC', now)).toBe(2);
     expect(calculateStreak([new Date('2026-10-22T12:00:00.000Z')], 'UTC', now)).toBe(0);
     expect(calculateStreak([], 'UTC', now)).toBe(0);
+  });
+
+  it('counts one verified learning or practice activity per local day', () => {
+    const days = new Map([
+      ['2026-10-23', 1],
+      ['2026-10-24', 8],
+      ['2026-10-25', 1],
+    ]);
+    expect(activityStreakFromDays(days, '2026-10-25')).toEqual({ current: 3, longest: 3 });
+    expect(activityStreakFromDays(new Map([['2026-10-23', 1]]), '2026-10-25')).toEqual({ current: 0, longest: 1 });
   });
 
   it('finds the longest streak across gaps', () => {

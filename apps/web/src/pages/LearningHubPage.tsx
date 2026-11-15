@@ -33,6 +33,10 @@ type Volume = {
   referencePath?: string;
   resourceUrl: string;
   warnings?: string[];
+  /** Blocking problems (red alerts) — e.g. the volume could not be indexed. */
+  errors?: string[];
+  /** Benign indexing notes that must not alarm the learner. */
+  notices?: string[];
   chapters: Chapter[];
 };
 
@@ -135,12 +139,12 @@ export function LearningHubPage() {
         actions={<Link to="/app/learn" className="btn btn-secondary">Topic lessons <ArrowRight size={16} /></Link>}
       />
 
-      {data.some((volume) => (volume.warnings?.length ?? 0) > 0) && (
+      {data.some((volume) => (volume.errors?.length ?? 0) > 0) && (
         <div className="hub-warnings">
           {data
-            .filter((volume) => (volume.warnings?.length ?? 0) > 0)
+            .filter((volume) => (volume.errors?.length ?? 0) > 0)
             .map((volume) => (
-              <div className="form-error" role="alert" key={volume.slug}>{volume.title}: {volume.warnings?.join(' ')}</div>
+              <div className="form-error" role="alert" key={volume.slug}>{volume.title}: {volume.errors?.join(' ')}</div>
             ))}
         </div>
       )}
@@ -223,6 +227,9 @@ export function LearningHubPage() {
                 <ChevronDown size={18} className={isOpen ? 'rotate-180' : ''} />
               </button>
               <ProgressBar value={done} max={Math.max(1, volume.chapters.length)} />
+              {(volume.notices?.length ?? 0) > 0 && (
+                <p className="volume-notice muted">{volume.notices?.join(' ')}</p>
+              )}
               {isOpen && (
                 <div className="learning-chapters">
                   <div className="learning-chapter-tools">

@@ -34,6 +34,7 @@ type MockSummary = {
   sections: MockSection[];
   marking: Marking;
   sourceNote: string | null;
+  company: { slug: string; name: string; logoUrl: string; initials: string } | null;
   attempts: Array<{
     id: string;
     status: string;
@@ -71,10 +72,6 @@ function initialsFor(name: string): string {
     .join('') || 'IT';
 }
 
-function companySlugOf(mock: MockSummary): string | null {
-  return mock.slug.startsWith('company-mock-') ? mock.slug.slice('company-mock-'.length) : null;
-}
-
 function totalQuestions(mock: { sections: MockSection[] }) {
   return mock.sections.reduce((sum, section) => sum + section.count, 0);
 }
@@ -101,15 +98,14 @@ export function MocksPage() {
     const latest = mock.attempts[0];
     const active = mock.attempts.find((attempt) => attempt.status === 'IN_PROGRESS');
     const submittedCount = mock.attempts.filter((attempt) => attempt.status === 'SUBMITTED').length;
-    const companySlug = companySlugOf(mock);
-    const companyName = mock.title.replace(' — Company Mock', '');
+    const companyName = mock.company?.name ?? mock.title.replace(' — Company Mock', '');
     return (
       <article className="mock-card company-card" key={mock.id}>
         <div className="mock-card-top">
           <span className="mock-icon mock-icon-company">
             <CompanyMark
-              initials={companySlug ? initialsFor(companyName) : 'IT'}
-              logoUrl={companySlug ? `/company-logos/${companySlug}.png` : null}
+              initials={mock.company?.initials ?? initialsFor(companyName)}
+              logoUrl={mock.company?.logoUrl ?? null}
             />
           </span>
           <Badge tone={active ? 'warning' : 'info'}>{active ? 'In progress' : 'Published'}</Badge>

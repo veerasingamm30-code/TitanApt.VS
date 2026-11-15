@@ -14,9 +14,9 @@ import type { Subject } from '@titanapt/shared';
 import { useApi, useDocumentTitle } from '../lib/useApi';
 import { ErrorState, Loader, PageHeader, ProgressBar, SectionHead, StatCard } from '../components/ui';
 import { SearchBar } from '../components/SearchBar';
-import { StreakChart } from '../components/StreakChart';
-import type { StreakSummary } from '../components/StreakChart';
-import { CompanyOrbit } from '../components/CompanyOrbit';
+import { DailyStreakCard } from '../components/DailyStreakCard';
+import type { StreakSummary } from '../components/DailyStreakCard';
+import { CompanyMarquee } from '../components/CompanyMarquee';
 import { formatDateTime, formatPercent, subjectLabel } from '../lib/format';
 
 type Dashboard = {
@@ -35,7 +35,7 @@ type Dashboard = {
   };
   dailyGoal: { date: string; completed: number; goal: number };
   streak: StreakSummary;
-  streakHistory: Array<{ date: string; correctCount: number; qualified: boolean; active: boolean; minutes: number }>;
+  streakHistory: Array<{ date: string; activityCount: number; qualified: boolean; active: boolean; minutes: number }>;
   studyMinutesToday: number;
   activity: Array<{ date: string; count: number }>;
   subjects: Array<{ subject: Subject; topics: number; lessons: number; completedTopics: number; attempts: number; accuracy: number | null }>;
@@ -64,7 +64,6 @@ export function DashboardPage() {
   if (error || !data) return <ErrorState message={error ?? 'Dashboard unavailable.'} onRetry={reload} />;
 
   const goalPercent = data.dailyGoal.goal > 0 ? Math.min(100, (data.dailyGoal.completed / data.dailyGoal.goal) * 100) : 0;
-  const studyPercent = data.user.studyTargetMinutes > 0 ? Math.min(100, (data.studyMinutesToday / data.user.studyTargetMinutes) * 100) : 0;
   const newLearner = data.stats.totalAttempts === 0 && data.stats.lessonsCompleted === 0;
 
   return (
@@ -96,6 +95,21 @@ export function DashboardPage() {
                 A focused lesson with worked examples and a verified checkpoint. Finish it, then reinforce it with a
                 short practice set.
               </p>
+              <figure className="next-quote">
+                <blockquote>
+                  <em className="quote-accent">Every Number</em> Has a Story.{' '}
+                  <em className="quote-accent">Every Problem</em> Has a{' '}
+                  <em className="quote-accent">Solution</em>.
+                </blockquote>
+                <p className="next-quote-sub">
+                  Your future is not decided by where you start, but by how consistently you learn. Every question
+                  you solve builds your confidence. Every mistake makes you stronger. Keep practising, keep
+                  improving, and turn your placement dreams into reality.
+                </p>
+                <p className="next-quote-tagline">
+                  Dream Big. Practise Daily. Think Clearly. Crack Your Dream Job.
+                </p>
+              </figure>
               <div className="next-actions">
                 <Link to={`/app/lessons/${data.recommendation.lessonId}`} className="btn btn-accent">
                   Start lesson <ArrowRight size={16} />
@@ -125,17 +139,7 @@ export function DashboardPage() {
               <span>{Math.round(goalPercent)}%</span>
             </div>
           </div>
-          <div className="study-target-strip">
-            <div className="study-target-copy">
-              <span className="stat-label">Crack Time focus</span>
-              <strong>{data.studyMinutesToday} min<span className="muted"> / {data.user.studyTargetMinutes} min target</span></strong>
-              <ProgressBar value={data.studyMinutesToday} max={data.user.studyTargetMinutes} />
-            </div>
-            <Link to="/app/crack-time" className="text-link">
-              {studyPercent >= 100 ? 'Target met — open Crack Time' : 'Adjust target or start the timer'} <ArrowRight size={14} />
-            </Link>
-          </div>
-          <StreakChart streak={data.streak} history={data.streakHistory} />
+          <DailyStreakCard streak={data.streak} history={data.streakHistory} />
         </article>
       </section>
 
@@ -146,13 +150,13 @@ export function DashboardPage() {
         <StatCard label="Mock tests" value={data.stats.mockAttempts} note={`${data.stats.bookmarks} bookmarked questions`} />
       </section>
 
-      <section className="company-orbit-section">
+      <section className="company-showcase-section">
         <SectionHead
-          title="EXPLORE TOP 10 IT COMPANIES"
-          action={<Link to="/app/companies" className="text-link">All {data.companies.length} companies <ArrowRight size={14} /></Link>}
+          title="TOP IT COMPANIES"
+          action={<Link to="/app/companies" className="text-link">All companies <ArrowRight size={14} /></Link>}
         />
-        <p className="orbit-subtitle">Discover the companies powering the digital world.</p>
-        <CompanyOrbit companies={data.companies} />
+        <p className="showcase-subtitle">Every logo moves in a live strip — select a company to open its verified profile and mapped practice topics.</p>
+        <CompanyMarquee variant="app" companies={data.companies} />
       </section>
 
       <div className="dashboard-columns">

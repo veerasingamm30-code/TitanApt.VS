@@ -1,0 +1,174 @@
+[
+  {
+    "id": "K1",
+    "name": "Signup page renders with validation fields",
+    "status": "PASS",
+    "detail": "email + password + name inputs present"
+  },
+  {
+    "id": "K2",
+    "name": "Valid signup creates account, session and redirects to /app",
+    "status": "PASS",
+    "detail": "signed up qa-…@titanapt.local via the real form"
+  },
+  {
+    "id": "B1",
+    "name": "Dashboard marquee renders the Top 25 company cards on a running doubled loop",
+    "status": "PASS",
+    "detail": "{\"count\":50,\"firstHalf\":25,\"broken\":0,\"doubles\":2,\"animation\":\"lq-scroll\",\"playState\":\"running\"}"
+  },
+  {
+    "id": "B2",
+    "name": "Dashboard marquee card click opens the correct company profile page",
+    "status": "PASS",
+    "detail": "Open Tata Consultancy Services (TCS) company profile -> /app/companies/tcs (Tata Consultancy Services (TCS))"
+  },
+  {
+    "id": "C1",
+    "name": "Daily streak card renders 7 bars, weekday letters, goal bar and streak figures",
+    "status": "PASS",
+    "detail": "{\"card\":true,\"bars\":7,\"letters\":\"SMTWTFS\",\"goalBar\":true,\"goalFill\":\"0px\",\"text\":\"Daily Streak Keep learning. Keep growing. Your future self will thank you! Current Streak 0 Days S Nov 8 M Nov 9 T Nov 10 W Nov 11 T Nov 12 F Nov 13 S Nov 14 7 \"}"
+  },
+  {
+    "id": "C2",
+    "name": "Streak card follows the theme accent (orange -> green -> orange)",
+    "status": "PASS",
+    "detail": "before=rgb(255, 121, 0) green=rgb(56, 217, 150) restored=rgb(255, 121, 0) patchOk=true patchStatus=200 patchBody={\"data\":{\"user\":{\"id\":\"cmwgbhtb20000cvyg2crsk6pn\",\"email\":\"qa-browser-mwgbht6s@titanapt.local\",\"displayName\":\"Browser QA mwgbht6s\",\"role\":\"LEARNER\",\"timezone\":\""
+  },
+  {
+    "id": "B3",
+    "name": "Dashboard loads with zero console errors / failed requests",
+    "status": "PASS",
+    "detail": "clean console"
+  },
+  {
+    "id": "A1",
+    "name": "Public marquee shows the Top 25 companies in a seamless doubled infinite loop",
+    "status": "PASS",
+    "detail": "{\"cards\":50,\"halves\":2,\"imgBroken\":0,\"animation\":\"lq-scroll\",\"playState\":\"running\"}"
+  },
+  {
+    "id": "A2",
+    "name": "Marquee pauses on hover",
+    "status": "PASS",
+    "detail": "playState on hover: paused"
+  },
+  {
+    "id": "A3",
+    "name": "Marquee freezes under prefers-reduced-motion",
+    "status": "PASS",
+    "detail": "animationName under reduce: none"
+  },
+  {
+    "id": "A4",
+    "name": "Marquee logo click opens the company info panel",
+    "status": "PASS",
+    "detail": "dialog with verified company facts"
+  },
+  {
+    "id": "D1",
+    "name": "Topic catalogue renders",
+    "status": "PASS",
+    "detail": "28 topic cards"
+  },
+  {
+    "id": "D2",
+    "name": "Topic subject filter narrows the grid",
+    "status": "PASS",
+    "detail": "clicked \"Quantitative\" -> 15/28 cards"
+  },
+  {
+    "id": "D3",
+    "name": "Topic boolean-algebra serves the 5-level path",
+    "status": "PASS",
+    "detail": "{\"hasAll\":true,\"lessonLinks\":5}"
+  },
+  {
+    "id": "D3",
+    "name": "Topic programming-logic serves the 5-level path",
+    "status": "PASS",
+    "detail": "{\"hasAll\":true,\"lessonLinks\":5}"
+  },
+  {
+    "id": "E1",
+    "name": "Progress page shows the 14-day activity chart with the streak strip removed (per design)",
+    "status": "PASS",
+    "detail": "{\"days\":14,\"streak\":false,\"streakText\":\"\"}"
+  },
+  {
+    "id": "G1",
+    "name": "Learning Hub renders 8 volumes with zero red error alerts",
+    "status": "PASS",
+    "detail": "volumes=8 redAlerts=0 benignNotices=8"
+  },
+  {
+    "id": "H1",
+    "name": "Crack Time custom target accepts custom minutes and validates",
+    "status": "PASS",
+    "detail": "options=15 min,25 min,45 min,60 min,Custom… customInputShown=true figures=\"0 min of 47 min goal 47 min left to goal\""
+  },
+  {
+    "id": "H2",
+    "name": "Custom target above the 480-minute cap is rejected",
+    "status": "PASS",
+    "detail": "Target must be between 5 and 480 minutes."
+  },
+  {
+    "id": "H3",
+    "name": "Crack Time timer start/pause/resume/finish cycle works",
+    "status": "PASS",
+    "detail": "state labels cycled via UI"
+  },
+  {
+    "id": "I1",
+    "name": "Company mocks list real logos on every available card (9 -> expander -> 25)",
+    "status": "PASS",
+    "detail": "initial=9 expander=true {\"cards\":25,\"imgCount\":25,\"broken\":0}"
+  },
+  {
+    "id": "F1",
+    "name": "Avatar upload persists and re-serves from storage after reload",
+    "status": "PASS",
+    "detail": "upload={\"status\":201,\"body\":\"{\\\"data\\\":{\\\"user\\\":{\\\"id\\\":\\\"cmwgbhtb20000cvyg2crsk6pn\\\",\\\"email\\\":\\\"qa-browser-mwgbht6s@titanapt.local\\\",\\\"displayName\\\":\\\"Browser QA mwgbht6s\\\",\\\"role\\\":\\\"LEARNER\\\",\\\"timezone\\\":\\\"\"} meAvatar=/api/auth/avatar rendered={\"count\":2,\"src\":\"http://localhost:5173/api/auth/avatar\"}"
+  },
+  {
+    "id": "R1",
+    "name": "No horizontal overflow at 7 viewport sizes (landing + dashboard)",
+    "status": "PASS",
+    "detail": "[\"desktop-1920: ok\",\"desktop-1440: ok\",\"tablet-1024: ok\",\"tablet-768: ok\",\"mobile-430: ok\",\"mobile-390: ok\",\"mobile-360: ok\"]"
+  },
+  {
+    "id": "K3",
+    "name": "Session persists across a full page reload",
+    "status": "PASS"
+  },
+  {
+    "id": "K4",
+    "name": "Logout clears the session; protected route redirects to login",
+    "status": "PASS",
+    "detail": "after logout /app/dashboard -> /login"
+  },
+  {
+    "id": "K5",
+    "name": "Valid login re-enrolls the session and redirects to /app",
+    "status": "PASS"
+  },
+  {
+    "id": "K6",
+    "name": "Wrong password is rejected with a single generic error",
+    "status": "PASS",
+    "detail": "verified over HTTP in the auth audit (401 UNAUTHENTICATED, enumeration-safe)"
+  },
+  {
+    "id": "K7",
+    "name": "Duplicate signup rejected",
+    "status": "PASS",
+    "detail": "verified over HTTP in the auth audit (409 EMAIL_TAKEN); UI form validation seen live on empty submit"
+  },
+  {
+    "id": "K7b",
+    "name": "Duplicate signup via the UI is rejected",
+    "status": "PASS",
+    "detail": "An account with this email already exists. Try signing in instead."
+  }
+]

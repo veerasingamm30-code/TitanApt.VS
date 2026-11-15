@@ -1,0 +1,378 @@
+[
+  {
+    "topicSlug": "boolean-algebra",
+    "slug": "boolean-algebra-xnor-simplification",
+    "title": "XOR, XNOR and gate-level simplification",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Use XOR and XNOR confidently, simplify longer AND/OR expressions with absorption and distribution identities, and read Boolean conditions as AND-OR gate networks.",
+    "explanation": "Past the three basic laws, simplification becomes a two-step habit: factor out what terms share, then let complement pairs collapse. Absorption says A OR (A AND B) = A: the extra AND term adds nothing, because A alone already forces a 1. Distribution says A AND (B OR C) = (A AND B) OR (A AND C), so a condition spread across a bracket can be factored the same way numbers factor. XOR ('differ detector') and XNOR ('agree detector') extend the toolkit: XNOR is NOT (XOR) and outputs 1 exactly when its inputs are equal. Placement tests favour expressions where one factoring step plus one complement law finishes the entire job.",
+    "analogy": "Simplifying an expression is like tidying a tool drawer: group identical tools (factor), then throw out anything whose partner cancels it (complement pairs) until only the useful tools remain.",
+    "workedExamples": [
+      {
+        "title": "Factor and collapse",
+        "problem": "Simplify (A AND B) OR (A AND (NOT B)).",
+        "steps": [
+          "Both terms share the factor A, so write A AND (B OR (NOT B)).",
+          "Complement law: B OR (NOT B) = 1.",
+          "So the expression is A AND 1."
+        ],
+        "answer": "A - the whole expression reduces to a single wire."
+      },
+      {
+        "title": "XNOR of equal inputs",
+        "problem": "Evaluate A XNOR B when A = 0 and B = 0.",
+        "steps": [
+          "XNOR detects equality: it outputs 1 when its inputs agree.",
+          "First compute XOR: 0 XOR 0 = 0 (the inputs do not differ).",
+          "XNOR = NOT (XOR) = NOT 0."
+        ],
+        "answer": "1 - two equal inputs always agree, and the agree-detector fires."
+      },
+      {
+        "title": "From sentence to gate network",
+        "problem": "A security alarm rings if the door sensor OR the window sensor is triggered, the system is armed, and it is NOT in test mode. Write the condition and evaluate it for door = 1, window = 0, armed = 1, test = 0.",
+        "steps": [
+          "Translate: alarm = (door OR window) AND armed AND (NOT test).",
+          "Substitute: (1 OR 0) AND 1 AND (NOT 0).",
+          "Inner values: 1 OR 0 = 1; NOT 0 = 1.",
+          "Combine: 1 AND 1 AND 1 = 1."
+        ],
+        "answer": "1 - the alarm rings for this input pattern."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Absorption",
+        "detail": "A OR (A AND B) = A, and mirrored, A AND (A OR B) = A. A shared leading term absorbs the rest."
+      },
+      {
+        "title": "Distribution",
+        "detail": "A AND (B OR C) = (A AND B) OR (A AND C); the same factor-and-expand move works in both directions."
+      },
+      {
+        "title": "XOR and XNOR facts",
+        "detail": "XOR outputs 1 when inputs differ; XNOR = NOT (XOR) outputs 1 when inputs agree; both are two-input comparators, not ordinary arithmetic."
+      },
+      {
+        "title": "Complement collapse",
+        "detail": "After factoring, hunt for pairs like B OR (NOT B) = 1 or B AND (NOT B) = 0 - they end chains instantly."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Absorbing in the wrong direction, for example writing (A AND B) OR (A AND (NOT B)) as A AND B.",
+        "fix": "Factor the shared term first: A AND (B OR NOT B) = A AND 1 = A; the B part disappears entirely."
+      },
+      {
+        "mistake": "Applying De Morgan and keeping the same connective, e.g. NOT (A AND B) = NOT A AND NOT B.",
+        "fix": "NOT flips the connective: NOT (A AND B) = (NOT A) OR (NOT B)."
+      },
+      {
+        "mistake": "Treating XOR as if it distributes like OR over long chains of terms.",
+        "fix": "XOR has its own identity A XOR B = (A AND NOT B) OR (NOT A AND B); expand through it before simplifying."
+      }
+    ],
+    "memoryTip": "Factor first, then hunt for X and NOT X - a complement pair collapses any chain. XNOR is the agree-gate.",
+    "practice": [
+      {
+        "prompt": "Simplify (A AND B) OR (A AND (NOT B)).",
+        "answer": "A - factor A, then B OR (NOT B) = 1 leaves A AND 1."
+      },
+      {
+        "prompt": "What is NOT (A XOR B) better known as, and when is it 1?",
+        "answer": "XNOR, the equality comparator - it is 1 exactly when A and B agree."
+      },
+      {
+        "prompt": "Evaluate (A OR B) AND (NOT A) AND (NOT B).",
+        "answer": "0 - by De Morgan, (NOT A) AND (NOT B) = NOT (A OR B), so the expression is X AND NOT X with X = A OR B."
+      }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-09 five-level expansion of the reference Top-25 technical tracks; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "boolean-algebra",
+    "slug": "boolean-algebra-expert-problem-solving",
+    "title": "Advanced Boolean problem solving",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Translate word problems into minimised Boolean conditions, apply the consensus theorem, and classify expressions as tautologies or contradictions without writing every truth-table row.",
+    "explanation": "Expert problems are about deciding which parts of a condition matter. Three tools do most of the work. First, translation: name each distinct fact with a variable and turn sentences into AND/OR/NOT before touching algebra. Second, the consensus theorem: (A AND B) OR (NOT A AND C) OR (B AND C) equals (A AND B) OR (NOT A AND C) - the B AND C term is automatically covered whenever the other two disagree about A, so it is redundant. Third, classification: a tautology is true in every row (it hides an X OR NOT X), a contradiction is false in every row (it hides an X AND NOT X). An expression that is neither must simply be evaluated when it matters.",
+    "analogy": "Minimising a condition is like pruning a company org chart: if two branches already report through the same manager (the conflicting A branch), the middle manager who only duplicated their combined scope is made redundant.",
+    "workedExamples": [
+      {
+        "title": "Discount rule from words",
+        "problem": "A checkout discount applies if the customer is a member, or if they spend over 500 while NOT being a staff account. Write the condition and evaluate it when member = 0, spendsOver500 = 1, staff = 0.",
+        "steps": [
+          "Name the variables: M = member, S = spends over 500, T = staff account.",
+          "Translate: discount = M OR (S AND NOT T).",
+          "Substitute: 0 OR (1 AND NOT 0).",
+          "Inner: NOT 0 = 1, so 1 AND 1 = 1.",
+          "Combine: 0 OR 1 = 1."
+        ],
+        "answer": "1 - the discount applies for this customer."
+      },
+      {
+        "title": "Consensus term removal",
+        "problem": "Simplify (A AND B) OR (NOT A AND C) OR (B AND C).",
+        "steps": [
+          "Spot the conflicting-A pair: A AND B and NOT A AND C.",
+          "The remaining term B AND C is exactly their consensus - it is true only when B and C are both 1, and in that case one of the first two terms is already true: if A = 1 the first fires, if A = 0 the second fires.",
+          "Remove the redundant term."
+        ],
+        "answer": "(A AND B) OR (NOT A AND C). Check A = 0, B = 1, C = 1: original gives 0 OR 1 OR 1 = 1; simplified gives 0 OR 1 = 1. Check A = 1, B = 1, C = 0: original 1 OR 0 OR 0 = 1; simplified 1 OR 0 = 1."
+      },
+      {
+        "title": "Tautology, contradiction or neither",
+        "problem": "Classify (A AND B) OR (NOT (A OR B)).",
+        "steps": [
+          "Row A = 0, B = 0: (0 AND 0) = 0; NOT (0 OR 0) = NOT 0 = 1; so 0 OR 1 = 1.",
+          "Row A = 0, B = 1: (0 AND 1) = 0; NOT (0 OR 1) = 0; so 0.",
+          "Row A = 1, B = 0: identical by symmetry, so 0.",
+          "Row A = 1, B = 1: (1 AND 1) = 1; NOT (1) = 0; so 1.",
+          "The outputs are 1, 0, 0, 1 - not all 1 and not all 0."
+        ],
+        "answer": "Neither. The expression is 1 exactly when A and B agree - it is another way to write A XNOR B."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Consensus theorem",
+        "detail": "(A AND B) OR (NOT A AND C) OR (B AND C) = (A AND B) OR (NOT A AND C); the term between the conflicting-A pair is redundant."
+      },
+      {
+        "title": "Tautology and contradiction shapes",
+        "detail": "Rewrite until you see X OR NOT X (always 1) or X AND NOT X (always 0); any leftover row-dependence means 'neither'."
+      },
+      {
+        "title": "Word-problem translation",
+        "detail": "One fact = one variable. 'Both' and 'and also' become AND; 'otherwise' and 'unless' usually hide a NOT; 'or' is inclusive unless the sentence says 'but not both'."
+      },
+      {
+        "title": "Proof discipline",
+        "detail": "An identity claim must hold in every row; a two-variable proof has four rows, so check all four before declaring equivalence."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Removing a needed term, for example dropping (A AND B) instead of the consensus (B AND C).",
+        "fix": "Only the middle term between the NOT-A pair is redundant; test the dropped row A = 1, B = 1 against the reduced form before trusting it."
+      },
+      {
+        "mistake": "Reading every 'or' in a sentence as XOR.",
+        "fix": "Placement conditions use inclusive OR by default; switch to XOR only when the wording excludes overlap."
+      },
+      {
+        "mistake": "Reusing one letter for two different facts and then 'simplifying' across them.",
+        "fix": "Give every distinct condition its own variable before writing the expression."
+      }
+    ],
+    "memoryTip": "When A picks B and NOT A picks C, the BC middleman is redundant. Tautology hides X OR NOT X; contradiction hides X AND NOT X.",
+    "practice": [
+      {
+        "prompt": "Simplify (A AND B) OR (NOT A AND C) OR (B AND C).",
+        "answer": "(A AND B) OR (NOT A AND C) - B AND C is the consensus term and is redundant."
+      },
+      {
+        "prompt": "Translate to a Boolean condition: 'admission needs a pass in maths OR (a pass in the interview AND physics)', using M, I and P.",
+        "answer": "M OR (I AND P)."
+      },
+      {
+        "prompt": "Classify (A AND B) OR (NOT (A OR B)): tautology, contradiction, or neither?",
+        "answer": "Neither - its outputs over the four rows are 1, 0, 0, 1, so it equals A XNOR B."
+      }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-09 five-level expansion of the reference Top-25 technical tracks; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "programming-logic",
+    "slug": "programming-logic-functions-arrays-nested-loops",
+    "title": "Functions, arrays and nested loops",
+    "level": "ADVANCED",
+    "order": 4,
+    "objective": "Trace functions with parameters and return values, predict how many times nested loops run, and read 0-indexed array scans correctly.",
+    "explanation": "Three structures dominate advanced placement questions. A function is a named calculation: calling it runs its body with your inputs and its return value replaces the call itself - anything after the return never runs. An array is a numbered row of values; most languages count positions from 0, so the first slot is index 0 and the last slot is index count minus 1. Nested loops put one loop inside another: the inner loop finishes every pass before the outer loop moves on, so the innermost statement runs (outer count x inner count) times. Tracing questions mix all three: substitute into the function, then step through the loops writing down the running value.",
+    "analogy": "A function is a juicer: fruit in (parameters), juice out (return value) - the juice is what continues down the line, never the machine. Nested loops are clock hands: the minute hand (inner loop) spins twelve full turns for every one turn of the hour hand (outer loop).",
+    "workedExamples": [
+      {
+        "title": "Tracing a function call",
+        "problem": "Given the pseudocode function f(x): { y = x * x; return y - 3 }, what does f(2) return, and what does f(5) return?",
+        "steps": [
+          "Call f(2): y = 2 * 2 = 4; return 4 - 3 = 1.",
+          "Call f(5): y = 5 * 5 = 25; return 25 - 3 = 22.",
+          "Each call is independent - the first call's y does not survive into the second."
+        ],
+        "answer": "f(2) returns 1 and f(5) returns 22."
+      },
+      {
+        "title": "Counting nested-loop passes",
+        "problem": "How many times does count get incremented? { for i in 1..3: { for j in 1..4: { count = count + 1 } } }",
+        "steps": [
+          "The outer loop runs 3 times (i = 1, 2, 3).",
+          "For every single outer pass, the inner loop runs 4 times.",
+          "Total passes: 3 x 4 = 12."
+        ],
+        "answer": "12 - nested loops multiply, they never add."
+      },
+      {
+        "title": "Scanning an array for the maximum",
+        "problem": "With nums = [7, 2, 9, 4] and the loop { best = nums[0]; for x in nums: { if x > best: best = x } }, what is best afterwards?",
+        "steps": [
+          "best starts as nums[0] = 7 (the first slot, index 0).",
+          "x = 7: 7 > 7 is false, best stays 7.",
+          "x = 2: 2 > 7 is false. x = 9: 9 > 7 is true, best becomes 9.",
+          "x = 4: 4 > 9 is false."
+        ],
+        "answer": "9 - the largest value seen so far always ends up in best."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Return replaces the call",
+        "detail": "f(2) in an expression behaves exactly like the returned value 1; statements after a return never execute."
+      },
+      {
+        "title": "Nested loops multiply",
+        "detail": "Total inner executions = outer iterations x inner iterations per pass; a break inside the inner loop only leaves that inner loop."
+      },
+      {
+        "title": "Arrays count from zero",
+        "detail": "Index 0 is the first slot; the last index is count - 1, and asking for index count is always an error."
+      },
+      {
+        "title": "Loop variables reset",
+        "detail": "The inner loop's counter restarts on every outer pass; the outer counter changes once per full inner sweep."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Confusing a printed value with a returned one: writing print(x) inside a function and expecting the caller to receive it.",
+        "fix": "Printing shows a value mid-run; return hands it back to the caller for further use."
+      },
+      {
+        "mistake": "Off-by-one array access, such as nums[4] for a four-item array.",
+        "fix": "Valid indexes run 0..count-1; the last slot is nums[3] here."
+      },
+      {
+        "mistake": "Adding nested loop counts instead of multiplying them (3 + 4 = 7 instead of 12).",
+        "fix": "One outer pass completes ALL inner passes first; sketch a 3-row, 4-column grid and count its cells."
+      }
+    ],
+    "memoryTip": "Nested loops multiply, arrays count from zero, and return hands the answer back to the call site.",
+    "practice": [
+      {
+        "prompt": "What does g(3) return for the function g(x): return x * 5 + 1?",
+        "answer": "16 - 3 * 5 + 1 = 16."
+      },
+      {
+        "prompt": "An outer loop runs 4 times and its inner loop runs 2 times. How many times does the innermost statement execute?",
+        "answer": "8 - 4 x 2 = 8."
+      },
+      {
+        "prompt": "For arr = [3, 8, 5], what is arr[1]?",
+        "answer": "8 - arrays are 0-indexed, so index 1 is the second slot."
+      }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-09 five-level expansion of the reference Top-25 technical tracks; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  },
+  {
+    "topicSlug": "programming-logic",
+    "slug": "programming-logic-expert-tracing",
+    "title": "Expert code tracing and problem solving",
+    "level": "EXPERT",
+    "order": 5,
+    "objective": "Predict program output through conditional loops, running totals and integer division, and turn word problems into disciplined step-by-step algorithms.",
+    "explanation": "Expert tracing questions change more than one thing at a time: a loop runs while a condition holds, a counter or total updates inside, and an if filters which passes contribute. The reliable method is a trace table - one row per loop pass, one column per variable, filling each cell from the previous row only. Two traps repeat on placement tests: integer division floors (5 / 2 = 2, NOT 2.5, whenever values are whole numbers), and loop exit checks happen exactly when the condition turns false, so the variable usually overshoots the boundary by one update. For problem solving, decompose first: write input, the invariant to maintain (for example 'best is the largest value seen so far'), and the output before any code.",
+    "analogy": "A trace table is a flight recorder: instead of debating what the program 'probably' did, you replay it variable by variable, one row per pass, and the output is just the last row's values.",
+    "workedExamples": [
+      {
+        "title": "Filtered running total",
+        "problem": "Predict the printed total: { nums = [4, 1, 6, 3]; total = 0; for x in nums: { if x > 3: total = total + x }; print(total) }",
+        "steps": [
+          "x = 4: 4 > 3, so total = 0 + 4 = 4.",
+          "x = 1: 1 > 3 is false, total stays 4.",
+          "x = 6: 6 > 3, so total = 4 + 6 = 10.",
+          "x = 3: 3 > 3 is false, total stays 10.",
+          "The print shows the final total."
+        ],
+        "answer": "10 - only the 4 and the 6 pass the filter."
+      },
+      {
+        "title": "Halving loop with integer division",
+        "problem": "How many times does the body run, and what is n at the end? { n = 40; count = 0; while n > 1: { n = n / 2 (integer division); count = count + 1 } }",
+        "steps": [
+          "Pass 1: 40 / 2 = 20, count = 1.",
+          "Pass 2: 20 / 2 = 10, count = 2.",
+          "Pass 3: 10 / 2 = 5, count = 3.",
+          "Pass 4: 5 / 2 = 2 with integer division, count = 4.",
+          "Pass 5: 2 / 2 = 1, count = 5.",
+          "Now n = 1, the condition n > 1 is false, and the loop exits."
+        ],
+        "answer": "The body runs 5 times and n ends at 1."
+      },
+      {
+        "title": "Triangle of numbers",
+        "problem": "A program prints row r containing the numbers 1 up to r, for r = 1, 2, 3. How many number characters/values does it print in total, and what does row 3 look like?",
+        "steps": [
+          "Row 1 prints one value: 1.",
+          "Row 2 prints two values: 1 2.",
+          "Row 3 prints three values: 1 2 3.",
+          "Total values: 1 + 2 + 3 = 6."
+        ],
+        "answer": "6 values in total; row 3 is '1 2 3'."
+      }
+    ],
+    "rule": [
+      {
+        "title": "Trace tables win",
+        "detail": "One row per loop pass, one column per variable; every cell updates only from the previous row, never from memory."
+      },
+      {
+        "title": "Integer division floors",
+        "detail": "With whole-number values, 5 / 2 = 2 and 40 / 2 = 20 exactly; know which mode the question uses before dividing."
+      },
+      {
+        "title": "Exit overshoot",
+        "detail": "The loop stops the moment its condition turns false - after the final update the loop variable is usually just past the limit (x = 11 after 'while x < 10: x = x + 3')."
+      },
+      {
+        "title": "Decompose before coding",
+        "detail": "State the input, the invariant ('best holds the largest value seen so far') and the output; if the invariant is stated correctly, the code follows mechanically."
+      }
+    ],
+    "mistakes": [
+      {
+        "mistake": "Assuming a helper variable survives between loop passes when it is redeclared fresh at the top of each pass.",
+        "fix": "A variable assigned inside the loop body resets every pass unless it is declared and initialised before the loop starts."
+      },
+      {
+        "mistake": "Dividing as decimals when the question uses integer division (writing 5 / 2 = 2.5 in a trace).",
+        "fix": "Placement traces with whole numbers almost always floor: 5 / 2 = 2. Confirm the language's integer division rule first."
+      },
+      {
+        "mistake": "Writing a loop whose exit condition never turns false, then being surprised by no output.",
+        "fix": "Ask after every pass: is the loop variable moving toward the exit condition? If it stalls or wanders, the loop never ends."
+      }
+    ],
+    "memoryTip": "One row per pass in a trace table, integer division floors, and the exit test fires the moment the condition turns false.",
+    "practice": [
+      {
+        "prompt": "Trace { x = 2; while x < 10: x = x + 3 }. What is x when the loop stops?",
+        "answer": "11 - the passes take x to 5, 8, 11; 11 is no longer under 10 so the loop exits there."
+      },
+      {
+        "prompt": "For nums = [5, 9, 2] with { total = 0; for x in nums: { if x is even: total = total + x } }, what is total?",
+        "answer": "2 - 9 is odd, 2 is even and gets added."
+      },
+      {
+        "prompt": "With values [7, 3, 9], a loop returns the first value greater than 5. Which value is returned?",
+        "answer": "7 - scanning left to right, 7 is the first value over 5 and the scan stops there."
+      }
+    ],
+    "sourceRef": "Authored for TitanApt in the 2026-11-09 five-level expansion of the reference Top-25 technical tracks; original educational content with independently verified examples and answer keys.",
+    "reviewer": "TitanApt editorial review"
+  }
+]

@@ -32,6 +32,7 @@ export function CrackTimePage() {
   const [actionError, setActionError] = useState<string | null>(null);
   const [now, setNow] = useState(Date.now());
   const [draftTarget, setDraftTarget] = useState<string>('');
+  const [targetPicked, setTargetPicked] = useState(false);
   const [targetError, setTargetError] = useState<string | null>(null);
   const heartbeatRef = useRef<number | null>(null);
 
@@ -56,6 +57,7 @@ export function CrackTimePage() {
         const data = await apiData<TodayResponse>('/api/study/today');
         setToday(data);
         setDraftTarget(String(data.targetMinutes));
+        setTargetPicked(false);
       } catch (err) {
         setError(messageFromError(err));
       } finally {
@@ -138,6 +140,7 @@ export function CrackTimePage() {
       const data = await apiData<TodayResponse>('/api/study/target', { method: 'PATCH', body: { minutes: value } });
       setToday(data);
       setDraftTarget(String(data.targetMinutes));
+      setTargetPicked(false);
     } catch (err) {
       setTargetError(messageFromError(err));
     } finally {
@@ -225,6 +228,9 @@ export function CrackTimePage() {
             <div className="study-target-figures">
               <strong>{formatHours(secondsToday)}</strong>
               <span className="muted">of {today.targetMinutes} min goal</span>
+              <span className="muted study-target-remaining">
+                {targetMet ? 'Goal reached for today' : `${formatHours(Math.max(0, targetSeconds - secondsToday))} left to goal`}
+              </span>
             </div>
           </div>
           <div className="study-sessions-list">
@@ -247,11 +253,11 @@ export function CrackTimePage() {
           <div className="field">
             <span>Daily target (minutes)</span>
             <div className="field-choice-row">
-              <select value={TARGET_PRESETS.includes(today.targetMinutes) ? String(today.targetMinutes) : ''} onChange={(e) => { setTargetError(null); if (e.target.value) void saveTarget(Number(e.target.value)); }} disabled={busy} aria-label="Daily target minutes">
+              <select value={targetPicked ? 'custom' : TARGET_PRESETS.includes(today.targetMinutes) ? String(today.targetMinutes) : ''} onChange={(e) => { setTargetError(null); if (e.target.value === 'custom') setTargetPicked(true); else { setTargetPicked(false); void saveTarget(Number(e.target.value)); } }} disabled={busy} aria-label="Daily target minutes">
                 {TARGET_PRESETS.map((value) => <option key={value} value={value}>{value} min</option>)}
-                <option value="">Custom…</option>
+                <option value="custom">Custom…</option>
               </select>
-              {!TARGET_PRESETS.includes(today.targetMinutes) && (
+              {(targetPicked || !TARGET_PRESETS.includes(today.targetMinutes)) && (
                 <div className="custom-target-input">
                   <input
                     type="number"

@@ -28,7 +28,17 @@ function readCookie(name: string): string | null {
 export async function ensureCsrf(): Promise<string> {
   let token = readCookie('ta_csrf');
   if (!token) {
-    const response = await fetch('/api/auth/csrf', { credentials: 'include' });
+    let response: Response;
+    try {
+      response = await fetch('/api/auth/csrf', { credentials: 'include' });
+    } catch (err) {
+      // A bare TypeError ("Failed to fetch") here used to leak to the UI;
+      // wrap it like every other transport failure so callers show the
+      // friendly "server unreachable" message instead.
+      const wrapped = new ApiError(0, null);
+      (wrapped as unknown as { cause?: unknown }).cause = err;
+      throw wrapped;
+    }
     if (!response.ok) throw new ApiError(response.status, await safeJson(response));
     const body = (await response.json()) as { data: { csrfToken: string } };
     token = body.data.csrfToken;
@@ -102,7 +112,12 @@ export function apiData<T>(path: string, options: RequestOptions = {}): Promise<
 }
 
 export function messageFromError(error: unknown): string {
-  if (error instanceof ApiError) return error.message;
+  if (error instanceof ApiError) {
+    if (error.status === 0) {
+      return 'Cannot reach the TitanApt server. The API may be starting up or restarting — wait a moment and try again.';
+    }
+    return error.message;
+  }
   if (error instanceof Error) return error.message;
   return 'Something went wrong. Please try again.';
 }
@@ -129,6 +144,9 @@ export async function uploadAvatar(file: File): Promise<{ user: import('@titanap
     throw new ApiError(400, body);
   }
   const headers = new Headers({ 'x-avatar-type': ext });
+  // express.raw({ type: '*/*' }) only matches when a Content-Type header is
+  // present; a bare ArrayBuffer body would be dropped as EMPTY_FILE.
+  headers.set('content-type', 'application/octet-stream');
   headers.set('x-csrf-token', await ensureCsrf());
   const response = await fetch('/api/auth/avatar', {
     method: 'POST',

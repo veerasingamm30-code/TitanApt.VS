@@ -1,0 +1,107 @@
+[
+  {
+    "name": "csrf bootstrap",
+    "pass": true,
+    "detail": "status=200"
+  },
+  {
+    "name": "login/signup + session",
+    "pass": true,
+    "detail": "status=200"
+  },
+  {
+    "name": "GET /api/auth/me",
+    "pass": {
+      "id": "cmw78tga50000cvygy5xll7n8",
+      "email": "probe-1794106718514-uy4uum@example.com",
+      "displayName": "Cycle J Probe",
+      "role": "LEARNER",
+      "timezone": "Asia/Kolkata",
+      "theme": "dark",
+      "accent": "orange",
+      "avatarUrl": null,
+      "createdAt": "2026-11-08T02:58:39.149Z"
+    },
+    "detail": "status=200"
+  },
+  {
+    "name": "PATCH /api/auth/profile",
+    "pass": true,
+    "detail": "status=200 displayName=Cycle J Probe"
+  },
+  {
+    "name": "PATCH /api/auth/profile persists study target",
+    "pass": true,
+    "detail": "status=200 target=47"
+  },
+  {
+    "name": "POST /api/auth/avatar (PNG upload)",
+    "pass": "/api/auth/avatar",
+    "detail": "status=201 avatarUrl=/api/auth/avatar"
+  },
+  {
+    "name": "GET /api/auth/avatar serves image",
+    "pass": true,
+    "detail": "status=200 bytes=69"
+  },
+  {
+    "name": "POST /api/auth/avatar rejects non-image",
+    "pass": true,
+    "detail": "status=400 msg=Only PNG, JPEG, WEBP or GIF images are supported."
+  },
+  {
+    "name": "DELETE /api/auth/avatar",
+    "pass": true,
+    "detail": "status=200"
+  },
+  {
+    "name": "GET /api/dashboard",
+    "pass": true,
+    "detail": "status=200"
+  },
+  {
+    "name": "POST /api/practice/sessions (mixed, 1q)",
+    "pass": true,
+    "detail": "status=201 msg=undefined"
+  },
+  {
+    "name": "answer a practice question",
+    "pass": true,
+    "detail": "status=201"
+  },
+  {
+    "name": "dashboard dailyGoal counts the answer",
+    "pass": true,
+    "detail": "before=3 after=4"
+  },
+  {
+    "name": "dashboard streak.todayActivityCount counts the answer",
+    "pass": true,
+    "detail": "before=3 after=4"
+  },
+  {
+    "name": "dashboard streakHistory present",
+    "pass": true,
+    "detail": "len=30"
+  },
+  {
+    "name": "GET /api/topics",
+    "pass": true,
+    "detail": "status=200 count=28"
+  },
+  {
+    "name": "topic payload includes difficultyCounts",
+    "pass": true,
+    "detail": "counts={\"EASY\":0,\"MEDIUM\":26,\"HARD\":0}"
+  },
+  {
+    "name": "Hard+time-and-work rejects with clear 409",
+    "pass": true,
+    "detail": "status=409 msg=No verified questions match those filters yet. Try another topic or difficulty."
+  },
+  {
+    "name": "Medium+time-and-work builds a set",
+    "pass": true,
+    "detail": "status=201 pool=26"
+  }
+]

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import type { Company } from '@prisma/client';
+import { companySlugForMockSlug } from '@titanapt/shared';
 import { prisma } from '../prisma.js';
 import { asyncHandler } from '../lib/errors.js';
 
@@ -31,18 +32,18 @@ publicRouter.get(
   '/companies',
   asyncHandler(async (_req, res) => {
     const companies = await prisma.company.findMany({ orderBy: { order: 'asc' } });
-    const publishedMockSlugs = new Set(
-      (await prisma.mockTest.findMany({
-        where: { status: 'PUBLISHED', slug: { startsWith: 'company-mock-' } },
-        select: { slug: true },
-      })).map((mock) => mock.slug),
-    );
+    // Published `company-mock-<x>` slugs keyed by the canonical company slug,
+    // so aliased mock slugs (e.g. hexawaretechnologies -> hexaware) still link.
+    const mockByCompanySlug = new Map<string, string>();
+    for (const mock of await prisma.mockTest.findMany({
+      where: { status: 'PUBLISHED', slug: { startsWith: 'company-mock-' } },
+      select: { slug: true },
+    })) {
+      mockByCompanySlug.set(companySlugForMockSlug(mock.slug), mock.slug);
+    }
     res.json({
       data: companies.map((company) =>
-        publicCompanyView(
-          company,
-          publishedMockSlugs.has(`company-mock-${company.slug}`) ? `company-mock-${company.slug}` : null,
-        ),
+        publicCompanyView(company, mockByCompanySlug.get(company.slug) ?? null),
       ),
     });
   }),

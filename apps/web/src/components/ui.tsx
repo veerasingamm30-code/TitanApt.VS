@@ -101,7 +101,9 @@ export function PageHeader({ eyebrow, title, subtitle, actions }: { eyebrow?: st
         <h1>{title}</h1>
         {subtitle && <p>{subtitle}</p>}
       </div>
-      {actions && <div className="page-actions">{actions}</div>}
+      <div className="page-header-side">
+        {actions && <div className="page-actions">{actions}</div>}
+      </div>
     </header>
   );
 }

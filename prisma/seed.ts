@@ -304,8 +304,8 @@ async function main() {
   const allQuestions = [...questions, ...top25Questions, ...companyMockQuestions];
 
   if (topics.length !== 28) throw new Error(`Expected 28 topics, found ${topics.length}.`);
-  if (lessons.length !== 136) throw new Error(`Expected 136 lessons, found ${lessons.length}.`);
-  if (companies.length !== 26) throw new Error(`Expected 26 companies, found ${companies.length}.`);
+  if (lessons.length !== 140) throw new Error(`Expected 140 lessons (136 prior + 4 Top-25 tech tracks), found ${lessons.length}.`);
+  if (companies.length !== 33) throw new Error(`Expected 33 companies (26 guide + 7 Top-25 reference additions), found ${companies.length}.`);
   if (questions.length !== 200) throw new Error(`Expected 200 sample questions, found ${questions.length}.`);
   if (top25Questions.length !== 750) throw new Error(`Expected 750 Top25 questions, found ${top25Questions.length}.`);
   if (companyMockQuestions.length !== 750) throw new Error(`Expected 750 company-mock questions, found ${companyMockQuestions.length}.`);
